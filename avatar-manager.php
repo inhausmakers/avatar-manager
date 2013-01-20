@@ -338,10 +338,10 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  *
  * @param array $user_id User to update.
  */
-function avatar_manager_profile_update( $user_id ) {
+function avatar_manager_edit_user_profile_update( $user_id ) {
 
 }
 
-add_action( 'personal_options_update', 'avatar_manager_profile_update' );
-add_action( 'edit_user_profile_update', 'avatar_manager_profile_update' );
+add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update' );
+add_action( 'edit_user_profile_update', 'avatar_manager_edit_user_profile_update' );
 ?>
