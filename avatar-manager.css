@@ -1,8 +1,8 @@
-#profile-page .avatar-picker img {
+#profile-page .avatar-manager img {
 	margin: 2px 0;
 	vertical-align: middle;
 }
 
-#profile-page .delete {
+#profile-page .avatar-manager .delete {
 	text-decoration: none;
 }
