@@ -31,6 +31,8 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 define( 'AVATAR_MANAGER_VERSION', '1.0.0' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'AVATAR_MANAGER_AVATAR_UPLOADS', 0 );
+define( 'AVATAR_MANAGER_DEFAULT_SIZE', 96 );
 
 /**
  * Sets up plugin defaults and makes Avatar Manager available for translation.
@@ -47,7 +49,7 @@ function avatar_manager_init() {
 add_action( 'init', 'avatar_manager_init' );
 
 /**
- * Registers sanitization callback and plugin settings fields.
+ * Registers sanitization callback and plugin setting fields.
  *
  * @uses register_setting() For registering a setting and its sanitization callback.
  * @uses add_settings_field() For registering a settings field to a settings page and section.
@@ -92,7 +94,7 @@ function avatar_manager_avatar_uploads_settings_field() {
 			</span>
 		</legend>
 		<label>
-			<input <?php checked( get_option( 'avatar_manager_avatar_uploads' ), 1, true ); ?> name="avatar_manager_avatar_uploads" type="checkbox" value="1">
+			<input <?php checked( get_option( 'avatar_manager_avatar_uploads', AVATAR_MANAGER_AVATAR_UPLOADS ), 1, true ); ?> name="avatar_manager_avatar_uploads" type="checkbox" value="1">
 			<?php _e( 'Anyone can upload', 'avatar-manager' ); ?>
 		</label>
 	</fieldset>
@@ -115,7 +117,7 @@ function avatar_manager_default_size_settings_field() {
 		</legend>
 		<label>
 			<?php _e( 'Default size of the avatar image' ); ?>
-			<input class="small-text" min="0" name="avatar_manager_default_size" step="1" type="number" value="<?php get_option( 'avatar_manager_default_size' ); ?>">
+			<input class="small-text" min="0" name="avatar_manager_default_size" step="1" type="number" value="<?php echo get_option( 'avatar_manager_default_size', AVATAR_MANAGER_DEFAULT_SIZE ); ?>">
 		</label>
 	</fieldset>
 	<?php
