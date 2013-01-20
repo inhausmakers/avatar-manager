@@ -72,6 +72,9 @@ add_action( 'admin_init', 'avatar_manager_admin_init' );
 /**
  * Enqueues scripts and styles for dashboard.
  *
+ * @uses wp_register_style() For registering a CSS style file.
+ * @uses wp_enqueue_style() For enqueuing a CSS style file.
+ *
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_enqueue_scripts() {
@@ -103,6 +106,7 @@ function avatar_manager_get_default_options() {
  * Returns plugin options.
  *
  * @see avatar_manager_get_default_options()
+ *
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_get_options() {
@@ -113,6 +117,7 @@ function avatar_manager_get_options() {
  * Sanitizes and validates plugin options.
  *
  * @see avatar_manager_get_default_options()
+ *
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_sanitize_options( $input ) {
@@ -139,6 +144,7 @@ function avatar_manager_sanitize_options( $input ) {
  * @see avatar_manager_get_options()
  * @uses checked() For comparing two given values.
  * @uses get_option() For getting values from the options database table.
+ *
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_avatar_uploads_settings_field() {
@@ -163,6 +169,7 @@ function avatar_manager_avatar_uploads_settings_field() {
  *
  * @see avatar_manager_get_options()
  * @uses get_option() For getting values from the options database table.
+ *
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_default_size_settings_field() {
@@ -185,8 +192,9 @@ function avatar_manager_default_size_settings_field() {
 /**
  * Prints Avatar section.
  *
- * @param array $profileuser User to edit.
  * @since Avatar Manager 1.0.0
+ *
+ * @param array $profileuser User to edit.
  */
 function avatar_manager_edit_user_profile( $profileuser ) {
 	?>
@@ -326,8 +334,9 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 /**
  * Updates user profile.
  *
- * @param array $user_id User to update.
  * @since Avatar Manager 1.0.0
+ *
+ * @param array $user_id User to update.
  */
 function avatar_manager_profile_update( $user_id ) {
 
