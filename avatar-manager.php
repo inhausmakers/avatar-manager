@@ -2,9 +2,6 @@
 /**
  * @package Avatar_Manager
  */
-?>
-
-<?php
 /*
 Plugin Name: Avatar Manager
 Plugin URI: https://github.com/cdog/avatar-manager
@@ -14,9 +11,7 @@ Author: Cătălin Dogaru
 Author URI: http://swarm.cs.pub.ro/~cdogaru/
 License: GPLv2 or later
 */
-?>
 
-<?php
 /*
 Copyright © 2013 Cătălin Dogaru
 
@@ -32,9 +27,7 @@ You should have received a copy of the GNU General Public License along with
 this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
-?>
 
-<?php
 define( 'AVATAR_MANAGER_VERSION', '1.0.0' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
