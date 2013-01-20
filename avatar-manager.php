@@ -306,4 +306,17 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 
 add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
+
+/**
+ * Updates user profile.
+ *
+ * @param array $user_id User to update.
+ * @since Avatar Manager 1.0.0
+ */
+function avatar_manager_profile_update( $user_id ) {
+
+}
+
+add_action( 'personal_options_update', 'avatar_manager_profile_update' );
+add_action( 'edit_user_profile_update', 'avatar_manager_profile_update' );
 ?>
