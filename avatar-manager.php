@@ -105,8 +105,14 @@ function avatar_manager_sanitize_options( $input ) {
 	if ( isset( $input['avatar_uploads'] ) && trim( $input['avatar_uploads'] ) )
 		$options['avatar_uploads'] = trim( $input['avatar_uploads'] ) ? 1 : 0;
 
-	if ( isset( $input['default_size'] ) && is_numeric( trim( $input['default_size'] ) ) )
-		$options['default_size'] = trim( $input['default_size'] );
+	if ( isset( $input['default_size'] ) && is_numeric( trim( $input['default_size'] ) ) ) {
+		$options['default_size'] = absint( trim( $input['default_size'] ) );
+
+		if ( $options['default_size'] < 1 )
+			$options['default_size'] = 1;
+		elseif ( $options['default_size'] > 512 )
+			$options['default_size'] = 512;
+	}
 
 	return $options;
 }
@@ -156,7 +162,7 @@ function avatar_manager_default_size_settings_field() {
 		</legend>
 		<label>
 			<?php _e( 'Default size of the avatar image', 'avatar-manager' ); ?>
-			<input class="small-text" min="0" name="avatar_manager[default_size]" step="1" type="number" value="<?php echo $options['default_size']; ?>">
+			<input class="small-text" min="1" name="avatar_manager[default_size]" step="1" type="number" value="<?php echo $options['default_size']; ?>">
 		</label>
 	</fieldset>
 	<?php
