@@ -203,11 +203,6 @@ function avatar_manager_default_size_settings_field() {
  * @param array $profileuser User to edit.
  */
 function avatar_manager_edit_user_profile( $profileuser ) {
-	?>
-	<h3>
-		<?php _e( 'Avatar', 'avatar-manager' ); ?>
-	</h3>
-	<?php
 	$avatar_type = isset( $profileuser->avatar_type ) ? $profileuser->avatar_type : 'gravatar';
 
 	if ( isset( $profileuser->custom_avatar ) ) {
@@ -221,6 +216,9 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 	if ( ! isset( $has_custom_avatar ) )
 		$has_custom_avatar = false;
 	?>
+	<h3>
+		<?php _e( 'Avatar', 'avatar-manager' ); ?>
+	</h3>
 	<table class="form-table">
 		<tr>
 			<th>
