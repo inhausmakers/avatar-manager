@@ -70,6 +70,22 @@ function avatar_manager_admin_init() {
 add_action( 'admin_init', 'avatar_manager_admin_init' );
 
 /**
+ * Enqueues scripts and styles for dashboard.
+ *
+ * @since Avatar Manager 1.0.0
+ */
+function avatar_manager_enqueue_scripts() {
+	global $hook_suffix;
+
+	if ( $hook_suffix == 'profile.php' ) {
+		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
+		wp_enqueue_style( 'avatar-manager.css');
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'avatar_manager_enqueue_scripts' );
+
+/**
  * Returns plugin default options.
  *
  * @since Avatar Manager 1.0.0

@@ -1,0 +1,8 @@
+#profile-page .avatar-picker img {
+	margin: 2px 0;
+	vertical-align: middle;
+}
+
+#profile-page .delete {
+	text-decoration: none;
+}
