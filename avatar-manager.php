@@ -33,7 +33,7 @@ define( 'AVATAR_MANAGER_VERSION', '1.0.0' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /**
- * Inits the plugin and makes Avatar Manager available for translation.
+ * Sets up plugin defaults and makes Avatar Manager available for translation.
  *
  * @uses load_theme_textdomain() For translation/localization support.
  *
@@ -47,7 +47,7 @@ function avatar_manager_init() {
 add_action( 'init', 'avatar_manager_init' );
 
 /**
- * Sets up plugin defaults.
+ * Registers sanitization callback and plugin settings fields.
  *
  * @uses register_setting() For registering a setting and its sanitization callback.
  * @uses add_settings_field() For registering a settings field to a settings page and section.
@@ -68,14 +68,20 @@ function avatar_manager_admin_init() {
 add_action( 'admin_init', 'avatar_manager_admin_init');
 
 /**
+ * Sanitizes the plugin options.
  *
+ * @since Avatar Manager 1.0.0
  */
 function avatar_manager_sanitize_options( $options ) {
 	return $options;
 }
 
 /**
+ * Prints the Avatar Uploads settings field.
  *
+ * @uses checked() For comparing two given values.
+ * @uses get_option() For getting values from the options database table.
+ * @since Avatar Manager 1.0.0
  */
 function avatar_manager_avatar_uploads_settings_field() {
 	?>
@@ -94,7 +100,10 @@ function avatar_manager_avatar_uploads_settings_field() {
 }
 
 /**
+ * Prints the Default Size settings field.
  *
+ * @uses get_option() For getting values from the options database table.
+ * @since Avatar Manager 1.0.0
  */
 function avatar_manager_default_size_settings_field() {
 	?>
