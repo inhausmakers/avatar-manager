@@ -31,6 +31,13 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 define( 'AVATAR_MANAGER_VERSION', '1.0.0' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
+/**
+ * Sets up plugin defaults and makes Avatar Manager available for translation.
+ *
+ * @uses load_theme_textdomain() For translation/localization support.
+ *
+ * @since Avatar Manager 1.0.0
+ */
 function avatar_manager_init() {
 	// Makes Avatar Manager available for translation.
 	load_plugin_textdomain( 'avatar-manager', false, basename( dirname( __FILE__ ) ) . '/languages' );

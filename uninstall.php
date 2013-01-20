@@ -1,6 +1,7 @@
 <?php
 /**
  * @package Avatar_Manager
+ * @subpackage Uninstaller
  */
 
 // Exit if uninstall is not called from WordPress.
