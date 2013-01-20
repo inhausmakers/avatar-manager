@@ -118,7 +118,7 @@ function avatar_manager_sanitize_options( $input ) {
 }
 
 /**
- * Prints the Avatar Uploads settings field.
+ * Prints Avatar Uploads settings field.
  *
  * @see avatar_manager_get_options()
  * @uses checked() For comparing two given values.
@@ -144,7 +144,7 @@ function avatar_manager_avatar_uploads_settings_field() {
 }
 
 /**
- * Prints the Default Size settings field.
+ * Prints Default Size settings field.
  *
  * @see avatar_manager_get_options()
  * @uses get_option() For getting values from the options database table.
@@ -167,4 +167,21 @@ function avatar_manager_default_size_settings_field() {
 	</fieldset>
 	<?php
 }
+
+/**
+ * Prints Avatar section.
+ *
+ * @param array $profileuser User to edit.
+ * @since Avatar Manager 1.0.0
+ */
+function avatar_manager_edit_user_profile( $profileuser ) {
+	?>
+	<h3>
+		<?php _e( 'Avatar', 'avatar-manager' ); ?>
+	</h3>
+	<?php
+}
+
+add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
+add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 ?>
