@@ -92,6 +92,8 @@ add_action( 'admin_enqueue_scripts', 'avatar_manager_enqueue_scripts' );
  * Returns plugin default options.
  *
  * @since Avatar Manager 1.0.0
+ *
+ * @return array Plugin default options.
  */
 function avatar_manager_get_default_options() {
 	$options = array(
@@ -108,6 +110,8 @@ function avatar_manager_get_default_options() {
  * @see avatar_manager_get_default_options()
  *
  * @since Avatar Manager 1.0.0
+ *
+ * @return array Plugin options.
  */
 function avatar_manager_get_options() {
 	return get_option( 'avatar_manager', avatar_manager_get_default_options() );
@@ -119,6 +123,8 @@ function avatar_manager_get_options() {
  * @see avatar_manager_get_default_options()
  *
  * @since Avatar Manager 1.0.0
+ *
+ * @return array Sanitized plugin options.
  */
 function avatar_manager_sanitize_options( $input ) {
 	$options = avatar_manager_get_default_options();
