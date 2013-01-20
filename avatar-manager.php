@@ -57,14 +57,11 @@ add_action( 'init', 'avatar_manager_init' );
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_admin_init() {
-	// Registers Avatar Uploads setting and its sanitization callback.
-	register_setting( 'discussion', 'avatar_manager_avatar_uploads', 'avatar_manager_sanitize_options' );
+	// Registers plugin setting and its sanitization callback.
+	register_setting( 'discussion', 'avatar_manager', 'avatar_manager_sanitize_options' );
 
 	// Registers Avatar Uploads settings field under the Settings Discussion Screen.
 	add_settings_field( 'avatar-manager-avatar_uploads', __( 'Avatar Uploads', 'avatar-manager' ), 'avatar_manager_avatar_uploads_settings_field', 'discussion', 'avatars' );
-
-	// Registers Default Size setting and its sanitization callback.
-	register_setting( 'discussion', 'avatar_manager_default_size', 'avatar_manager_sanitize_options' );
 
 	// Registers Default Size settings field under the Settings Discussion Screen.
 	add_settings_field( 'avatar-manager-default-size', __( 'Default Size', 'avatar-manager' ), 'avatar_manager_default_size_settings_field', 'discussion', 'avatars' );
@@ -79,11 +76,21 @@ add_action( 'admin_init', 'avatar_manager_admin_init' );
  */
 function avatar_manager_get_default_options() {
 	$options = array(
-		'avatar_manager_avatar_uploads' => AVATAR_MANAGER_AVATAR_UPLOADS,
-		'avatar_manager_default_size'   => AVATAR_MANAGER_DEFAULT_SIZE
+		'avatar_uploads' => AVATAR_MANAGER_AVATAR_UPLOADS,
+		'default_size'   => AVATAR_MANAGER_DEFAULT_SIZE
 	);
 
 	return $options;
+}
+
+/**
+ * Returns plugin options.
+ *
+ * @see avatar_manager_get_default_options()
+ * @since Avatar Manager 1.0.0
+ */
+function avatar_manager_get_options() {
+	return get_option( 'avatar_manager', avatar_manager_get_default_options() );
 }
 
 /**
@@ -95,11 +102,11 @@ function avatar_manager_get_default_options() {
 function avatar_manager_sanitize_options( $input ) {
 	$options = avatar_manager_get_default_options();
 
-	if ( isset( $input['avatar_manager_avatar_uploads'] ) )
-		$options['avatar_manager_avatar_uploads'] = $input['avatar_manager_avatar_uploads'] ? 0 : 1;
+	if ( isset( $input['avatar_uploads'] ) && trim( $input['avatar_uploads'] ) )
+		$options['avatar_uploads'] = trim( $input['avatar_uploads'] ) ? 1 : 0;
 
-	if ( isset( $input['avatar_manager_default_size'] ) && is_numeric( $input['avatar_manager_default_size'] ) )
-		$options['avatar_manager_default_size'] = $input['avatar_manager_default_size'] ? 0 : 1;
+	if ( isset( $input['default_size'] ) && is_numeric( trim( $input['default_size'] ) ) )
+		$options['default_size'] = trim( $input['default_size'] );
 
 	return $options;
 }
@@ -107,11 +114,14 @@ function avatar_manager_sanitize_options( $input ) {
 /**
  * Prints the Avatar Uploads settings field.
  *
+ * @see avatar_manager_get_options()
  * @uses checked() For comparing two given values.
  * @uses get_option() For getting values from the options database table.
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_avatar_uploads_settings_field() {
+	$options = avatar_manager_get_options();
+
 	?>
 	<fieldset>
 		<legend class="screen-reader-text">
@@ -120,7 +130,7 @@ function avatar_manager_avatar_uploads_settings_field() {
 			</span>
 		</legend>
 		<label>
-			<input <?php checked( get_option( 'avatar_manager_avatar_uploads', AVATAR_MANAGER_AVATAR_UPLOADS ), 1, true ); ?> name="avatar_manager_avatar_uploads" type="checkbox" value="1">
+			<input <?php checked( $options['avatar_uploads'], 1, true ); ?> name="avatar_manager[avatar_uploads]" type="checkbox" value="1">
 			<?php _e( 'Anyone can upload', 'avatar-manager' ); ?>
 		</label>
 	</fieldset>
@@ -130,10 +140,13 @@ function avatar_manager_avatar_uploads_settings_field() {
 /**
  * Prints the Default Size settings field.
  *
+ * @see avatar_manager_get_options()
  * @uses get_option() For getting values from the options database table.
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_default_size_settings_field() {
+	$options = avatar_manager_get_options();
+
 	?>
 	<fieldset>
 		<legend class="screen-reader-text">
@@ -143,7 +156,7 @@ function avatar_manager_default_size_settings_field() {
 		</legend>
 		<label>
 			<?php _e( 'Default size of the avatar image', 'avatar-manager' ); ?>
-			<input class="small-text" min="0" name="avatar_manager_default_size" step="1" type="number" value="<?php echo get_option( 'avatar_manager_default_size', AVATAR_MANAGER_DEFAULT_SIZE ); ?>">
+			<input class="small-text" min="0" name="avatar_manager[default_size]" step="1" type="number" value="<?php echo $options['default_size']; ?>">
 		</label>
 	</fieldset>
 	<?php
