@@ -89,6 +89,7 @@ function avatar_manager_get_default_options() {
 /**
  * Sanitizes and validates plugin options.
  *
+ * @see avatar_manager_get_default_options()
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_sanitize_options( $input ) {
