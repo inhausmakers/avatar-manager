@@ -2,7 +2,7 @@ Avatar Manager
 ==============
 
 Avatar Manager for WordPress is a sweet and simple plugin for storing avatars
-locally and more.
+locally and more. Easily.
 
 
 
