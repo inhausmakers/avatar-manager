@@ -51,8 +51,10 @@ add_action( 'init', 'avatar_manager_init' );
 /**
  * Registers sanitization callback and plugin setting fields.
  *
- * @uses register_setting() For registering a setting and its sanitization callback.
- * @uses add_settings_field() For registering a settings field to a settings page and section.
+ * @uses register_setting() For registering a setting and its sanitization
+ * callback.
+ * @uses add_settings_field() For registering a settings field to a settings
+ * page and section.
  *
  * @since Avatar Manager 1.0.0
  */
@@ -60,10 +62,12 @@ function avatar_manager_admin_init() {
 	// Registers plugin setting and its sanitization callback.
 	register_setting( 'discussion', 'avatar_manager', 'avatar_manager_sanitize_options' );
 
-	// Registers Avatar Uploads settings field under the Settings Discussion Screen.
+	// Registers Avatar Uploads settings field under the Settings Discussion
+	// Screen.
 	add_settings_field( 'avatar-manager-avatar_uploads', __( 'Avatar Uploads', 'avatar-manager' ), 'avatar_manager_avatar_uploads_settings_field', 'discussion', 'avatars' );
 
-	// Registers Default Size settings field under the Settings Discussion Screen.
+	// Registers Default Size settings field under the Settings Discussion
+	// Screen.
 	add_settings_field( 'avatar-manager-default-size', __( 'Default Size', 'avatar-manager' ), 'avatar_manager_default_size_settings_field', 'discussion', 'avatars' );
 }
 
@@ -300,13 +304,17 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</legend><!-- .screen-reader-text -->
 						<?php
 						$ratings = array(
-							/* translators: Content suitability rating: http://bit.ly/89QxZA */
+							// Translators: Content suitability rating:
+							// http://bit.ly/89QxZA
 							'G'  => __( 'G &#8212; Suitable for all audiences', 'avatar-manager' ),
-							/* translators: Content suitability rating: http://bit.ly/89QxZA */
+							// Translators: Content suitability rating:
+							// http://bit.ly/89QxZA
 							'PG' => __( 'PG &#8212; Possibly offensive, usually for audiences 13 and above', 'avatar-manager' ),
-							/* translators: Content suitability rating: http://bit.ly/89QxZA */
+							// Translators: Content suitability rating:
+							// http://bit.ly/89QxZA
 							'R'  => __( 'R &#8212; Intended for adult audiences above 17', 'avatar-manager' ),
-							/* translators: Content suitability rating: http://bit.ly/89QxZA */
+							// Translators: Content suitability rating:
+							// http://bit.ly/89QxZA
 							'X'  => __( 'X &#8212; Even more mature than above', 'avatar-manager' )
 						);
 
