@@ -240,7 +240,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</span><!-- .screen-reader-text -->
 					</legend>
 					<label>
-						<input <?php checked( $avatar_type, 'gravatar', true ); ?> name="avatar_type" type="radio" value="gravatar">
+						<input <?php checked( $avatar_type, 'gravatar', true ); ?> name="avatar_manager_avatar_type" type="radio" value="gravatar">
 						<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
 						<?php _e( 'Gravatar', 'avatar-manager' ); ?>
 						<span class="description">
@@ -250,7 +250,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 					<?php if ( $user_has_custom_avatar ) : ?>
 						<br>
 						<label>
-							<input <?php checked( $avatar_type, 'custom', true ); ?> name="avatar_type" type="radio" value="custom">
+							<input <?php checked( $avatar_type, 'custom', true ); ?> name="avatar_manager_avatar_type" type="radio" value="custom">
 							<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
 							<?php _e( 'Custom', 'avatar-manager' ); ?>
 						</label>
@@ -263,7 +263,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						),
 						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
 						?>
-						<a class="delete" href="<?php echo wp_nonce_url( $href, 'update-user_' . $user_id ); ?>" onclick="return showNotice.warn();">
+						<a class="delete" href="<?php echo wp_nonce_url( $href, 'update-user_' . $profileuser->ID ); ?>" onclick="return showNotice.warn();">
 							<?php _e( 'Delete', 'avatar-manager' ); ?>
 						</a><!-- .delete -->
 						<?php
@@ -284,12 +284,12 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 								<?php _e( 'Select Image', 'avatar-manager' ); ?>
 							</span>
 						</legend><!-- .screen-reader-text -->
-						<label class="description" for="upload-avatar">
+						<label class="description" for="avatar-manager-upload-avatar">
 							<?php _e( 'Choose an image from your computer:', 'avatar-manager' ); ?>
 						</label><!-- .description -->
 						<br>
-						<input name="import" type="file">
-						<?php submit_button( __( 'Upload', 'avatar-manager' ), 'button', 'upload-avatar', false ); ?>
+						<input name="avatar_manager_import" type="file">
+						<?php submit_button( __( 'Upload', 'avatar-manager' ), 'button', 'avatar-manager-upload-avatar', false ); ?>
 					</fieldset>
 				</td>
 			</tr>
@@ -325,7 +325,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						foreach ( $ratings as $key => $rating ) {
 							?>
 							<label>
-								<input <?php checked( $custom_avatar_rating, $key, true ); ?> name="custom_avatar_rating" type="radio" value="<?php echo esc_attr( $key ); ?>">
+								<input <?php checked( $custom_avatar_rating, $key, true ); ?> name="avatar_manager_custom_avatar_rating" type="radio" value="<?php echo esc_attr( $key ); ?>">
 								<?php echo $rating; ?>
 							</label>
 							<br>
@@ -347,6 +347,41 @@ add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 
 /**
+ * Resizes an avatar image.
+ *
+ * @since Avatar Manager 1.0.0
+ *
+ * @param string $url URL of the avatar image to resize.
+ * @param int $size Size of the new avatar image.
+ * @return array Array with the URL of the new avatar image.
+ */
+function avatar_manager_avatar_resize( $url, $size ) {
+	$upload_dir = wp_upload_dir();
+	$filename   = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $url );
+	$pathinfo   = pathinfo( $filename );
+	$dirname    = $pathinfo['dirname'];
+	$extension  = $pathinfo['extension'];
+	$basename   = wp_basename( $filename, ".$ext" );
+	$suffix     = $size . 'x' . $size;
+	$dest_path  = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
+	$avatar     = array();
+
+	if ( file_exists( $dest_path ) ) {
+		$avatar['url']  = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $dest_path );
+		$avatar['skip'] = true;
+	} else {
+		$filename = image_resize( $filename, $size, $size, true );
+
+		if ( ! is_wp_error( $filename ) ) {
+			$avatar['url']  = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $filename );
+			$avatar['skip'] = false;
+		}
+	}
+
+	return $avatar;
+}
+
+/**
  * Updates user profile.
  *
  * @since Avatar Manager 1.0.0
@@ -354,7 +389,69 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  * @param array $user_id User to update.
  */
 function avatar_manager_edit_user_profile_update( $user_id ) {
+	$user->avatar_type = isset( $_POST['avatar_manager_avatar_type'] ) ? sanitize_text_field( $_POST['avatar_manager_avatar_type'] ) : 'gravatar';
 
+	if ( isset( $userdata->avatar_manager_custom_avatar ) ) {
+		$user->avatar_manager_custom_avatar  = $userdata->avatar_manager_custom_avatar;
+		$custom_avatar_rating = isset( $_POST['avatar_manager_custom_avatar_rating'] ) ? sanitize_text_field( $_POST['avatar_manager_custom_avatar_rating'] ) : 'G';
+
+		update_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', $custom_avatar_rating );
+	}
+
+	if ( isset( $_POST['avatar-manager-upload-avatar'] ) && $_POST['avatar-manager-upload-avatar'] ) {
+		if ( isset( $user->custom_avatar ) )
+			custom_avatar_cleanup( $user->custom_avatar );
+
+		$mimes = array(
+			'bmp'  => 'image/bmp',
+			'gif'  => 'image/gif',
+			'jpe'  => 'image/jpeg',
+			'jpeg' => 'image/jpeg',
+			'jpg'  => 'image/jpeg',
+			'png'  => 'image/png',
+			'tif'  => 'image/tiff',
+			'tiff' => 'image/tiff'
+		);
+
+		$overrides = array( 'mimes' => $mimes, 'test_form' => false );
+		$file      = wp_handle_upload( $_FILES['avatar_manager_import'], $overrides );
+
+		if ( isset( $file['error'] ) )
+			wp_die( $file['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
+
+		$url      = $file['url'];
+		$type     = $file['type'];
+		$file     = $file['file'];
+		$filename = basename( $file );
+
+		// Construct the object array
+		$object = array(
+			'guid'           => $url,
+			'post_content'   => $url,
+			'post_mime_type' => $type,
+			'post_title'     => $filename
+		);
+
+		// Save the data
+		$attachment_id = wp_insert_attachment( $object, $file );
+
+		// Add the attachment meta-data
+		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $file ) );
+
+		$size          = get_option( 'avatar_size' );
+		$custom_avatar = array();
+
+		// Resize the avatar image to default size
+		$custom_avatar[ $size ] = avatar_manager_avatar_resize( $url, $size );
+
+		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar', $custom_avatar );
+		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', 'G' );
+		update_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
+
+		// Add the user meta-data
+		$user->avatar_type   = 'custom';
+		$user->custom_avatar = $attachment_id;
+	}
 }
 
 add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update' );
