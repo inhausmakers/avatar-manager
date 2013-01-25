@@ -210,18 +210,19 @@ function avatar_manager_default_size_settings_field() {
  * @param array $profileuser User to edit.
  */
 function avatar_manager_edit_user_profile( $profileuser ) {
-	$avatar_type = isset( $profileuser->avatar_type ) ? $profileuser->avatar_type : 'gravatar';
+	$options     = avatar_manager_get_options();
+	$avatar_type = isset( $profileuser->avatar_manager_avatar_type ) ? $profileuser->avatar_manager_avatar_type : 'gravatar';
 
-	if ( isset( $profileuser->custom_avatar ) ) {
-		$custom_avatar_rating = get_post_meta( $profileuser->custom_avatar, '_wp_attachment_custom_avatar_rating', true );
-		$has_custom_avatar    = get_post_meta( $profileuser->custom_avatar, '_wp_attachment_is_custom_avatar', true );
+	if ( isset( $profileuser->avatar_manager_custom_avatar ) ) {
+		$custom_avatar_rating   = get_post_meta( $profileuser->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', true );
+		$user_has_custom_avatar = get_post_meta( $profileuser->avatar_manager_custom_avatar, '_avatar_manager_is_custom_avatar', true );
 	}
 
-	if ( ! isset( $custom_avatar_rating ) )
+	if ( ! isset( $custom_avatar_rating ) || empty( $custom_avatar_rating ) )
 		$custom_avatar_rating = 'G';
 
-	if ( ! isset( $has_custom_avatar ) )
-		$has_custom_avatar = false;
+	if ( ! isset( $user_has_custom_avatar ) || empty( $user_has_custom_avatar ) )
+		$user_has_custom_avatar = false;
 	?>
 	<h3>
 		<?php _e( 'Avatar', 'avatar-manager' ); ?>
@@ -239,25 +240,25 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</span><!-- .screen-reader-text -->
 					</legend>
 					<label>
-						<input <?php checked( $avatar_type, 'gravatar' ); ?> name="avatar_type" type="radio" value="gravatar">
-						<?php echo get_avatar( $profileuser->ID, 32, '', false, 'gravatar' ); ?>
+						<input <?php checked( $avatar_type, 'gravatar', true ); ?> name="avatar_type" type="radio" value="gravatar">
+						<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
 						<?php _e( 'Gravatar', 'avatar-manager' ); ?>
 						<span class="description">
 							<?php _e( '<a href="http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress" target="_blank">More information</a>', 'avatar-manager' ); ?>
 						</span><!-- .description -->
 					</label>
-					<?php if ( $has_custom_avatar ) : ?>
+					<?php if ( $user_has_custom_avatar ) : ?>
 						<br>
 						<label>
-							<input <?php checked( $avatar_type, 'custom' ); ?> name="avatar_type" type="radio" value="custom">
-							<?php echo get_avatar( $profileuser->ID, 32, '', false, 'custom' ); ?>
+							<input <?php checked( $avatar_type, 'custom', true ); ?> name="avatar_type" type="radio" value="custom">
+							<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
 							<?php _e( 'Custom', 'avatar-manager' ); ?>
 						</label>
 					<?php endif; ?>
 					<?php
-					if ( $has_custom_avatar && current_user_can( 'upload_files' ) ) {
+					if ( $user_has_custom_avatar && (current_user_can( 'upload_files' ) || $options['avatar_uploads']) ) {
 						$href = esc_attr( add_query_arg( array(
-							'action'  => 'remove-avatar',
+							'action'  => 'avatar-manager-remove-avatar',
 							'user_id' => $profileuser->ID
 						),
 						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
@@ -271,7 +272,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 				</fieldset>
 			</td><!-- .avatar-manager -->
 		</tr>
-		<?php if ( current_user_can( 'upload_files' ) ) : ?>
+		<?php if ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) : ?>
 			<tr>
 				<th>
 					<?php _e( 'Select Image', 'avatar-manager' ); ?>
@@ -293,7 +294,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 				</td>
 			</tr>
 		<?php endif; ?>
-		<?php if ( $has_custom_avatar ) : ?>
+		<?php if ( $user_has_custom_avatar ) : ?>
 			<tr>
 				<th>
 					<?php _e( 'Avatar Rating', 'avatar-manager' ); ?>
@@ -322,10 +323,9 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						);
 
 						foreach ( $ratings as $key => $rating ) {
-							$selected = ( $custom_avatar_rating == $key ) ? 'checked="checked"' : '';
 							?>
 							<label>
-								<input <?php echo $selected; ?> name="custom_avatar_rating" type="radio" value="<?php echo esc_attr( $key ); ?>">
+								<input <?php checked( $custom_avatar_rating, $key, true ); ?> name="custom_avatar_rating" type="radio" value="<?php echo esc_attr( $key ); ?>">
 								<?php echo $rating; ?>
 							</label>
 							<br>
