@@ -87,6 +87,9 @@ function avatar_manager_enqueue_scripts() {
 	if ( $hook_suffix == 'profile.php' ) {
 		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
 		wp_enqueue_style( 'avatar-manager.css');
+
+		wp_register_script( 'avatar-manager.js', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.js', array( 'jquery' ), '1.0.0' );
+		wp_enqueue_script( 'avatar-manager.js' );
 	}
 }
 
