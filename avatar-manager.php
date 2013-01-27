@@ -400,9 +400,6 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 	}*/
 
 	if ( isset( $_POST['avatar-manager-upload-avatar'] ) && $_POST['avatar-manager-upload-avatar'] ) {
-		/*if ( isset( $user->custom_avatar ) )
-			custom_avatar_cleanup( $user->custom_avatar );*/
-
 		if ( ! function_exists( 'wp_handle_upload' ) )
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
@@ -430,6 +427,13 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		if ( isset( $avatar['error'] ) )
 			wp_die( $avatar['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
 
+		// Retreieves custom avatar meta field based on user ID.
+		$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+
+		if ( ! empty( $custom_avatar ) )
+			// Removes users old avatar if exists.
+			//custom_avatar_delete_avatar( $custom_avatar );
+
 		// An associative array about the attachment.
 		$attachment = array(
 			'guid'           => $avatar['url'],
@@ -452,12 +456,12 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		// Generates a resized copy of the avatar image.
 		$custom_avatar[ $options['default_size'] ] = avatar_manager_avatar_resize( $avatar['url'], $options['default_size'] );
 
-		// Updates the value of an existing meta key for the attachment.
+		// Updates attachment meta fields based on attachment ID.
 		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar', $custom_avatar );
 		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', 'G' );
 		update_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
 
-		// Updates user meta field based on user ID.
+		// Updates user meta fields based on user ID.
 		update_user_meta( $user_id, 'avatar_manager_avatar_type', 'custom' );
 		update_user_meta( $user_id, 'avatar_manager_custom_avatar', $attachment_id );
 	}
