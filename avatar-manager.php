@@ -276,9 +276,9 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 					<?php
 					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
 						$href = esc_attr( add_query_arg( array(
-							'action'                => 'update',
-							'avatar_manager_action' => 'remove-avatar',
-							'avatar_manager_avatar' => $profileuser->avatar_manager_custom_avatar
+							'action'                       => 'update',
+							'avatar_manager_action'        => 'remove-avatar',
+							'avatar_manager_custom_avatar' => $profileuser->avatar_manager_custom_avatar
 						),
 						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
 						?>
@@ -591,7 +591,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		switch ( $action ) {
 			case 'remove-avatar':
 				// Deletes avatar image based on attachment ID.
-				avatar_manager_delete_avatar( $_GET['avatar_manager_avatar'] );
+				avatar_manager_delete_avatar( $_GET['avatar_manager_custom_avatar'] );
 
 				break;
 		}
@@ -695,7 +695,7 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 		$ratings['X']  = 4;
 
 		if ( $ratings[ $custom_avatar_rating ] <= $ratings[ $avatar_rating ] ) {
-			$custom_avatar = get_post_meta( $user->custom_avatar, '_avatar_manager_custom_avatar', true );
+			$custom_avatar = get_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar', true );
 
 			if ( empty( $custom_avatar[ $size ] ) ) {
 				$url = wp_get_attachment_image_src( $user->avatar_manager_custom_avatar, 'full' );
