@@ -464,7 +464,7 @@ function avatar_manager_delete_avatar( $attachment_id ) {
 
 	foreach ( $users as $user ) {
 		// Deletes user meta fields based on user ID.
-		delete_user_meta( $user->ID, 'avatar_manager_avatar_type', 'gravatar' );
+		delete_user_meta( $user->ID, 'avatar_manager_avatar_type' );
 		delete_user_meta( $user->ID, 'avatar_manager_custom_avatar' );
 	}
 }
