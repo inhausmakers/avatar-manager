@@ -38,12 +38,13 @@ define( 'AVATAR_MANAGER_DEFAULT_SIZE', 96 );
  * Sets up plugin defaults and makes Avatar Manager available for translation.
  *
  * @uses load_theme_textdomain() For translation/localization support.
+ * @uses plugin_basename() For retrieving the basename of the plugin.
  *
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_init() {
 	// Makes Avatar Manager available for translation.
-	load_plugin_textdomain( 'avatar-manager', false, basename( dirname( __FILE__ ) ) . '/languages' );
+	load_plugin_textdomain( 'avatar-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
 add_action( 'init', 'avatar_manager_init' );
@@ -275,8 +276,9 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 					<?php
 					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
 						$href = esc_attr( add_query_arg( array(
-							'action'  => 'avatar-manager-remove-avatar',
-							'user_id' => $profileuser->ID
+							'action'         => 'update',
+							'avatar_manager' => 'remove-avatar',
+							'user_id'        => $profileuser->ID
 						),
 						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
 						?>
@@ -380,15 +382,20 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  * @return array Array with the URL of the new avatar image.
  */
 function avatar_manager_avatar_resize( $url, $size ) {
+	// Retrieves path information on the currently configured uploads directory.
 	$upload_dir = wp_upload_dir();
-	$filename   = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $url );
-	$pathinfo   = pathinfo( $filename );
-	$dirname    = $pathinfo['dirname'];
-	$extension  = $pathinfo['extension'];
-	$basename   = wp_basename( $filename, ".$ext" );
-	$suffix     = $size . 'x' . $size;
-	$dest_path  = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
-	$avatar     = array();
+
+	$filename  = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $url );
+	$pathinfo  = pathinfo( $filename );
+	$dirname   = $pathinfo['dirname'];
+	$extension = $pathinfo['extension'];
+
+	// i18n friendly version of basename().
+	$basename = wp_basename( $filename, '.' . $ext );
+
+	$suffix    = $size . 'x' . $size;
+	$dest_path = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
+	$avatar    = array();
 
 	if ( file_exists( $dest_path ) ) {
 		$avatar['url']  = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $dest_path );
@@ -408,17 +415,28 @@ function avatar_manager_avatar_resize( $url, $size ) {
 /**
  * Deletes an avatar image based on attachment ID.
  *
+ * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses wp_upload_dir() For retrieving path information on the currently
+ * configured uploads directory.
+ * @uses delete_post_meta() For deleting attachment meta fields.
+ * @uses get_users() For retrieving an array of users.
+ * @uses delete_user_meta() For deleting user meta fields.
+ *
  * @since Avatar Manager 1.0.0
  *
  * @param int $attachment_id An attachment ID
  */
 function avatar_manager_delete_avatar( $attachment_id ) {
+	// Retreieves attachment meta field based on attachment ID.
 	$is_custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
 
 	if ( ! $is_custom_avatar )
 		return;
 
-	$upload_dir    = wp_upload_dir();
+	// Retrieves path information on the currently configured uploads directory.
+	$upload_dir = wp_upload_dir();
+
+	// Retreieves attachment meta field based on attachment ID.
 	$custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_custom_avatar', true );
 
 	if ( is_array( $custom_avatar ) ) {
@@ -430,19 +448,23 @@ function avatar_manager_delete_avatar( $attachment_id ) {
 		}
 	}
 
+	// Deletes attachment meta fields based on attachment ID.
 	delete_post_meta( $attachment_id, '_avatar_manager_custom_avatar' );
 	delete_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating' );
 	delete_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar' );
 
+	// An associative array with criteria to match.
 	$args = array(
 		'meta_key'   => 'avatar_manager_custom_avatar',
 		'meta_value' => $attachment_id
 	);
 
+	// Retrieves an array of users matching the criteria given in $args.
 	$users = get_users( $args );
 
 	foreach ( $users as $user ) {
-		update_user_meta( $user->ID, 'avatar_manager_avatar_type', 'gravatar' );
+		// Deletes user meta fields based on user ID.
+		delete_user_meta( $user->ID, 'avatar_manager_avatar_type', 'gravatar' );
 		delete_user_meta( $user->ID, 'avatar_manager_custom_avatar' );
 	}
 }
@@ -453,7 +475,6 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * Updates user profile based on user ID.
  *
  * @uses avatar_manager_get_options() For retreiveing plugin options.
- * specified avatar image.
  * @uses update_user_meta() For updating user meta fields.
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses update_post_meta() For updating attachment meta fields.
@@ -468,6 +489,7 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * @uses wp_update_attachment_metadata() For updating metadata for an
  * attachment.
  * @uses avatar_manager_avatar_resize() For generating a resized copy of the
+ * specified avatar image.
  *
  * @since Avatar Manager 1.0.0
  *
