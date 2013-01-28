@@ -78,6 +78,8 @@ add_action( 'admin_init', 'avatar_manager_admin_init' );
  *
  * @uses wp_register_style() For registering a CSS style file.
  * @uses wp_enqueue_style() For enqueuing a CSS style file.
+ * @uses wp_register_script() For registering a JS script file.
+ * @uses wp_enqueue_script() For enqueuing a JS script file.
  *
  * @since Avatar Manager 1.0.0
  */
@@ -114,7 +116,9 @@ function avatar_manager_get_default_options() {
 /**
  * Returns plugin options.
  *
- * @see avatar_manager_get_default_options()
+ * @see avatar_manager_get_default_options() For retreiveing plugin default
+ * options.
+ * @uses get_option() For getting values for a named option.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -127,7 +131,8 @@ function avatar_manager_get_options() {
 /**
  * Sanitizes and validates plugin options.
  *
- * @see avatar_manager_get_default_options()
+ * @see avatar_manager_get_default_options() For retreiveing plugin default
+ * options.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -154,9 +159,8 @@ function avatar_manager_sanitize_options( $input ) {
 /**
  * Prints Avatar Uploads settings field.
  *
- * @see avatar_manager_get_options()
+ * @see avatar_manager_get_options() For retreiveing plugin options.
  * @uses checked() For comparing two given values.
- * @uses get_option() For getting values from the options database table.
  *
  * @since Avatar Manager 1.0.0
  */
@@ -180,8 +184,7 @@ function avatar_manager_avatar_uploads_settings_field() {
 /**
  * Prints Default Size settings field.
  *
- * @see avatar_manager_get_options()
- * @uses get_option() For getting values from the options database table.
+ * @see avatar_manager_get_options() For retreiveing plugin options.
  *
  * @since Avatar Manager 1.0.0
  */
@@ -205,6 +208,19 @@ function avatar_manager_default_size_settings_field() {
 /**
  * Prints Avatar section.
  *
+ * @see avatar_manager_get_options() For retreiveing plugin options.
+ * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses checked() For comparing two given values.
+ * @uses get_avatar() For retrieving the avatar for a user.
+ * @uses esc_attr() For escaping HTML attributes.
+ * @uses add_query_arg() For retrieving a modified URL (with) query string.
+ * @uses self_admin_url() For retrieving an admin url link with optional path
+ * appended.
+ * @uses current_user_can() For checking whether the current user has a certain
+ * capability.
+ * @uses submit_button() For echoing a submit button, with provided text and
+ * appropriate class.
+ *
  * @since Avatar Manager 1.0.0
  *
  * @param array $profileuser User to edit.
@@ -214,6 +230,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 	$avatar_type = isset( $profileuser->avatar_manager_avatar_type ) ? $profileuser->avatar_manager_avatar_type : 'gravatar';
 
 	if ( isset( $profileuser->avatar_manager_custom_avatar ) ) {
+		// Retreieves attachment meta fields based on attachment ID.
 		$custom_avatar_rating   = get_post_meta( $profileuser->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', true );
 		$user_has_custom_avatar = get_post_meta( $profileuser->avatar_manager_custom_avatar, '_avatar_manager_is_custom_avatar', true );
 	}
@@ -256,7 +273,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</label>
 					<?php endif; ?>
 					<?php
-					if ( $user_has_custom_avatar && (current_user_can( 'upload_files' ) || $options['avatar_uploads']) ) {
+					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
 						$href = esc_attr( add_query_arg( array(
 							'action'  => 'avatar-manager-remove-avatar',
 							'user_id' => $profileuser->ID
@@ -349,6 +366,13 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 /**
  * Generates a resized copy of the specified avatar image.
  *
+ * @uses wp_upload_dir() For retrieving path information on the currently
+ * configured uploads directory.
+ * @uses wp_basename() For i18n friendly version of basename().
+ * @uses image_resize() [description]
+ * @uses is_wp_error() For checking whether the passed variable is a WordPress
+ * Error.
+ *
  * @since Avatar Manager 1.0.0
  *
  * @param string $url URL of the avatar image to resize.
@@ -383,6 +407,23 @@ function avatar_manager_avatar_resize( $url, $size ) {
 
 /**
  * Updates user profile based on user ID.
+ *
+ * @see avatar_manager_get_options() For retreiveing plugin options.
+ * @see avatar_manager_delete_avatar() For deleting an avatar image.
+ * @see avatar_manager_avatar_resize() For generating a resized copy of the
+ * specified avatar image.
+ * @uses update_user_meta() For updating user meta fields.
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses update_post_meta() For updating attachment meta fields.
+ * @uses wp_handle_upload() For handling PHP uploads in WordPress.
+ * @uses wp_die() For killing WordPress execution and displaying HTML error
+ * message.
+ * @uses wp_insert_attachment() For inserting an attachment into the media
+ * library.
+ * @uses wp_generate_attachment_metadata() For generating metadata for an
+ * attachment.
+ * @uses wp_update_attachment_metadata() For updating metadata for an
+ * attachment.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -431,6 +472,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		$avatar = wp_handle_upload( $_FILES['avatar_manager_import'], $overrides );
 
 		if ( isset( $avatar['error'] ) )
+			// Kills WordPress execution and display HTML error message.
 			wp_die( $avatar['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
 
 		if ( ! empty( $custom_avatar ) )
