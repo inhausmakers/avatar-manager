@@ -619,4 +619,23 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 
 add_action( 'edit_user_profile_update', 'avatar_manager_edit_user_profile_update' );
 add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update' );
+
+/**
+ * Retrieves the avatar for a user who provided a user ID or email address.
+ *
+ * @since Avatar Manager 1.0.0
+ *
+ * @param int|string|object $id_or_email A user ID, email address, or comment
+ * object.
+ * @param int $size Size of the avatar image
+ * @param string $default URL to a default image to use if no avatar is
+ * available.
+ * @param string $alt Alternative text to use in image tag. Defaults to blank.
+ * @return string <img> tag for the user's avatar.
+ */
+function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $default = '', $alt = false ) {
+	return $avatar;
+}
+
+add_filter( 'get_avatar', 'avatar_manager_get_avatar', 10, 5 );
 ?>
