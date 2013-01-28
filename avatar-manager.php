@@ -382,7 +382,7 @@ function avatar_manager_avatar_resize( $url, $size ) {
 }
 
 /**
- * Updates user profile.
+ * Updates user profile based on user ID.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -392,12 +392,18 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 	$options     = avatar_manager_get_options();
 	$avatar_type = isset( $_POST['avatar_manager_avatar_type'] ) ? sanitize_text_field( $_POST['avatar_manager_avatar_type'] ) : 'gravatar';
 
-	/*if ( isset( $userdata->avatar_manager_custom_avatar ) ) {
-		$user->avatar_manager_custom_avatar  = $userdata->avatar_manager_custom_avatar;
+	// Updates user meta field based on user ID.
+	update_user_meta( $user_id, 'avatar_manager_avatar_type', $avatar_type );
+
+	// Retreieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+
+	if ( ! empty( $custom_avatar ) ) {
 		$custom_avatar_rating = isset( $_POST['avatar_manager_custom_avatar_rating'] ) ? sanitize_text_field( $_POST['avatar_manager_custom_avatar_rating'] ) : 'G';
 
-		update_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', $custom_avatar_rating );
-	}*/
+		// Updates attachment meta field based on attachment ID.
+		update_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', $custom_avatar_rating );
+	}
 
 	if ( isset( $_POST['avatar-manager-upload-avatar'] ) && $_POST['avatar-manager-upload-avatar'] ) {
 		if ( ! function_exists( 'wp_handle_upload' ) )
@@ -426,9 +432,6 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 
 		if ( isset( $avatar['error'] ) )
 			wp_die( $avatar['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
-
-		// Retreieves custom avatar meta field based on user ID.
-		$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
 
 		if ( ! empty( $custom_avatar ) )
 			// Removes users old avatar if exists.
