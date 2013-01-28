@@ -391,7 +391,7 @@ function avatar_manager_avatar_resize( $url, $size ) {
 	$extension = $pathinfo['extension'];
 
 	// i18n friendly version of basename().
-	$basename = wp_basename( $filename, '.' . $ext );
+	$basename = wp_basename( $filename, '.' . $extension );
 
 	$suffix    = $size . 'x' . $size;
 	$dest_path = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
@@ -634,6 +634,86 @@ add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update'
  * @return string <img> tag for the user's avatar.
  */
 function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $default = '', $alt = false ) {
+	if ( ! get_option( 'show_avatars' ) )
+		return false;
+
+	$options = avatar_manager_get_options();
+
+	if ( empty( $size ) || ! is_numeric( $size ) ) {
+		$size = $options['avatar-manager-default-size'];
+	} else {
+		$size = absint( $size );
+
+		if ( $size < 1 )
+			$size = 1;
+		elseif ( $size > 512 )
+			$size = 512;
+	}
+
+	$email = '';
+
+	if ( is_numeric( $id_or_email ) ) {
+		$id   = (int) $id_or_email;
+		$user = get_userdata( $id );
+
+		if ( $user )
+			$email = $user->user_email;
+	} elseif ( is_object( $id_or_email ) ) {
+		$allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
+
+		if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
+			return false;
+
+		if ( ! empty( $id_or_email->user_id ) ) {
+			$id   = (int) $id_or_email->user_id;
+			$user = get_userdata( $id );
+
+			if ( $user )
+				$email = $user->user_email;
+		} elseif ( ! empty( $id_or_email->comment_author_email ) ) {
+			$email = $id_or_email->comment_author_email;
+		}
+	} else {
+		$email = $id_or_email;
+
+		if ( $id = email_exists( $email ) )
+			$user = get_userdata( $id );
+	}
+
+	if ( isset( $user ) )
+		$avatar_type = $user->avatar_manager_avatar_type;
+	else
+		return $avatar;
+
+	if ( $avatar_type == 'custom' ) {
+		$avatar_rating        = get_option( 'avatar_rating' );
+		$custom_avatar_rating = get_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', true );
+
+		$ratings['G']  = 1;
+		$ratings['PG'] = 2;
+		$ratings['R']  = 3;
+		$ratings['X']  = 4;
+
+		if ( $ratings[ $custom_avatar_rating ] <= $ratings[ $avatar_rating ] ) {
+			$custom_avatar = get_post_meta( $user->custom_avatar, '_avatar_manager_custom_avatar', true );
+
+			if ( empty( $custom_avatar[ $size ] ) ) {
+				$url = wp_get_attachment_image_src( $user->avatar_manager_custom_avatar, 'full' );
+
+				// Resize the avatar image
+				$custom_avatar[ $size ] = avatar_manager_avatar_resize( $url[0], $size );
+
+				// Update the user meta-data
+				update_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar', $custom_avatar );
+			}
+
+			$src    = $custom_avatar[ $size ]['url'];
+			$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
+		} else {
+			$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $default . '" width="' . $size . '">';
+		}
+	}
+
 	return $avatar;
 }
 
