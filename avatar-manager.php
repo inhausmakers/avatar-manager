@@ -276,9 +276,9 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 					<?php
 					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
 						$href = esc_attr( add_query_arg( array(
-							'action'         => 'update',
-							'avatar_manager' => 'remove-avatar',
-							'user_id'        => $profileuser->ID
+							'action'                => 'update',
+							'avatar_manager_action' => 'remove-avatar',
+							'avatar_manager_avatar' => $profileuser->avatar_manager_custom_avatar
 						),
 						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
 						?>
@@ -490,6 +490,14 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * attachment.
  * @uses avatar_manager_avatar_resize() For generating a resized copy of the
  * specified avatar image.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
+ * attachment ID.
+ * @uses wp_get_referer() For retrieving referer from '_wp_http_referer', HTTP
+ * referer, or current page respectively.
+ * @uses get_edit_user_link() For getting the link to the users edit profile
+ * page in the WordPress admin.
+ * @uses add_query_arg() For retrieving a modified URL (with) query string.
+ * @uses wp_redirect() For redirecting the user to a specified absolute URI.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -575,6 +583,37 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		// Updates user meta fields based on user ID.
 		update_user_meta( $user_id, 'avatar_manager_avatar_type', 'custom' );
 		update_user_meta( $user_id, 'avatar_manager_custom_avatar', $attachment_id );
+	}
+
+	if ( isset( $_GET['avatar_manager_action'] ) && $_GET['avatar_manager_action'] ) {
+		$action = $_GET['avatar_manager_action'];
+
+		switch ( $action ) {
+			case 'remove-avatar':
+				// Deletes avatar image based on attachment ID.
+				avatar_manager_delete_avatar( $_GET['avatar_manager_avatar'] );
+
+				break;
+		}
+
+		// Retrieves referer from '_wp_http_referer', HTTP referer, or current
+		// page respectively.
+		$wp_http_referer = wp_get_referer();
+
+		// Gets the link to the users edit profile page in the WordPress admin.
+		$edit_user_link = get_edit_user_link( $user_id );
+
+		// Retrieves a modified URL (with) query string.
+		$redirect = add_query_arg( 'updated', true, $edit_user_link );
+
+		if ( $wp_http_referer )
+			// Retrieves a modified URL (with) query string.
+			$redirect = add_query_arg( 'wp_http_referer', urlencode( $wp_http_referer ), $redirect );
+
+		// Redirects the user to a specified absolute URI.
+		wp_redirect( $redirect );
+
+		exit;
 	}
 }
 
