@@ -406,6 +406,50 @@ function avatar_manager_avatar_resize( $url, $size ) {
 }
 
 /**
+ * Deletes an avatar image based on attachment ID.
+ *
+ * @since Avatar Manager 1.0.0
+ *
+ * @param int $attachment_id An attachment ID
+ */
+function avatar_manager_delete_avatar( $attachment_id ) {
+	$is_custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
+
+	if ( ! $is_custom_avatar )
+		return;
+
+	$upload_dir    = wp_upload_dir();
+	$custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_custom_avatar', true );
+
+	if ( is_array( $custom_avatar ) ) {
+		foreach ( $custom_avatar as $file ) {
+			if ( ! $file['skip'] ) {
+				$file = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $file['url'] );
+				@unlink( $file );
+			}
+		}
+	}
+
+	delete_post_meta( $attachment_id, '_avatar_manager_custom_avatar' );
+	delete_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating' );
+	delete_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar' );
+
+	$args = array(
+		'meta_key'   => 'avatar_manager_custom_avatar',
+		'meta_value' => $attachment_id
+	);
+
+	$users = get_users( $args );
+
+	foreach ( $users as $user ) {
+		update_user_meta( $user->ID, 'avatar_manager_avatar_type', 'gravatar' );
+		delete_user_meta( $user->ID, 'avatar_manager_custom_avatar' );
+	}
+}
+
+add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
+
+/**
  * Updates user profile based on user ID.
  *
  * @see avatar_manager_get_options() For retreiveing plugin options.
@@ -477,7 +521,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 
 		if ( ! empty( $custom_avatar ) )
 			// Deletes users old avatar image.
-			//custom_avatar_delete_avatar( $custom_avatar );
+			avatar_manager_delete_avatar( $custom_avatar );
 
 		// An associative array about the attachment.
 		$attachment = array(
