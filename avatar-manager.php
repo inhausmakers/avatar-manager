@@ -116,9 +116,9 @@ function avatar_manager_get_default_options() {
 /**
  * Returns plugin options.
  *
- * @see avatar_manager_get_default_options() For retreiveing plugin default
- * options.
  * @uses get_option() For getting values for a named option.
+ * @uses avatar_manager_get_default_options() For retreiveing plugin default
+ * options.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -131,7 +131,7 @@ function avatar_manager_get_options() {
 /**
  * Sanitizes and validates plugin options.
  *
- * @see avatar_manager_get_default_options() For retreiveing plugin default
+ * @uses avatar_manager_get_default_options() For retreiveing plugin default
  * options.
  *
  * @since Avatar Manager 1.0.0
@@ -159,7 +159,7 @@ function avatar_manager_sanitize_options( $input ) {
 /**
  * Prints Avatar Uploads settings field.
  *
- * @see avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retreiveing plugin options.
  * @uses checked() For comparing two given values.
  *
  * @since Avatar Manager 1.0.0
@@ -184,7 +184,7 @@ function avatar_manager_avatar_uploads_settings_field() {
 /**
  * Prints Default Size settings field.
  *
- * @see avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retreiveing plugin options.
  *
  * @since Avatar Manager 1.0.0
  */
@@ -208,7 +208,7 @@ function avatar_manager_default_size_settings_field() {
 /**
  * Prints Avatar section.
  *
- * @see avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retreiveing plugin options.
  * @uses get_post_meta() For retreieving attachment meta fields.
  * @uses checked() For comparing two given values.
  * @uses get_avatar() For retrieving the avatar for a user.
@@ -452,9 +452,7 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
 /**
  * Updates user profile based on user ID.
  *
- * @see avatar_manager_get_options() For retreiveing plugin options.
- * @see avatar_manager_delete_avatar() For deleting an avatar image.
- * @see avatar_manager_avatar_resize() For generating a resized copy of the
+ * @uses avatar_manager_get_options() For retreiveing plugin options.
  * specified avatar image.
  * @uses update_user_meta() For updating user meta fields.
  * @uses get_user_meta() For retrieving user meta fields.
@@ -462,12 +460,14 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * @uses wp_handle_upload() For handling PHP uploads in WordPress.
  * @uses wp_die() For killing WordPress execution and displaying HTML error
  * message.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
  * @uses wp_generate_attachment_metadata() For generating metadata for an
  * attachment.
  * @uses wp_update_attachment_metadata() For updating metadata for an
  * attachment.
+ * @uses avatar_manager_avatar_resize() For generating a resized copy of the
  *
  * @since Avatar Manager 1.0.0
  *
