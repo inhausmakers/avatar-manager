@@ -698,12 +698,14 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 			$custom_avatar = get_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar', true );
 
 			if ( empty( $custom_avatar[ $size ] ) ) {
+				// Retrieves an array with the image attributes "url", "width"
+				// and "height", of the image attachment file.
 				$url = wp_get_attachment_image_src( $user->avatar_manager_custom_avatar, 'full' );
 
-				// Resize the avatar image
+				// Generates a resized copy of the avatar image.
 				$custom_avatar[ $size ] = avatar_manager_avatar_resize( $url[0], $size );
 
-				// Update the user meta-data
+				// Updates attachment meta field based on attachment ID.
 				update_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar', $custom_avatar );
 			}
 
