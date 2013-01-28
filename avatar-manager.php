@@ -472,11 +472,11 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		$avatar = wp_handle_upload( $_FILES['avatar_manager_import'], $overrides );
 
 		if ( isset( $avatar['error'] ) )
-			// Kills WordPress execution and display HTML error message.
+			// Kills WordPress execution and displays HTML error message.
 			wp_die( $avatar['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
 
 		if ( ! empty( $custom_avatar ) )
-			// Removes users old avatar if exists.
+			// Deletes users old avatar image.
 			//custom_avatar_delete_avatar( $custom_avatar );
 
 		// An associative array about the attachment.
