@@ -241,6 +241,9 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 
 	if ( ! isset( $user_has_custom_avatar ) || empty( $user_has_custom_avatar ) )
 		$user_has_custom_avatar = false;
+
+	if ( $user_has_custom_avatar )
+		remove_filter( 'get_avatar', 'avatar_manager_get_avatar' );
 	?>
 	<h3>
 		<?php _e( 'Avatar', 'avatar-manager' ); ?>
@@ -269,7 +272,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						<br>
 						<label>
 							<input <?php checked( $avatar_type, 'custom', true ); ?> name="avatar_manager_avatar_type" type="radio" value="custom">
-							<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
+							<?php echo avatar_manager_get_custom_avatar( $profileuser->ID, 32, '', false ); ?>
 							<?php _e( 'Custom', 'avatar-manager' ); ?>
 						</label>
 					<?php endif; ?>
@@ -616,6 +619,40 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 add_action( 'edit_user_profile_update', 'avatar_manager_edit_user_profile_update' );
 add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update' );
 
+function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', $alt = false ) {
+	$avatar_rating        = get_option( 'avatar_rating' );
+	$custom_avatar        = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+	$custom_avatar_rating = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true );
+
+	$ratings['G']  = 1;
+	$ratings['PG'] = 2;
+	$ratings['R']  = 3;
+	$ratings['X']  = 4;
+
+	if ( $ratings[ $custom_avatar_rating ] <= $ratings[ $avatar_rating ] ) {
+		$avatar = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar', true );
+
+		if ( empty( $avatar[ $size ] ) ) {
+			// Retrieves an array with the image attributes "url", "width"
+			// and "height", of the image attachment file.
+			$url = wp_get_attachment_image_src( $custom_avatar, 'full' );
+
+			// Generates a resized copy of the avatar image.
+			$avatar[ $size ] = avatar_manager_avatar_resize( $url[0], $size );
+
+			// Updates attachment meta field based on attachment ID.
+			update_post_meta( $custom_avatar, '_avatar_manager_custom_avatar', $avatar );
+		}
+
+		$src    = $avatar[ $size ]['url'];
+		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
+	} else {
+		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $default . '" width="' . $size . '">';
+	}
+
+	return $avatar;
+}
+
 /**
  * Retrieves the avatar for a user who provided a user ID or email address.
  *
@@ -681,36 +718,8 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 	else
 		return $avatar;
 
-	if ( $avatar_type == 'custom' ) {
-		$avatar_rating        = get_option( 'avatar_rating' );
-		$custom_avatar_rating = get_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', true );
-
-		$ratings['G']  = 1;
-		$ratings['PG'] = 2;
-		$ratings['R']  = 3;
-		$ratings['X']  = 4;
-
-		if ( $ratings[ $custom_avatar_rating ] <= $ratings[ $avatar_rating ] ) {
-			$custom_avatar = get_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar', true );
-
-			if ( empty( $custom_avatar[ $size ] ) ) {
-				// Retrieves an array with the image attributes "url", "width"
-				// and "height", of the image attachment file.
-				$url = wp_get_attachment_image_src( $user->avatar_manager_custom_avatar, 'full' );
-
-				// Generates a resized copy of the avatar image.
-				$custom_avatar[ $size ] = avatar_manager_avatar_resize( $url[0], $size );
-
-				// Updates attachment meta field based on attachment ID.
-				update_post_meta( $user->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar', $custom_avatar );
-			}
-
-			$src    = $custom_avatar[ $size ]['url'];
-			$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
-		} else {
-			$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $default . '" width="' . $size . '">';
-		}
-	}
+	if ( $avatar_type == 'custom' )
+		$avatar = avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt );
 
 	return $avatar;
 }
