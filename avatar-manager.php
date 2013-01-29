@@ -381,7 +381,8 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  * @uses wp_upload_dir() For retrieving path information on the currently
  * configured uploads directory.
  * @uses wp_basename() For i18n friendly version of basename().
- * @uses image_resize() [description]
+ * @uses wp_get_image_editor() For retrieving a WP_Image_Editor instance and
+ * loading a file into it.
  * @uses is_wp_error() For checking whether the passed variable is a WordPress
  * Error.
  *
@@ -411,10 +412,17 @@ function avatar_manager_avatar_resize( $url, $size ) {
 		$avatar['url']  = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $dest_path );
 		$avatar['skip'] = true;
 	} else {
-		$filename = image_resize( $filename, $size, $size, true );
+		// Retrieves a WP_Image_Editor instance and loads a file into it.
+		$image = wp_get_image_editor( $filename );
 
-		if ( ! is_wp_error( $filename ) ) {
-			$avatar['url']  = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $filename );
+		if ( ! is_wp_error( $image ) ) {
+			// Resizes current image.
+			$image->resize( $size, $size, true );
+
+			// Saves current image to file.
+			$image->save( $dest_path );
+
+			$avatar['url']  = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $dest_path );
 			$avatar['skip'] = false;
 		}
 	}
@@ -843,7 +851,7 @@ add_filter( 'get_avatar', 'avatar_manager_get_avatar', 10, 5 );
  *
  * @since Avatar Manager 1.0.0
  *
- * @param  array $avatar_defaults An associative array with default avatars.
+ * @param array $avatar_defaults An associative array with default avatars.
  * @return array An associative array with default avatars.
  */
 function avatar_manager_avatar_defaults( $avatar_defaults ) {
