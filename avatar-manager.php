@@ -844,7 +844,7 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 add_filter( 'get_avatar', 'avatar_manager_get_avatar', 10, 5 );
 
 /**
- * Removes the custom avatar function attached to the avatar hook.
+ * Removes the custom avatar function attached to the avatar action hook.
  *
  * @uses remove_filter() For removing a function attached to a specified action
  * hook.
@@ -855,7 +855,7 @@ add_filter( 'get_avatar', 'avatar_manager_get_avatar', 10, 5 );
  * @return array An associative array with default avatars.
  */
 function avatar_manager_avatar_defaults( $avatar_defaults ) {
-	// Removes the function attached to the specified action hook.
+	// Removes the custom avatar function attached to the avatar action hook.
 	remove_filter( 'get_avatar', 'avatar_manager_get_avatar' );
 
 	return $avatar_defaults;
