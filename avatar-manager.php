@@ -492,8 +492,6 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * specified avatar image.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
  * attachment ID.
- * @uses wp_get_referer() For retrieving referer from '_wp_http_referer', HTTP
- * referer, or current page respectively.
  * @uses get_edit_user_link() For getting the link to the users edit profile
  * page in the WordPress admin.
  * @uses add_query_arg() For retrieving a modified URL (with) query string.
@@ -586,6 +584,8 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 	}
 
 	if ( isset( $_GET['avatar_manager_action'] ) && $_GET['avatar_manager_action'] ) {
+		global $wp_http_referer;
+
 		$action = $_GET['avatar_manager_action'];
 
 		switch ( $action ) {
@@ -595,10 +595,6 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 
 				break;
 		}
-
-		// Retrieves referer from '_wp_http_referer', HTTP referer, or current
-		// page respectively.
-		$wp_http_referer = wp_get_referer();
 
 		// Gets the link to the users edit profile page in the WordPress admin.
 		$edit_user_link = get_edit_user_link( $user_id );
