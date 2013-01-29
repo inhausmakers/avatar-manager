@@ -166,6 +166,7 @@ function avatar_manager_sanitize_options( $input ) {
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_avatar_uploads_settings_field() {
+	// Retrieves plugin options.
 	$options = avatar_manager_get_options();
 	?>
 	<fieldset>
@@ -190,6 +191,7 @@ function avatar_manager_avatar_uploads_settings_field() {
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_default_size_settings_field() {
+	// Retrieves plugin options.
 	$options = avatar_manager_get_options();
 	?>
 	<fieldset>
@@ -211,6 +213,8 @@ function avatar_manager_default_size_settings_field() {
  *
  * @uses avatar_manager_get_options() For retreiveing plugin options.
  * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses remove_filter() For removing a function attached to a specified action
+ * hook.
  * @uses checked() For comparing two given values.
  * @uses get_avatar() For retrieving the avatar for a user.
  * @uses esc_attr() For escaping HTML attributes.
@@ -227,7 +231,9 @@ function avatar_manager_default_size_settings_field() {
  * @param array $profileuser User to edit.
  */
 function avatar_manager_edit_user_profile( $profileuser ) {
-	$options     = avatar_manager_get_options();
+	// Retrieves plugin options.
+	$options = avatar_manager_get_options();
+
 	$avatar_type = isset( $profileuser->avatar_manager_avatar_type ) ? $profileuser->avatar_manager_avatar_type : 'gravatar';
 
 	if ( isset( $profileuser->avatar_manager_custom_avatar ) ) {
@@ -243,6 +249,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 		$user_has_custom_avatar = false;
 
 	if ( $user_has_custom_avatar )
+		// Removes the function attached to the specified action hook.
 		remove_filter( 'get_avatar', 'avatar_manager_get_avatar' );
 	?>
 	<h3>
@@ -478,6 +485,8 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * Updates user profile based on user ID.
  *
  * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses sanitize_text_field() For sanitizing a string from user input or from
+ * the database.
  * @uses update_user_meta() For updating user meta fields.
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses update_post_meta() For updating attachment meta fields.
@@ -502,10 +511,13 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  *
  * @since Avatar Manager 1.0.0
  *
- * @param array $user_id User to update.
+ * @param int $user_id User to update.
  */
 function avatar_manager_edit_user_profile_update( $user_id ) {
-	$options     = avatar_manager_get_options();
+	// Retrieves plugin options.
+	$options = avatar_manager_get_options();
+
+	// Sanitizes the string from user input.
 	$avatar_type = isset( $_POST['avatar_manager_avatar_type'] ) ? sanitize_text_field( $_POST['avatar_manager_avatar_type'] ) : 'gravatar';
 
 	// Updates user meta field based on user ID.
@@ -515,6 +527,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
 
 	if ( ! empty( $custom_avatar ) ) {
+		// Sanitizes the string from user input.
 		$custom_avatar_rating = isset( $_POST['avatar_manager_custom_avatar_rating'] ) ? sanitize_text_field( $_POST['avatar_manager_custom_avatar_rating'] ) : 'G';
 
 		// Updates attachment meta field based on attachment ID.
@@ -619,9 +632,81 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 add_action( 'edit_user_profile_update', 'avatar_manager_edit_user_profile_update' );
 add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update' );
 
+/**
+ * Returns user custom avatar based on user ID.
+ *
+ * @since Avatar Manager 1.0.0
+ *
+ * @param int $user_id User to update.
+ * @param int $size Size of the avatar image
+ * @param string $default URL to a default image to use if no avatar is
+ * available.
+ * @param string $alt Alternative text to use in image tag. Defaults to blank.
+ * @return string <img> tag for the user's avatar.
+ */
 function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', $alt = false ) {
-	$avatar_rating        = get_option( 'avatar_rating' );
-	$custom_avatar        = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+	if ( ! get_option( 'show_avatars' ) )
+		return false;
+
+	// Retrieves plugin options.
+	$options = avatar_manager_get_options();
+
+	if ( empty( $size ) || ! is_numeric( $size ) ) {
+		$size = $options['avatar-manager-default-size'];
+	} else {
+		$size = absint( $size );
+
+		if ( $size < 1 )
+			$size = 1;
+		elseif ( $size > 512 )
+			$size = 512;
+	}
+
+	if ( empty( $default ) ) {
+		// Retieves values for the named option.
+		$avatar_default = get_option( 'avatar_default' );
+
+		if ( empty( $avatar_default ) )
+			$default = 'mystery';
+		else
+			$default = $avatar_default;
+	}
+
+	if ( is_ssl() )
+		$host = 'https://secure.gravatar.com';
+	else
+		$host = 'http://0.gravatar.com';
+
+	if ( $default == 'mystery' )
+		$default = $host . '/avatar/ad516503a11cd5ca435acc9bb6523536?s=' . $size;
+	elseif ( $default == 'blank' )
+		// Retrieves the url to the includes area for the current site with the
+		// appropriate protocol.
+		$default = includes_url( 'images/blank.gif' );
+	elseif ( $default == 'gravatar_default' )
+		$default = $host . '/avatar/?s=' . $size;
+	elseif ( strpos( $default, 'http://' ) === 0 )
+		// Retrieves a modified URL (with) query string.
+		$default = add_query_arg( 's', $size, $default );
+	else
+		$default = $host . '/avatar/?d=' . $default . '&amp;s=' . $size;
+
+	if ( $alt === false )
+		$alt = '';
+	else
+		// Escapes HTML attributes.
+		$alt = esc_attr( $alt );
+
+	// Retieves values for the named option.
+	$avatar_rating = get_option( 'avatar_rating' );
+
+	// Retreieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+
+	if ( empty( $custom_avatar ) )
+		return false;
+
+	// Retreieves attachment meta field based on attachment ID.
 	$custom_avatar_rating = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true );
 
 	$ratings['G']  = 1;
@@ -630,6 +715,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 	$ratings['X']  = 4;
 
 	if ( $ratings[ $custom_avatar_rating ] <= $ratings[ $avatar_rating ] ) {
+		// Retreieves attachment meta field based on attachment ID.
 		$avatar = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar', true );
 
 		if ( empty( $avatar[ $size ] ) ) {
@@ -654,7 +740,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 }
 
 /**
- * Retrieves the avatar for a user who provided a user ID or email address.
+ * Returns the avatar for a user who provided a user ID or email address.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -670,6 +756,7 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 	if ( ! get_option( 'show_avatars' ) )
 		return false;
 
+	// Retrieves plugin options.
 	$options = avatar_manager_get_options();
 
 	if ( empty( $size ) || ! is_numeric( $size ) ) {
@@ -686,19 +773,18 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 	$email = '';
 
 	if ( is_numeric( $id_or_email ) ) {
-		$id   = (int) $id_or_email;
+		$id = (int) $id_or_email;
+
+		// Retrieves user data by user ID.
 		$user = get_userdata( $id );
 
 		if ( $user )
 			$email = $user->user_email;
 	} elseif ( is_object( $id_or_email ) ) {
-		$allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
-
-		if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
-			return false;
-
 		if ( ! empty( $id_or_email->user_id ) ) {
-			$id   = (int) $id_or_email->user_id;
+			$id = (int) $id_or_email->user_id;
+
+			// Retrieves user data by user ID.
 			$user = get_userdata( $id );
 
 			if ( $user )
@@ -710,6 +796,7 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 		$email = $id_or_email;
 
 		if ( $id = email_exists( $email ) )
+			// Retrieves user data by user ID.
 			$user = get_userdata( $id );
 	}
 
@@ -719,6 +806,7 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 		return $avatar;
 
 	if ( $avatar_type == 'custom' )
+		// Retrieves user custom avatar based on user ID.
 		$avatar = avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt );
 
 	return $avatar;
