@@ -635,6 +635,21 @@ add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update'
 /**
  * Returns user custom avatar based on user ID.
  *
+ * @uses get_option() For getting values for a named option.
+ * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses is_ssl() For checking if SSL is being used.
+ * @uses includes_url() For retrieving the url to the includes area for the
+ * current site with the appropriate protocol.
+ * @uses add_query_arg() For retrieving a modified URL (with) query string.
+ * @uses esc_attr() For escaping HTML attributes.
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses wp_get_attachment_image_src() For retrieving an array with the image
+ * attributes "url", "width" and "height", of an image attachment file.
+ * @uses avatar_manager_avatar_resize() For generating a resized copy of the
+ * specified avatar image.
+ * @uses update_post_meta() For updating attachment meta fields.
+ *
  * @since Avatar Manager 1.0.0
  *
  * @param int $user_id User to update.
@@ -741,6 +756,12 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 
 /**
  * Returns the avatar for a user who provided a user ID or email address.
+ *
+ * @uses get_option() For getting values for a named option.
+ * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses get_userdata() For retrieving user data by user ID.
+ * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
+ * based on user ID.
  *
  * @since Avatar Manager 1.0.0
  *
