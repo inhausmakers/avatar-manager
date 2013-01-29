@@ -56,8 +56,8 @@ For more information on SemVer, please visit [semver.org](http://semver.org/).
 
 
 
-Bug Tracker
------------
+Get Involved
+------------
 
 Have a bug or a feature request? [Please open a new
 issue](https://github.com/cdog/avatar-manager/issues). Before opening any issue,
