@@ -651,9 +651,8 @@ add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update'
  *
  * @uses get_option() For getting values for a named option.
  * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses get_userdata() For retrieving user data by user ID.
  * @uses is_ssl() For checking if SSL is being used.
- * @uses includes_url() For retrieving the url to the includes area for the
- * current site with the appropriate protocol.
  * @uses add_query_arg() For retrieving a modified URL (with) query string.
  * @uses esc_attr() For escaping HTML attributes.
  * @uses get_user_meta() For retrieving user meta fields.
@@ -692,6 +691,15 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 			$size = 512;
 	}
 
+	// Retrieves user data by user ID.
+	$user = get_userdata( $user_id );
+
+	// Returns if no user data was retrieved.
+	if ( empty( $user ) )
+		return false;
+
+	$email = $user->user_email;
+
 	if ( empty( $default ) ) {
 		// Retieves values for the named option.
 		$avatar_default = get_option( 'avatar_default' );
@@ -702,24 +710,20 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 			$default = $avatar_default;
 	}
 
+	$email_hash = md5( strtolower( trim( $email ) ) );
+
 	if ( is_ssl() )
 		$host = 'https://secure.gravatar.com';
 	else
-		$host = 'http://0.gravatar.com';
+		$host = sprintf( 'http://%d.gravatar.com', ( hexdec( $email_hash[0] ) % 2 ) );
 
 	if ( $default == 'mystery' )
 		$default = $host . '/avatar/ad516503a11cd5ca435acc9bb6523536?s=' . $size;
-	elseif ( $default == 'blank' )
-		// Retrieves the url to the includes area for the current site with the
-		// appropriate protocol.
-		$default = includes_url( 'images/blank.gif' );
 	elseif ( $default == 'gravatar_default' )
-		$default = $host . '/avatar/?s=' . $size;
+		$default = '';
 	elseif ( strpos( $default, 'http://' ) === 0 )
 		// Retrieves a modified URL (with) query string.
 		$default = add_query_arg( 's', $size, $default );
-	else
-		$default = $host . '/avatar/?d=' . $default . '&amp;s=' . $size;
 
 	if ( $alt === false )
 		$alt = '';
@@ -764,7 +768,13 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 		$src    = $avatar[ $size ]['url'];
 		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
 	} else {
-		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $default . '" width="' . $size . '">';
+		$src  = $host . '/avatar/';
+		$src .= $email_hash;
+		$src .= '?s=' . $size;
+		$src .= '&amp;d=' . urlencode( $default );
+		$src .= '&amp;forcedefault=1';
+
+		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
 	}
 
 	return $avatar;
