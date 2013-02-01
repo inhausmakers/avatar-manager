@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Avatar Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-01 09:41+0200\n"
-"PO-Revision-Date: 2013-02-01 09:53+0200\n"
+"PO-Revision-Date: 2013-02-01 11:59+0200\n"
 "Last-Translator: Catalin Dogaru <catalin.dogaru@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -18,85 +18,85 @@ msgstr ""
 #: ../avatar-manager.php:68
 #: ../avatar-manager.php:181
 msgid "Avatar Uploads"
-msgstr ""
+msgstr "Încărcare Avatare"
 
 #: ../avatar-manager.php:72
 #: ../avatar-manager.php:206
 msgid "Default Size"
-msgstr ""
+msgstr "Dimensiune Implicită"
 
 #: ../avatar-manager.php:186
 msgid "Anyone can upload"
-msgstr ""
+msgstr "Oricine poate încărca"
 
 #: ../avatar-manager.php:210
 msgid "Default size of the avatar image"
-msgstr ""
+msgstr "Dimensiunea implicită a avatarului"
 
 #: ../avatar-manager.php:262
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #: ../avatar-manager.php:267
 #: ../avatar-manager.php:273
 msgid "Display this avatar"
-msgstr ""
+msgstr "Afișează acest avatar"
 
 #: ../avatar-manager.php:279
 msgid "Gravatar"
-msgstr ""
+msgstr "Gravatar"
 
 #: ../avatar-manager.php:281
 msgid "<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" target=\"_blank\">More information</a>"
-msgstr ""
+msgstr "<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" target=\"_blank\">Mai multe informații</a>"
 
 #: ../avatar-manager.php:289
 msgid "Custom"
-msgstr ""
+msgstr "Personalizat"
 
 #: ../avatar-manager.php:302
 msgid "Delete"
-msgstr ""
+msgstr "Șterge"
 
 #: ../avatar-manager.php:313
 #: ../avatar-manager.php:319
 msgid "Select Image"
-msgstr ""
+msgstr "Selecție Imagine"
 
 #: ../avatar-manager.php:323
 msgid "Choose an image from your computer:"
-msgstr ""
+msgstr "Alege o imagine din calculator:"
 
 #: ../avatar-manager.php:327
 msgid "Upload"
-msgstr ""
+msgstr "Încarcă"
 
 #: ../avatar-manager.php:335
 #: ../avatar-manager.php:341
 msgid "Avatar Rating"
-msgstr ""
+msgstr "Evaluare Avatar"
 
 #: ../avatar-manager.php:348
 msgid "G &#8212; Suitable for all audiences"
-msgstr ""
+msgstr "G &#8212; Potrivit tuturor categoriilor de public"
 
 #: ../avatar-manager.php:351
 msgid "PG &#8212; Possibly offensive, usually for audiences 13 and above"
-msgstr ""
+msgstr "PG &#8212; Posibil ofensator, de regulă pentru publicul peste 13 ani"
 
 #: ../avatar-manager.php:354
 msgid "R &#8212; Intended for adult audiences above 17"
-msgstr ""
+msgstr "R &#8212; Destinat publicului adult peste 17 ani"
 
 #: ../avatar-manager.php:357
 msgid "X &#8212; Even more mature than above"
-msgstr ""
+msgstr "X &#8212; Chiar mai matur decât cele anterioare"
 
 #: ../avatar-manager.php:371
 msgid "Choose a rating for your custom avatar."
-msgstr ""
+msgstr "Alege o evaluare pentru avatarul personalizat."
 
 #: ../avatar-manager.php:578
 msgid "Image Upload Error"
-msgstr ""
+msgstr "Eroare Încărcare Imagine"
 
