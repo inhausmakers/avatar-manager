@@ -75,7 +75,7 @@ function avatar_manager_admin_init() {
 add_action( 'admin_init', 'avatar_manager_admin_init' );
 
 /**
- * Enqueues plugin scripts and styles.
+ * Enqueues plugin scripts and styles for Users Your Profile Screen.
  *
  * @uses wp_register_style() For registering a CSS style file.
  * @uses wp_enqueue_style() For enqueuing a CSS style file.
@@ -733,6 +733,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 	// Retreieves user meta field based on user ID.
 	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
 
+	// Returns if no attachment ID was retrieved.
 	if ( empty( $custom_avatar ) )
 		return false;
 
