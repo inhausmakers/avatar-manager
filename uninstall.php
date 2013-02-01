@@ -4,14 +4,14 @@
  * @subpackage Uninstaller
  */
 
-// Exit if uninstall is not called from WordPress.
+// Exits if uninstall is not called from WordPress.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) )
 	exit;
 
 if ( ! function_exists( 'avatar_manager_delete_avatar' ) )
 	include_once( 'avatar-manager.php' );
 
-// Delete plugin options
+// Deletes plugin options.
 delete_option( 'avatar_manager' );
 
 // An associative array with criteria to match.

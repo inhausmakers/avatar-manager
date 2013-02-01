@@ -668,6 +668,7 @@ add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update'
  * @return string <img> tag for the user's avatar.
  */
 function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', $alt = false ) {
+	// Returns if showing avatars is not enabled.
 	if ( ! get_option( 'show_avatars' ) )
 		return false;
 
@@ -782,6 +783,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
  * @return string <img> tag for the user's avatar.
  */
 function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $default = '', $alt = false ) {
+	// Returns if showing avatars is not enabled.
 	if ( ! get_option( 'show_avatars' ) )
 		return false;
 
