@@ -75,7 +75,7 @@ function avatar_manager_admin_init() {
 add_action( 'admin_init', 'avatar_manager_admin_init' );
 
 /**
- * Enqueues scripts and styles for dashboard.
+ * Enqueues plugin scripts and styles.
  *
  * @uses wp_register_style() For registering a CSS style file.
  * @uses wp_enqueue_style() For enqueuing a CSS style file.
