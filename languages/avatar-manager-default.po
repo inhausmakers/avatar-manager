@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Avatar Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-01 09:41+0200\n"
-"PO-Revision-Date: 2013-02-01 09:42+0200\n"
+"POT-Creation-Date: 2013-02-02 11:51+0200\n"
+"PO-Revision-Date: 2013-02-02 11:51+0200\n"
 "Last-Translator: Catalin Dogaru <catalin.dogaru@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -97,5 +97,9 @@ msgstr ""
 
 #: ../avatar-manager.php:578
 msgid "Image Upload Error"
+msgstr ""
+
+#: ../avatar-manager.php:902
+msgid "Avatar Image"
 msgstr ""
 
