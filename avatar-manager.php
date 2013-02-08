@@ -6,7 +6,7 @@
 Plugin Name: Avatar Manager
 Plugin URI: http://wordpress.org/extend/plugins/avatar-manager/
 Description: Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.
-Version: 1.2.0
+Version: 1.2.1
 Author: Cătălin Dogaru
 Author URI: http://swarm.cs.pub.ro/~cdogaru/
 License: GPLv2 or later
@@ -29,7 +29,7 @@ this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-define( 'AVATAR_MANAGER_VERSION', '1.2.0' );
+define( 'AVATAR_MANAGER_VERSION', '1.2.1' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AVATAR_MANAGER_AVATAR_UPLOADS', 0 );
 define( 'AVATAR_MANAGER_DEFAULT_SIZE', 96 );
@@ -391,6 +391,7 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  * loading a file into it.
  * @uses is_wp_error() For checking whether the passed variable is a WordPress
  * Error.
+ * @uses do_action() For calling the functions added to an action hook.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -433,6 +434,9 @@ function avatar_manager_avatar_resize( $url, $size ) {
 		}
 	}
 
+	// Calls the functions added to avatar_manager_avatar_resize action hook.
+	do_action( 'avatar_manager_avatar_resize', $url, $size );
+
 	return $avatar;
 }
 
@@ -445,6 +449,7 @@ function avatar_manager_avatar_resize( $url, $size ) {
  * @uses delete_post_meta() For deleting attachment meta fields.
  * @uses get_users() For retrieving an array of users.
  * @uses delete_user_meta() For deleting user meta fields.
+ * @uses do_action() For calling the functions added to an action hook.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -491,6 +496,9 @@ function avatar_manager_delete_avatar( $attachment_id ) {
 		delete_user_meta( $user->ID, 'avatar_manager_avatar_type' );
 		delete_user_meta( $user->ID, 'avatar_manager_custom_avatar' );
 	}
+
+	// Calls the functions added to avatar_manager_delete_avatar action hook.
+	do_action( 'avatar_manager_delete_avatar', $attachment_id );
 }
 
 add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
@@ -662,6 +670,7 @@ add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update'
  * @uses avatar_manager_avatar_resize() For generating a resized copy of the
  * specified avatar image.
  * @uses update_post_meta() For updating attachment meta fields.
+ * @uses apply_filters() For calling the functions added to a filter hook.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -777,7 +786,9 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
 	}
 
-	return $avatar;
+	// Calls the functions added to avatar_manager_get_custom_avatar
+	// filter hook.
+	return apply_filters( 'avatar_manager_get_custom_avatar', $avatar, $user_id, $size, $default, $alt );
 }
 
 /**
@@ -788,6 +799,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
  * @uses get_userdata() For retrieving user data by user ID.
  * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
  * based on user ID.
+ * @uses apply_filters() For calling the functions added to a filter hook.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -857,7 +869,8 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 		// Retrieves user custom avatar based on user ID.
 		$avatar = avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt );
 
-	return $avatar;
+	// Calls the functions added to avatar_manager_get_avatar filter hook.
+	return apply_filters( 'avatar_manager_get_avatar', $avatar, $id_or_email, $size, $default, $alt );
 }
 
 add_filter( 'get_avatar', 'avatar_manager_get_avatar', 10, 5 );
@@ -886,6 +899,7 @@ add_filter( 'avatar_defaults', 'avatar_manager_avatar_defaults', 10, 1 );
  * Displays media states for avatar images.
  *
  * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses apply_filters() For calling the functions added to a filter hook.
  *
  * @since Avatar Manager 1.2.0
  *
@@ -901,7 +915,9 @@ function avatar_manager_display_media_states( $media_states ) {
 	if ( ! empty( $meta_avatar ) )
 		$media_states[] = __( 'Avatar Image', 'avatar-manager' );
 
-	return $media_states;
+	// Calls the functions added to avatar_manager_display_media_states filter
+	// hook.
+	return apply_filters( 'avatar_manager_display_media_states', $media_states );
 }
 
 add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1 );
