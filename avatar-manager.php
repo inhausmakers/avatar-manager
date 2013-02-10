@@ -87,7 +87,7 @@ add_action( 'admin_init', 'avatar_manager_admin_init' );
 function avatar_manager_enqueue_scripts() {
 	global $hook_suffix;
 
-	if ( $hook_suffix == 'profile.php' ) {
+	if ( $hook_suffix == 'profile.php' || $hook_suffix == 'user-edit.php' ) {
 		// Registers plugin CSS style file.
 		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
 
@@ -294,7 +294,8 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						$href = esc_attr( add_query_arg( array(
 							'action'                       => 'update',
 							'avatar_manager_action'        => 'remove-avatar',
-							'avatar_manager_custom_avatar' => $profileuser->avatar_manager_custom_avatar
+							'avatar_manager_custom_avatar' => $profileuser->avatar_manager_custom_avatar,
+							'user_id'                      => $profileuser->ID
 						),
 						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
 						?>
