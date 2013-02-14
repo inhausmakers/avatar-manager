@@ -367,7 +367,7 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  *
  * @since Avatar Manager 1.0.0
  */
-function avatar_manager_enqueue_scripts() {
+function avatar_manager_admin_enqueue_scripts() {
 	global $hook_suffix;
 
 	if ( $hook_suffix == 'profile.php' || $hook_suffix == 'user-edit.php' ) {
@@ -385,7 +385,7 @@ function avatar_manager_enqueue_scripts() {
 	}
 }
 
-add_action( 'admin_enqueue_scripts', 'avatar_manager_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'avatar_manager_admin_enqueue_scripts' );
 
 /**
  * Generates a resized copy of the specified avatar image.
