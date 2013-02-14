@@ -56,6 +56,7 @@ add_action( 'init', 'avatar_manager_init' );
  * callback.
  * @uses add_settings_field() For registering a settings field to a settings
  * page and section.
+ * @uses __() For retrieving the translated string from the translate().
  *
  * @since Avatar Manager 1.0.0
  */
@@ -73,36 +74,6 @@ function avatar_manager_admin_init() {
 }
 
 add_action( 'admin_init', 'avatar_manager_admin_init' );
-
-/**
- * Enqueues plugin scripts and styles for Users Your Profile Screen.
- *
- * @uses wp_register_style() For registering a CSS style file.
- * @uses wp_enqueue_style() For enqueuing a CSS style file.
- * @uses wp_register_script() For registering a JS script file.
- * @uses wp_enqueue_script() For enqueuing a JS script file.
- *
- * @since Avatar Manager 1.0.0
- */
-function avatar_manager_enqueue_scripts() {
-	global $hook_suffix;
-
-	if ( $hook_suffix == 'profile.php' || $hook_suffix == 'user-edit.php' ) {
-		// Registers plugin CSS style file.
-		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
-
-		// Enqueues plugin CSS style file.
-		wp_enqueue_style( 'avatar-manager.css');
-
-		// Registers plugin JS script file.
-		wp_register_script( 'avatar-manager.js', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.js', array( 'jquery' ), '1.0.0' );
-
-		// Enqueues plugin JS script file.
-		wp_enqueue_script( 'avatar-manager.js' );
-	}
-}
-
-add_action( 'admin_enqueue_scripts', 'avatar_manager_enqueue_scripts' );
 
 /**
  * Returns plugin default options.
@@ -124,7 +95,7 @@ function avatar_manager_get_default_options() {
  * Returns plugin options.
  *
  * @uses get_option() For getting values for a named option.
- * @uses avatar_manager_get_default_options() For retreiveing plugin default
+ * @uses avatar_manager_get_default_options() For retrieving plugin default
  * options.
  *
  * @since Avatar Manager 1.0.0
@@ -138,7 +109,7 @@ function avatar_manager_get_options() {
 /**
  * Sanitizes and validates plugin options.
  *
- * @uses avatar_manager_get_default_options() For retreiveing plugin default
+ * @uses avatar_manager_get_default_options() For retrieving plugin default
  * options.
  *
  * @since Avatar Manager 1.0.0
@@ -166,7 +137,8 @@ function avatar_manager_sanitize_options( $input ) {
 /**
  * Prints Avatar Uploads settings field.
  *
- * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
+ * @uses _e() For displaying the translated string from the translate().
  * @uses checked() For comparing two given values.
  *
  * @since Avatar Manager 1.0.0
@@ -192,7 +164,8 @@ function avatar_manager_avatar_uploads_settings_field() {
 /**
  * Prints Default Size settings field.
  *
- * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
+ * @uses _e() For displaying the translated string from the translate().
  *
  * @since Avatar Manager 1.0.0
  */
@@ -217,10 +190,11 @@ function avatar_manager_default_size_settings_field() {
 /**
  * Prints Avatar section.
  *
- * @uses avatar_manager_get_options() For retreiveing plugin options.
- * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
+ * @uses get_post_meta() For retrieving attachment meta fields.
  * @uses remove_filter() For removing a function attached to a specified action
  * hook.
+ * @uses _e() For displaying the translated string from the translate().
  * @uses checked() For comparing two given values.
  * @uses get_avatar() For retrieving the avatar for a user.
  * @uses esc_attr() For escaping HTML attributes.
@@ -231,6 +205,7 @@ function avatar_manager_default_size_settings_field() {
  * capability.
  * @uses submit_button() For echoing a submit button, with provided text and
  * appropriate class.
+ * @uses __() For retrieving the translated string from the translate().
  *
  * @since Avatar Manager 1.0.0
  *
@@ -243,7 +218,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 	$avatar_type = isset( $profileuser->avatar_manager_avatar_type ) ? $profileuser->avatar_manager_avatar_type : 'gravatar';
 
 	if ( isset( $profileuser->avatar_manager_custom_avatar ) ) {
-		// Retreieves attachment meta fields based on attachment ID.
+		// Retrieves attachment meta fields based on attachment ID.
 		$custom_avatar_rating   = get_post_meta( $profileuser->avatar_manager_custom_avatar, '_avatar_manager_custom_avatar_rating', true );
 		$user_has_custom_avatar = get_post_meta( $profileuser->avatar_manager_custom_avatar, '_avatar_manager_is_custom_avatar', true );
 	}
@@ -383,6 +358,36 @@ add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 
 /**
+ * Enqueues plugin scripts and styles for Users Your Profile Screen.
+ *
+ * @uses wp_register_style() For registering a CSS style file.
+ * @uses wp_enqueue_style() For enqueuing a CSS style file.
+ * @uses wp_register_script() For registering a JS script file.
+ * @uses wp_enqueue_script() For enqueuing a JS script file.
+ *
+ * @since Avatar Manager 1.0.0
+ */
+function avatar_manager_enqueue_scripts() {
+	global $hook_suffix;
+
+	if ( $hook_suffix == 'profile.php' || $hook_suffix == 'user-edit.php' ) {
+		// Registers plugin CSS style file.
+		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
+
+		// Enqueues plugin CSS style file.
+		wp_enqueue_style( 'avatar-manager.css');
+
+		// Registers plugin JS script file.
+		wp_register_script( 'avatar-manager.js', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.js', array( 'jquery' ), '1.0.0' );
+
+		// Enqueues plugin JS script file.
+		wp_enqueue_script( 'avatar-manager.js' );
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'avatar_manager_enqueue_scripts' );
+
+/**
  * Generates a resized copy of the specified avatar image.
  *
  * @uses wp_upload_dir() For retrieving path information on the currently
@@ -444,7 +449,7 @@ function avatar_manager_avatar_resize( $url, $size ) {
 /**
  * Deletes an avatar image based on attachment ID.
  *
- * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses get_post_meta() For retrieving attachment meta fields.
  * @uses wp_upload_dir() For retrieving path information on the currently
  * configured uploads directory.
  * @uses delete_post_meta() For deleting attachment meta fields.
@@ -457,7 +462,7 @@ function avatar_manager_avatar_resize( $url, $size ) {
  * @param int $attachment_id An attachment ID
  */
 function avatar_manager_delete_avatar( $attachment_id ) {
-	// Retreieves attachment meta field based on attachment ID.
+	// Retrieves attachment meta field based on attachment ID.
 	$is_custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
 
 	if ( ! $is_custom_avatar )
@@ -466,7 +471,7 @@ function avatar_manager_delete_avatar( $attachment_id ) {
 	// Retrieves path information on the currently configured uploads directory.
 	$upload_dir = wp_upload_dir();
 
-	// Retreieves attachment meta field based on attachment ID.
+	// Retrieves attachment meta field based on attachment ID.
 	$custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_custom_avatar', true );
 
 	if ( is_array( $custom_avatar ) ) {
@@ -507,7 +512,7 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
 /**
  * Updates user profile based on user ID.
  *
- * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
  * @uses sanitize_text_field() For sanitizing a string from user input or from
  * the database.
  * @uses update_user_meta() For updating user meta fields.
@@ -516,6 +521,7 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * @uses wp_handle_upload() For handling PHP uploads in WordPress.
  * @uses wp_die() For killing WordPress execution and displaying HTML error
  * message.
+ * @uses __() For retrieving the translated string from the translate().
  * @uses avatar_manager_delete_avatar() For deleting an avatar image.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
@@ -546,7 +552,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 	// Updates user meta field based on user ID.
 	update_user_meta( $user_id, 'avatar_manager_avatar_type', $avatar_type );
 
-	// Retreieves user meta field based on user ID.
+	// Retrieves user meta field based on user ID.
 	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
 
 	if ( ! empty( $custom_avatar ) ) {
@@ -659,13 +665,13 @@ add_action( 'personal_options_update', 'avatar_manager_edit_user_profile_update'
  * Returns user custom avatar based on user ID.
  *
  * @uses get_option() For getting values for a named option.
- * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
  * @uses get_userdata() For retrieving user data by user ID.
  * @uses is_ssl() For checking if SSL is being used.
  * @uses add_query_arg() For retrieving a modified URL (with) query string.
  * @uses esc_attr() For escaping HTML attributes.
  * @uses get_user_meta() For retrieving user meta fields.
- * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses get_post_meta() For retrieving attachment meta fields.
  * @uses wp_get_attachment_image_src() For retrieving an array with the image
  * attributes "url", "width" and "height", of an image attachment file.
  * @uses avatar_manager_avatar_resize() For generating a resized copy of the
@@ -744,14 +750,14 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 	// Retieves values for the named option.
 	$avatar_rating = get_option( 'avatar_rating' );
 
-	// Retreieves user meta field based on user ID.
+	// Retrieves user meta field based on user ID.
 	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
 
 	// Returns if no attachment ID was retrieved.
 	if ( empty( $custom_avatar ) )
 		return false;
 
-	// Retreieves attachment meta field based on attachment ID.
+	// Retrieves attachment meta field based on attachment ID.
 	$custom_avatar_rating = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true );
 
 	$ratings['G']  = 1;
@@ -760,7 +766,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 	$ratings['X']  = 4;
 
 	if ( $ratings[ $custom_avatar_rating ] <= $ratings[ $avatar_rating ] ) {
-		// Retreieves attachment meta field based on attachment ID.
+		// Retrieves attachment meta field based on attachment ID.
 		$avatar = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar', true );
 
 		if ( empty( $avatar[ $size ] ) ) {
@@ -796,7 +802,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
  * Returns the avatar for a user who provided a user ID or email address.
  *
  * @uses get_option() For getting values for a named option.
- * @uses avatar_manager_get_options() For retreiveing plugin options.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
  * @uses get_userdata() For retrieving user data by user ID.
  * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
  * based on user ID.
@@ -899,7 +905,8 @@ add_filter( 'avatar_defaults', 'avatar_manager_avatar_defaults', 10, 1 );
 /**
  * Displays media states for avatar images.
  *
- * @uses get_post_meta() For retreieving attachment meta fields.
+ * @uses get_post_meta() For retrieving attachment meta fields.
+ * @uses __() For retrieving the translated string from the translate().
  * @uses apply_filters() For calling the functions added to a filter hook.
  *
  * @since Avatar Manager 1.2.0
@@ -910,7 +917,7 @@ add_filter( 'avatar_defaults', 'avatar_manager_avatar_defaults', 10, 1 );
 function avatar_manager_display_media_states( $media_states ) {
 	global $post;
 
-	// Retreieves attachment meta field based on attachment ID.
+	// Retrieves attachment meta field based on attachment ID.
 	$meta_avatar = get_post_meta( $post->ID, '_avatar_manager_is_custom_avatar', true );
 
 	if ( ! empty( $meta_avatar ) )
