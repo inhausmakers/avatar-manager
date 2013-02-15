@@ -111,6 +111,7 @@ function avatar_manager_get_options() {
  *
  * @uses avatar_manager_get_default_options() For retrieving plugin default
  * options.
+ * @uses absint() For converting a value to a non-negative integer.
  *
  * @since Avatar Manager 1.0.0
  *
