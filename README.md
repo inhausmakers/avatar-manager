@@ -9,7 +9,7 @@ Gravatar or a self-hosted avatar image right from their profile screen. Improved
 workflow, on-demand image generation and custom user permissions under a native
 interface. Say hello to the Avatar Manager plugin.
 
-To get started, check out Avatar Manager on WordPress [Plugin
+To get started, check out Avatar Manager on [WordPress Plugin
 Directory](http://wordpress.org/extend/plugins/avatar-manager/)!
 
 
