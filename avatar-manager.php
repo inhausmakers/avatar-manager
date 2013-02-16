@@ -718,7 +718,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 	$email = $user->user_email;
 
 	if ( empty( $default ) ) {
-		// Retieves values for the named option.
+		// Retrieves values for the named option.
 		$avatar_default = get_option( 'avatar_default' );
 
 		if ( empty( $avatar_default ) )
@@ -748,7 +748,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 		// Escapes HTML attributes.
 		$alt = esc_attr( $alt );
 
-	// Retieves values for the named option.
+	// Retrieves values for the named option.
 	$avatar_rating = get_option( 'avatar_rating' );
 
 	// Retrieves user meta field based on user ID.
