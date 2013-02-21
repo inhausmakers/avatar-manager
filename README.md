@@ -60,6 +60,19 @@ For more information on SemVer, please visit [semver.org](http://semver.org/).
 
 
 
+How It's Made
+-------------
+
+Want to find out how Avatar Manager is built? Just check the following
+resources.
+
+**Wptuts+**
+
++ [How to Create a WordPress Avatar Management Plugin from Scratch: Getting Started](http://wp.tutsplus.com/tutorials/plugins/how-to-create-a-wordpress-avatar-management-plugin-from-scratch-getting-started/)
++ [How to Create a WordPress Avatar Management Plugin from Scratch: Finishing Touches](http://wp.tutsplus.com/tutorials/plugins/how-to-create-a-wordpress-avatar-management-plugin-from-scratch-finishing-touches/)
+
+
+
 Get Involved
 ------------
 
