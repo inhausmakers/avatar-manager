@@ -63,7 +63,7 @@ For more information on SemVer, please visit [semver.org](http://semver.org/).
 How It's Made
 -------------
 
-Want to find out how Avatar Manager is built? Just check the following
+Want to find out how Avatar Manager is built? Make sure to read the following
 resources.
 
 **Wptuts+**
