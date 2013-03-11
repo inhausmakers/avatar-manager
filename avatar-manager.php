@@ -6,7 +6,7 @@
 Plugin Name: Avatar Manager
 Plugin URI: http://wordpress.org/extend/plugins/avatar-manager/
 Description: Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.
-Version: 1.2.2
+Version: 1.3.0
 Author: Cătălin Dogaru
 Author URI: http://swarm.cs.pub.ro/~cdogaru/
 License: GPLv2 or later
@@ -29,7 +29,7 @@ this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-define( 'AVATAR_MANAGER_VERSION', '1.2.2' );
+define( 'AVATAR_MANAGER_VERSION', '1.3.0' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AVATAR_MANAGER_AVATAR_UPLOADS', 0 );
 define( 'AVATAR_MANAGER_DEFAULT_SIZE', 96 );
@@ -698,7 +698,7 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 	$options = avatar_manager_get_options();
 
 	if ( empty( $size ) || ! is_numeric( $size ) ) {
-		$size = $options['avatar-manager-default-size'];
+		$size = $options['default_size'];
 	} else {
 		$size = absint( $size );
 
@@ -771,8 +771,8 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 		$avatar = get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar', true );
 
 		if ( empty( $avatar[ $size ] ) ) {
-			// Retrieves an array with the image attributes "url", "width"
-			// and "height", of the image attachment file.
+			// Retrieves an array with the image attributes "url", "width" and
+			// "height", of the image attachment file.
 			$url = wp_get_attachment_image_src( $custom_avatar, 'full' );
 
 			// Generates a resized copy of the avatar image.
@@ -794,8 +794,8 @@ function avatar_manager_get_custom_avatar( $user_id, $size = '', $default = '', 
 		$avatar = '<img alt="' . $alt . '" class="avatar avatar-' . $size . ' photo avatar-default" height="' . $size . '" src="' . $src . '" width="' . $size . '">';
 	}
 
-	// Calls the functions added to avatar_manager_get_custom_avatar
-	// filter hook.
+	// Calls the functions added to avatar_manager_get_custom_avatar filter
+	// hook.
 	return apply_filters( 'avatar_manager_get_custom_avatar', $avatar, $user_id, $size, $default, $alt );
 }
 
@@ -828,7 +828,7 @@ function avatar_manager_get_avatar( $avatar = '', $id_or_email, $size = '', $def
 	$options = avatar_manager_get_options();
 
 	if ( empty( $size ) || ! is_numeric( $size ) ) {
-		$size = $options['avatar-manager-default-size'];
+		$size = $options['default_size'];
 	} else {
 		$size = absint( $size );
 
@@ -931,4 +931,62 @@ function avatar_manager_display_media_states( $media_states ) {
 }
 
 add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1 );
+
+/**
+ * Returns user custom avatar based on user ID.
+ *
+ * @param array $args
+ * @return array
+ */
+function avatar_manager_getCustomAvatar( $args ) {
+	global $wp_xmlrpc_server;
+
+	if ( ! is_array( $args ) )
+		$args = array( $args );
+
+	// Sanitize string or array of strings for database.
+	$wp_xmlrpc_server->escape( $args );
+
+	if ( count( $args ) < 1 )
+		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
+
+	$user_id = $args[0];
+	$size    = isset( $args[1] ) ? $args[1] : '';
+	$default = isset( $args[2] ) ? $args[2] : '';
+	$alt     = isset( $args[3] ) ? $args[3] : false;
+
+	// Retrieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+
+	// Returns if no attachment ID was retrieved.
+	if ( empty( $custom_avatar ) )
+		return new IXR_Error( 404, __( 'Sorry, no custom avatar for the given user.', 'avatar_manager' ) );
+
+	// Calls the functions added to xmlrpc_call action hook.
+	do_action( 'xmlrpc_call', 'avatarManager.getCustomAvatar' );
+
+	$custom_avatar = array(
+		'image' => avatar_manager_get_custom_avatar( $user_id, $size, $default, $alt ),
+		'rating' => get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true )
+	);
+
+	return $custom_avatar;
+}
+
+/**
+ * Extends the WordPress XML-RPC API.
+ *
+ * @since Avatar Manager 1.3.0
+ *
+ * @param array $methods An associative array with WordPress XML-RPC API
+ * methods.
+ * @return array An associative array with WordPress XML-RPC API methods.
+ */
+function avatar_manager_xmlrpc_methods( $methods ) {
+	$methods['avatarManager.getCustomAvatar'] = 'avatar_manager_getCustomAvatar';
+
+	return $methods;
+}
+
+add_filter( 'xmlrpc_methods', 'avatar_manager_xmlrpc_methods' );
 ?>
