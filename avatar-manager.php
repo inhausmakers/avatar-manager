@@ -935,6 +935,14 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
 /**
  * Returns user's custom avatar image and rating.
  *
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses do_action() For calling the functions added to an action hook.
+ * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
+ * based on user ID.
+ * @uses get_post_meta() For retrieving attachment meta fields.
+ *
+ * @since Avatar Manager 1.3.0
+ *
  * @param array $args An associative array with username, passowrd, avatar image
  * size (optional), default avatar image (optional) and alternate text
  * (optional).
@@ -978,6 +986,12 @@ function avatar_manager_getCustomAvatar( $args ) {
 
 /**
  * Sets user's avatar type.
+ *
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses do_action() For calling the functions added to an action hook.
+ * @uses update_user_meta() For updating user meta fields.
+ *
+ * @since Avatar Manager 1.3.0
  *
  * @param array $args An associative array with username, passowrd and avatar
  * type.
