@@ -986,10 +986,11 @@ function avatar_manager_getCustomAvatar( $args ) {
  * @return array An associative array with WordPress XML-RPC API methods.
  */
 function avatar_manager_xmlrpc_methods( $methods ) {
-	$methods['avatarManager.deleteCustomAvatar'] = 'avatar_manager_deleteCustomAvatar';
-	$methods['avatarManager.getCustomAvatar']    = 'avatar_manager_getCustomAvatar';
-	$methods['avatarManager.setAvatarType']      = 'avatar_manager_setAvatarType';
-	$methods['avatarManager.uploadCustomAvatar'] = 'avatar_manager_uploadCustomAvatar';
+	$methods['avatarManager.deleteCustomAvatar']    = 'avatar_manager_deleteCustomAvatar';
+	$methods['avatarManager.getCustomAvatar']       = 'avatar_manager_getCustomAvatar';
+	$methods['avatarManager.setAvatarType']         = 'avatar_manager_setAvatarType';
+	$methods['avatarManager.setCustomAvatarRating'] = 'avatar_manager_setCustomAvatarRating';
+	$methods['avatarManager.uploadCustomAvatar']    = 'avatar_manager_uploadCustomAvatar';
 
 	return $methods;
 }
