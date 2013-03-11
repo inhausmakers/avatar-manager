@@ -935,8 +935,9 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
 /**
  * Returns user custom avatar based on user ID.
  *
- * @param array $args An associative array with user ID, image size (optional),
- * default avatar (optional) and alternate text (optional).
+ * @param array $args An associative array with username, passowrd, avatar image
+ * size (optional), default avatar image (optional) and alternate text
+ * (optional).
  * @return array An associative array with custom avatar image and rating.
  */
 function avatar_manager_getCustomAvatar( $args ) {
