@@ -935,8 +935,8 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
 /**
  * Returns user custom avatar based on user ID.
  *
- * @param array $args
- * @return array
+ * @param array $args Method parameters.
+ * @return array An associative array with custom avatar image and rating.
  */
 function avatar_manager_getCustomAvatar( $args ) {
 	global $wp_xmlrpc_server;
@@ -960,7 +960,7 @@ function avatar_manager_getCustomAvatar( $args ) {
 
 	// Returns if no attachment ID was retrieved.
 	if ( empty( $custom_avatar ) )
-		return new IXR_Error( 404, __( 'Sorry, no custom avatar for the given user.', 'avatar_manager' ) );
+		return new IXR_Error( 404, __( 'Sorry, custom avatar not found for the given user.', 'avatar_manager' ) );
 
 	// Calls the functions added to xmlrpc_call action hook.
 	do_action( 'xmlrpc_call', 'avatarManager.getCustomAvatar' );
