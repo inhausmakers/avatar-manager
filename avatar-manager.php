@@ -942,22 +942,23 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
 function avatar_manager_getCustomAvatar( $args ) {
 	global $wp_xmlrpc_server;
 
-	if ( ! is_array( $args ) )
-		$args = array( $args );
+	if ( count( $args ) < 2 )
+		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
 
 	// Sanitize string or array of strings for database.
 	$wp_xmlrpc_server->escape( $args );
 
-	if ( count( $args ) < 1 )
-		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
+	$username = $args[0];
+	$password = $args[1];
+	$size     = isset( $args[2] ) ? $args[2] : '';
+	$default  = isset( $args[3] ) ? $args[3] : '';
+	$alt      = isset( $args[4] ) ? $args[4] : false;
 
-	$user_id = $args[0];
-	$size    = isset( $args[1] ) ? $args[1] : '';
-	$default = isset( $args[2] ) ? $args[2] : '';
-	$alt     = isset( $args[3] ) ? $args[3] : false;
+	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
+		return $wp_xmlrpc_server->error;
 
 	// Retrieves user meta field based on user ID.
-	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
 
 	// Returns if no attachment ID was retrieved.
 	if ( empty( $custom_avatar ) )
@@ -967,7 +968,7 @@ function avatar_manager_getCustomAvatar( $args ) {
 	do_action( 'xmlrpc_call', 'avatarManager.getCustomAvatar' );
 
 	$custom_avatar = array(
-		'image' => avatar_manager_get_custom_avatar( $user_id, $size, $default, $alt ),
+		'image' => avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt ),
 		'rating' => get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true )
 	);
 
@@ -984,7 +985,10 @@ function avatar_manager_getCustomAvatar( $args ) {
  * @return array An associative array with WordPress XML-RPC API methods.
  */
 function avatar_manager_xmlrpc_methods( $methods ) {
-	$methods['avatarManager.getCustomAvatar'] = 'avatar_manager_getCustomAvatar';
+	$methods['avatarManager.deleteCustomAvatar'] = 'avatar_manager_deleteCustomAvatar';
+	$methods['avatarManager.getCustomAvatar']    = 'avatar_manager_getCustomAvatar';
+	$methods['avatarManager.setAvatarType']      = 'avatar_manager_setAvatarType';
+	$methods['avatarManager.uploadCustomAvatar'] = 'avatar_manager_uploadCustomAvatar';
 
 	return $methods;
 }
