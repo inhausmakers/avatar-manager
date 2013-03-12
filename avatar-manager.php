@@ -940,8 +940,7 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
  *
  * @since Avatar Manager 1.3.0
  *
- * @param array $args An associative array with username, passowrd and avatar
- * type.
+ * @param array $args An associative array with username and passowrd.
  * @return bool Operation status.
  */
 function avatar_manager_getAvatarType( $args ) {
@@ -1058,7 +1057,8 @@ function avatar_manager_setAvatarType( $args ) {
 	// Retrieves user meta field based on user ID.
 	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
 
-	// Returns if no attachment ID was retrieved.
+	// Returns if no attachment ID was retrieved and requested avatar type is
+	// set to custom.
 	if ( empty( $custom_avatar ) && $avatar_type == 'custom' )
 		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
 
@@ -1067,6 +1067,54 @@ function avatar_manager_setAvatarType( $args ) {
 
 	// Updates user meta field based on user ID.
 	update_user_meta( $user->id, 'avatar_manager_avatar_type', $avatar_type );
+
+	return true;
+}
+
+/**
+ * Sets user's custom avatar rating.
+ *
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses do_action() For calling the functions added to an action hook.
+ * @uses update_user_meta() For updating user meta fields.
+ *
+ * @since Avatar Manager 1.3.0
+ *
+ * @param array $args An associative array with username, passowrd and custom
+ * avatar rating.
+ * @return bool Operation status.
+ */
+function avatar_manager_setCustomAvatarRating( $args ) {
+	global $wp_xmlrpc_server;
+
+	if ( count( $args ) < 3 )
+		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
+
+	// Sanitizes the string or array of strings from user input.
+	$wp_xmlrpc_server->escape( $args );
+
+	$username             = $args[0];
+	$password             = $args[1];
+	$custom_avatar_rating = $args[2];
+
+	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
+		return $wp_xmlrpc_server->error;
+
+	if ( ! in_array(  $custom_avatar_rating, array( 'G', 'PG', 'R', 'X' ) ) )
+		return new IXR_Error( 401, __( 'Invalid custom avatar rating.', 'avatar_manager' ) );
+
+	// Retrieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
+
+	// Returns if no attachment ID was retrieved.
+	if ( empty( $custom_avatar ) )
+		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
+
+	// Calls the functions added to xmlrpc_call action hook.
+	do_action( 'xmlrpc_call', 'avatarManager.setCustomAvatarRating' );
+
+	// Updates attachment meta field based on attachment ID.
+	update_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', $custom_avatar_rating );
 
 	return true;
 }
