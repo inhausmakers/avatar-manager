@@ -1058,9 +1058,9 @@ function avatar_manager_getCustomAvatar( $args ) {
 	do_action( 'xmlrpc_call', 'avatarManager.getCustomAvatar' );
 
 	$custom_avatar = array(
-		'attachment_id' => $custom_avatar,
-		'image'         => avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt ),
-		'rating'        => get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true )
+		'id'     => $custom_avatar,
+		'image'  => avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt ),
+		'rating' => get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true )
 	);
 
 	return $custom_avatar;
