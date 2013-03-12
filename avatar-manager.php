@@ -1014,7 +1014,7 @@ function avatar_manager_getAvatarType( $args ) {
 }
 
 /**
- * Returns user's custom avatar image and rating.
+ * Returns user's custom avatar attachment ID, image and rating.
  *
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses do_action() For calling the functions added to an action hook.
