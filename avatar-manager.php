@@ -1058,8 +1058,9 @@ function avatar_manager_getCustomAvatar( $args ) {
 	do_action( 'xmlrpc_call', 'avatarManager.getCustomAvatar' );
 
 	$custom_avatar = array(
-		'image' => avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt ),
-		'rating' => get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true )
+		'attachment_id' => $custom_avatar,
+		'image'         => avatar_manager_get_custom_avatar( $user->ID, $size, $default, $alt ),
+		'rating'        => get_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', true )
 	);
 
 	return $custom_avatar;
@@ -1158,6 +1159,50 @@ function avatar_manager_setCustomAvatarRating( $args ) {
 
 	// Updates attachment meta field based on attachment ID.
 	update_post_meta( $custom_avatar, '_avatar_manager_custom_avatar_rating', $custom_avatar_rating );
+
+	return true;
+}
+
+/**
+ * Uploads an avatar image and sets it as user's custom avatar image.
+ *
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses do_action() For calling the functions added to an action hook.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
+ * attachment ID.
+ *
+ * @since Avatar Manager 1.3.0
+ *
+ * @param array $args An associative array with username and passowrd.
+ * @return string Avatar type.
+ */
+function avatar_manager_uploadCustomAvatar( $args ) {
+	global $wp_xmlrpc_server;
+
+	if ( count( $args ) < 2 )
+		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
+
+	// Sanitizes the string or array of strings from user input.
+	$wp_xmlrpc_server->escape( $args );
+
+	$username    = $args[0];
+	$password    = $args[1];
+
+	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
+		return $wp_xmlrpc_server->error;
+
+	// Retrieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
+
+	// Returns if no attachment ID was retrieved.
+	if ( empty( $custom_avatar ) )
+		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
+
+	// Calls the functions added to xmlrpc_call action hook.
+	do_action( 'xmlrpc_call', 'avatarManager.uploadCustomAvatar' );
+
+	// Deletes avatar image based on attachment ID.
+	avatar_manager_delete_avatar( $custom_avatar );
 
 	return true;
 }
