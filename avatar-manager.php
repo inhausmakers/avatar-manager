@@ -1177,16 +1177,13 @@ function avatar_manager_setCustomAvatarRating( $args ) {
  * @return string Avatar type.
  */
 function avatar_manager_uploadCustomAvatar( $args ) {
-	global $wp_xmlrpc_server;
+	global $wpdb, $wp_xmlrpc_server;
 
 	if ( count( $args ) < 3 )
 		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
 
-	// Sanitizes the string or array of strings from user input.
-	$wp_xmlrpc_server->escape( $args );
-
-	$username = $args[0];
-	$password = $args[1];
+	$username = $wpdb->escape($args[0]);
+	$password = $wpdb->escape($args[1]);
 	$avatar   = $args[2];
 
 	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
@@ -1266,7 +1263,14 @@ function avatar_manager_uploadCustomAvatar( $args ) {
 	update_user_meta( $user->ID, 'avatar_manager_avatar_type', 'custom' );
 	update_user_meta( $user->ID, 'avatar_manager_custom_avatar', $attachment_id );
 
-	return $attachment_id;
+	$struct = array(
+		'id'   => strval( $attachment_id ),
+		'file' => $filename,
+		'url'  => $upload['url'],
+		'type' => $avatar['type']
+	);
+
+	return apply_filters( 'wp_handle_upload', $struct, 'upload' );
 }
 
 /**
