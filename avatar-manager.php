@@ -933,6 +933,45 @@ function avatar_manager_display_media_states( $media_states ) {
 add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1 );
 
 /**
+ * Retrieves user's avatar type.
+ *
+ * @uses do_action() For calling the functions added to an action hook.
+ * @uses get_user_meta() For retrieving user meta fields.
+ *
+ * @since Avatar Manager 1.3.0
+ *
+ * @param array $args An associative array with username, passowrd and avatar
+ * type.
+ * @return bool Operation status.
+ */
+function avatar_manager_getAvatarType( $args ) {
+	global $wp_xmlrpc_server;
+
+	if ( count( $args ) < 2 )
+		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
+
+	// Sanitizes the string or array of strings from user input.
+	$wp_xmlrpc_server->escape( $args );
+
+	$username    = $args[0];
+	$password    = $args[1];
+
+	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
+		return $wp_xmlrpc_server->error;
+
+	// Calls the functions added to xmlrpc_call action hook.
+	do_action( 'xmlrpc_call', 'avatarManager.getAvatarType' );
+
+	// Retrieves user meta field based on user ID.
+	$avatar_type = get_user_meta( $user->ID, 'avatar_manager_avatar_type', true );
+
+	// Defaults to Gravatar if avatar type is empty.
+	$avatar_type = empty( $avatar_type ) ? 'gravatar' : $avatar_type;
+
+	return $avatar_type;
+}
+
+/**
  * Returns user's custom avatar image and rating.
  *
  * @uses get_user_meta() For retrieving user meta fields.
@@ -1008,10 +1047,13 @@ function avatar_manager_setAvatarType( $args ) {
 
 	$username    = $args[0];
 	$password    = $args[1];
-	$avatar_type = ( $args[2] == 'gravatar' ) ? $args[2] : 'custom';
+	$avatar_type = $args[2];
 
 	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
 		return $wp_xmlrpc_server->error;
+
+	if ( ! in_array(  $avatar_type, array( 'gravatar', 'custom' ) ) )
+		return new IXR_Error( 401, __( 'Invalid avatar type.', 'avatar_manager' ) );
 
 	// Retrieves user meta field based on user ID.
 	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
