@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Avatar Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-02 11:51+0200\n"
-"PO-Revision-Date: 2013-02-02 11:52+0200\n"
+"POT-Creation-Date: 2013-03-12 22:49+0200\n"
+"PO-Revision-Date: 2013-03-12 22:54+0200\n"
 "Last-Translator: Catalin Dogaru <catalin.dogaru@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -15,92 +15,124 @@ msgstr ""
 "X-Poedit-Language: Romanian\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../avatar-manager.php:68
-#: ../avatar-manager.php:181
+#: ../avatar-manager.php:69
+#: ../avatar-manager.php:154
 msgid "Avatar Uploads"
 msgstr "Încărcare Avatare"
 
-#: ../avatar-manager.php:72
-#: ../avatar-manager.php:206
+#: ../avatar-manager.php:73
+#: ../avatar-manager.php:180
 msgid "Default Size"
 msgstr "Dimensiune Implicită"
 
-#: ../avatar-manager.php:186
+#: ../avatar-manager.php:159
 msgid "Anyone can upload"
 msgstr "Oricine poate încărca"
 
-#: ../avatar-manager.php:210
+#: ../avatar-manager.php:184
 msgid "Default size of the avatar image"
 msgstr "Dimensiunea implicită a avatarului"
 
-#: ../avatar-manager.php:262
+#: ../avatar-manager.php:238
 msgid "Avatar"
 msgstr "Avatar"
 
-#: ../avatar-manager.php:267
-#: ../avatar-manager.php:273
+#: ../avatar-manager.php:243
+#: ../avatar-manager.php:249
 msgid "Display this avatar"
 msgstr "Afișează acest avatar"
 
-#: ../avatar-manager.php:279
+#: ../avatar-manager.php:255
 msgid "Gravatar"
 msgstr "Gravatar"
 
-#: ../avatar-manager.php:281
+#: ../avatar-manager.php:257
 msgid "<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" target=\"_blank\">More information</a>"
 msgstr "<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" target=\"_blank\">Mai multe informații</a>"
 
-#: ../avatar-manager.php:289
+#: ../avatar-manager.php:265
 msgid "Custom"
 msgstr "Personalizat"
 
-#: ../avatar-manager.php:302
+#: ../avatar-manager.php:279
 msgid "Delete"
 msgstr "Șterge"
 
-#: ../avatar-manager.php:313
-#: ../avatar-manager.php:319
+#: ../avatar-manager.php:290
+#: ../avatar-manager.php:296
 msgid "Select Image"
 msgstr "Selecție Imagine"
 
-#: ../avatar-manager.php:323
+#: ../avatar-manager.php:300
 msgid "Choose an image from your computer:"
 msgstr "Alege o imagine din calculator:"
 
-#: ../avatar-manager.php:327
+#: ../avatar-manager.php:304
 msgid "Upload"
 msgstr "Încarcă"
 
-#: ../avatar-manager.php:335
-#: ../avatar-manager.php:341
+#: ../avatar-manager.php:312
+#: ../avatar-manager.php:318
 msgid "Avatar Rating"
 msgstr "Evaluare Avatar"
 
-#: ../avatar-manager.php:348
+#: ../avatar-manager.php:325
 msgid "G &#8212; Suitable for all audiences"
 msgstr "G &#8212; Potrivit tuturor categoriilor de public"
 
-#: ../avatar-manager.php:351
+#: ../avatar-manager.php:328
 msgid "PG &#8212; Possibly offensive, usually for audiences 13 and above"
 msgstr "PG &#8212; Posibil ofensator, de regulă pentru publicul peste 13 ani"
 
-#: ../avatar-manager.php:354
+#: ../avatar-manager.php:331
 msgid "R &#8212; Intended for adult audiences above 17"
 msgstr "R &#8212; Destinat publicului adult peste 17 ani"
 
-#: ../avatar-manager.php:357
+#: ../avatar-manager.php:334
 msgid "X &#8212; Even more mature than above"
 msgstr "X &#8212; Chiar mai matur decât cele anterioare"
 
-#: ../avatar-manager.php:371
+#: ../avatar-manager.php:348
 msgid "Choose a rating for your custom avatar."
 msgstr "Alege o evaluare pentru avatarul personalizat."
 
-#: ../avatar-manager.php:578
+#: ../avatar-manager.php:593
 msgid "Image Upload Error"
 msgstr "Eroare Încărcare Imagine"
 
-#: ../avatar-manager.php:902
+#: ../avatar-manager.php:925
 msgid "Avatar Image"
 msgstr "Imagine Avatar"
+
+#: ../avatar-manager.php:951
+#: ../avatar-manager.php:993
+#: ../avatar-manager.php:1036
+#: ../avatar-manager.php:1086
+#: ../avatar-manager.php:1135
+#: ../avatar-manager.php:1199
+msgid "Insufficient arguments passed to this XML-RPC method."
+msgstr "Argumente insuficiente transmise acestei metode XML-RPC."
+
+#: ../avatar-manager.php:967
+#: ../avatar-manager.php:1055
+#: ../avatar-manager.php:1107
+#: ../avatar-manager.php:1155
+msgid "Sorry, you don't have a custom avatar."
+msgstr "Ne pare rău, nu aveți un avatar personalizat."
+
+#: ../avatar-manager.php:1099
+msgid "Invalid avatar type."
+msgstr "Tip avatar invalid."
+
+#: ../avatar-manager.php:1148
+msgid "Invalid custom avatar rating."
+msgstr "Evaluare avatar person alizat invalidă."
+
+#: ../avatar-manager.php:1212
+msgid "Sorry, you don't have permission to upload files."
+msgstr "Ne pare rău, nu aveți permisiunea de a încărca fișiere."
+
+#: ../avatar-manager.php:1233
+msgid "Sorry, this file type is not permitted for security reasons."
+msgstr "Ne pare rău, acest tip de fișier nu este permis din motive de securitate."
 
