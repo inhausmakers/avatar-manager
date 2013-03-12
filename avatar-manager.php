@@ -1076,7 +1076,7 @@ function avatar_manager_setAvatarType( $args ) {
  *
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses do_action() For calling the functions added to an action hook.
- * @uses update_user_meta() For updating user meta fields.
+ * @uses update_post_meta() For updating attachment meta fields.
  *
  * @since Avatar Manager 1.3.0
  *
