@@ -953,8 +953,8 @@ function avatar_manager_deleteCustomAvatar( $args ) {
 	// Sanitizes the string or array of strings from user input.
 	$wp_xmlrpc_server->escape( $args );
 
-	$username    = $args[0];
-	$password    = $args[1];
+	$username = $args[0];
+	$password = $args[1];
 
 	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
 		return $wp_xmlrpc_server->error;
@@ -995,8 +995,8 @@ function avatar_manager_getAvatarType( $args ) {
 	// Sanitizes the string or array of strings from user input.
 	$wp_xmlrpc_server->escape( $args );
 
-	$username    = $args[0];
-	$password    = $args[1];
+	$username = $args[0];
+	$password = $args[1];
 
 	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
 		return $wp_xmlrpc_server->error;
@@ -1185,8 +1185,8 @@ function avatar_manager_uploadCustomAvatar( $args ) {
 	// Sanitizes the string or array of strings from user input.
 	$wp_xmlrpc_server->escape( $args );
 
-	$username    = $args[0];
-	$password    = $args[1];
+	$username = $args[0];
+	$password = $args[1];
 
 	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
 		return $wp_xmlrpc_server->error;
