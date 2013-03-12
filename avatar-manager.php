@@ -971,7 +971,7 @@ function avatar_manager_getCustomAvatar( $args ) {
 
 	// Returns if no attachment ID was retrieved.
 	if ( empty( $custom_avatar ) )
-		return new IXR_Error( 404, __( 'Sorry, custom avatar not found for the given user.', 'avatar_manager' ) );
+		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
 
 	// Calls the functions added to xmlrpc_call action hook.
 	do_action( 'xmlrpc_call', 'avatarManager.getCustomAvatar' );
@@ -1018,7 +1018,7 @@ function avatar_manager_setAvatarType( $args ) {
 
 	// Returns if no attachment ID was retrieved.
 	if ( empty( $custom_avatar ) && $avatar_type == 'custom' )
-		return new IXR_Error( 404, __( 'Sorry, custom avatar not found for the given user.', 'avatar_manager' ) );
+		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
 
 	// Calls the functions added to xmlrpc_call action hook.
 	do_action( 'xmlrpc_call', 'avatarManager.setAvatarType' );
