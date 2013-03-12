@@ -941,7 +941,7 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
  * @since Avatar Manager 1.3.0
  *
  * @param array $args An associative array with username and passowrd.
- * @return bool Operation status.
+ * @return string Avatar type.
  */
 function avatar_manager_getAvatarType( $args ) {
 	global $wp_xmlrpc_server;
@@ -971,7 +971,7 @@ function avatar_manager_getAvatarType( $args ) {
 }
 
 /**
- * Returns user's custom avatar image and rating.
+ * Retrieves user's custom avatar image and rating.
  *
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses do_action() For calling the functions added to an action hook.
