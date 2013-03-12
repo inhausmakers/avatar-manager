@@ -1166,10 +1166,26 @@ function avatar_manager_setCustomAvatarRating( $args ) {
 /**
  * Uploads an avatar image and sets it as user's custom avatar image.
  *
- * @uses get_user_meta() For retrieving user meta fields.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
+ * @uses apply_filters() For calling the functions added to a filter hook.
+ * @uses sanitize_file_name() For sanitizing a filename replacing whitespace
+ * with dashes.
+ * @uses wp_upload_bits() For creating a file in the upload folder with given
+ * content.
  * @uses do_action() For calling the functions added to an action hook.
+ * @uses get_user_meta() For retrieving user meta fields.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
  * attachment ID.
+ * @uses wp_insert_attachment() For inserting an attachment into the media
+ * library.
+ * @uses wp_generate_attachment_metadata() For generating metadata for an
+ * attachment.
+ * @uses wp_update_attachment_metadata() For updating metadata for an
+ * attachment.
+ * @uses avatar_manager_avatar_resize() For generating a resized copy of the
+ * specified avatar image.
+ * @uses update_post_meta() For updating attachment meta fields.
+ * @uses update_user_meta() For updating user meta fields.
  *
  * @since Avatar Manager 1.3.0
  *
@@ -1270,6 +1286,7 @@ function avatar_manager_uploadCustomAvatar( $args ) {
 		'type' => $avatar['type']
 	);
 
+	// Calls the functions added to wp_handle_upload filter hook.
 	return apply_filters( 'wp_handle_upload', $struct, 'upload' );
 }
 
