@@ -1179,7 +1179,7 @@ function avatar_manager_setCustomAvatarRating( $args ) {
 function avatar_manager_uploadCustomAvatar( $args ) {
 	global $wp_xmlrpc_server;
 
-	if ( count( $args ) < 2 )
+	if ( count( $args ) < 3 )
 		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
 
 	// Sanitizes the string or array of strings from user input.
@@ -1187,24 +1187,86 @@ function avatar_manager_uploadCustomAvatar( $args ) {
 
 	$username = $args[0];
 	$password = $args[1];
+	$avatar   = $args[2];
 
 	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
 		return $wp_xmlrpc_server->error;
 
-	// Retrieves user meta field based on user ID.
-	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
+	// Retrieves plugin options.
+	$options = avatar_manager_get_options();
 
-	// Returns if no attachment ID was retrieved.
-	if ( empty( $custom_avatar ) )
-		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
+	if ( ! current_user_can( 'upload_files' ) && ! $options['avatar_uploads'] )
+		return new IXR_Error( 401, __( 'Sorry, you don\'t have permission to upload files.', 'avatar_manager' ) );
+
+	if ( $upload_error = apply_filters( 'pre_upload_error', false ) )
+		return new IXR_Error( 500, $upload_error );
+
+	// Sanitizes a filename replacing whitespace with dashes.
+	$filename = sanitize_file_name( $avatar['name'] );
+
+	// An associative array with allowed MIME types.
+	$mimes = array(
+		'bmp'  => 'image/bmp',
+		'gif'  => 'image/gif',
+		'jpe'  => 'image/jpeg',
+		'jpeg' => 'image/jpeg',
+		'jpg'  => 'image/jpeg',
+		'png'  => 'image/png',
+		'tif'  => 'image/tiff',
+		'tiff' => 'image/tiff'
+	);
+
+	if ( ! in_array( $avatar['type'], $mimes ) )
+		return new IXR_Error( 401, __( 'Sorry, this file type is not permitted for security reasons.', 'avatar_manager' ) );
+
+	// Creates a file in the upload folder with given content.
+	$upload = wp_upload_bits( $filename, null, $avatar['bits'] );
+
+	if ( ! empty( $upload['error'] ) )
+		return new IXR_Error( 500, $upload['error'] );
 
 	// Calls the functions added to xmlrpc_call action hook.
 	do_action( 'xmlrpc_call', 'avatarManager.uploadCustomAvatar' );
 
-	// Deletes avatar image based on attachment ID.
-	avatar_manager_delete_avatar( $custom_avatar );
+	// Retrieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
 
-	return true;
+	if ( ! empty( $custom_avatar ) )
+		// Deletes user's old avatar image.
+		avatar_manager_delete_avatar( $custom_avatar );
+
+	// An associative array about the attachment.
+	$attachment = array(
+		'guid'           => $upload['url'],
+		'post_content'   => $upload['url'],
+		'post_mime_type' => $avatar['type'],
+		'post_title'     => $filename
+	);
+
+	// Inserts the attachment into the media library.
+	$attachment_id = wp_insert_attachment( $attachment, $upload['file'] );
+
+	// Generates metadata for the attachment.
+	$attachment_metadata = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
+
+	// Updates metadata for the attachment.
+	wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
+
+	$custom_avatar = array();
+
+	// Generates a resized copy of the avatar image.
+	$custom_avatar[ $options['default_size'] ] = avatar_manager_avatar_resize( $upload['url'], $options['default_size'] );
+
+	// Updates attachment meta fields based on attachment ID.
+	update_post_meta( $attachment_id, '_avatar_manager_custom_avatar', $custom_avatar );
+	update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', 'G' );
+	update_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
+
+	// Updates user meta fields based on user ID.
+	update_user_meta( $user->ID, 'avatar_manager_avatar_type', 'custom' );
+	update_user_meta( $user->ID, 'avatar_manager_custom_avatar', $attachment_id );
+
+	return $attachment_id;
 }
 
 /**
