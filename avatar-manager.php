@@ -523,7 +523,8 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * @uses wp_die() For killing WordPress execution and displaying HTML error
  * message.
  * @uses __() For retrieving the translated string from the translate().
- * @uses avatar_manager_delete_avatar() For deleting an avatar image.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
+ * attachment ID.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
  * @uses wp_generate_attachment_metadata() For generating metadata for an
@@ -532,9 +533,7 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * attachment.
  * @uses avatar_manager_avatar_resize() For generating a resized copy of the
  * specified avatar image.
- * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * attachment ID.
- * @uses get_edit_user_link() For getting the link to the users edit profile
+ * @uses get_edit_user_link() For getting the link to the user's edit profile
  * page in the WordPress admin.
  * @uses add_query_arg() For retrieving a modified URL (with) query string.
  * @uses wp_redirect() For redirecting the user to a specified absolute URI.
@@ -594,7 +593,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 			wp_die( $avatar['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
 
 		if ( ! empty( $custom_avatar ) )
-			// Deletes users old avatar image.
+			// Deletes user's old avatar image.
 			avatar_manager_delete_avatar( $custom_avatar );
 
 		// An associative array about the attachment.
@@ -642,7 +641,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 				break;
 		}
 
-		// Gets the link to the users edit profile page in the WordPress admin.
+		// Gets the link to the user's edit profile page in the WordPress admin.
 		$edit_user_link = get_edit_user_link( $user_id );
 
 		// Retrieves a modified URL (with) query string.
@@ -933,7 +932,51 @@ function avatar_manager_display_media_states( $media_states ) {
 add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1 );
 
 /**
- * Retrieves user's avatar type.
+ * Deletes user's custom avatar image.
+ *
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses do_action() For calling the functions added to an action hook.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
+ * attachment ID.
+ *
+ * @since Avatar Manager 1.3.0
+ *
+ * @param array $args An associative array with username and passowrd.
+ * @return string Avatar type.
+ */
+function avatar_manager_deleteCustomAvatar( $args ) {
+	global $wp_xmlrpc_server;
+
+	if ( count( $args ) < 2 )
+		return new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.', 'avatar_manager' ) );
+
+	// Sanitizes the string or array of strings from user input.
+	$wp_xmlrpc_server->escape( $args );
+
+	$username    = $args[0];
+	$password    = $args[1];
+
+	if ( ! $user = $wp_xmlrpc_server->login( $username, $password ) )
+		return $wp_xmlrpc_server->error;
+
+	// Retrieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
+
+	// Returns if no attachment ID was retrieved.
+	if ( empty( $custom_avatar ) )
+		return new IXR_Error( 404, __( 'Sorry, you don\'t have a custom avatar.', 'avatar_manager' ) );
+
+	// Calls the functions added to xmlrpc_call action hook.
+	do_action( 'xmlrpc_call', 'avatarManager.deleteCustomAvatar' );
+
+	// Deletes avatar image based on attachment ID.
+	avatar_manager_delete_avatar( $custom_avatar );
+
+	return true;
+}
+
+/**
+ * Returns user's avatar type.
  *
  * @uses do_action() For calling the functions added to an action hook.
  * @uses get_user_meta() For retrieving user meta fields.
@@ -971,7 +1014,7 @@ function avatar_manager_getAvatarType( $args ) {
 }
 
 /**
- * Retrieves user's custom avatar image and rating.
+ * Returns user's custom avatar image and rating.
  *
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses do_action() For calling the functions added to an action hook.
