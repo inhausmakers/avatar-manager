@@ -1,5 +1,5 @@
-Avatar Manager
-==============
+[Avatar Manager v1.3.0](http://wordpress.org/plugins/avatar-manager/)
+=======================
 
 Avatar Manager for WordPress is a sweet and simple plugin for storing avatars
 locally and more. Easily.
@@ -10,16 +10,16 @@ workflow, on-demand image generation and custom user permissions under a native
 interface. Say hello to the Avatar Manager plugin.
 
 To get started, check out Avatar Manager on [WordPress Plugin
-Directory](http://wordpress.org/extend/plugins/avatar-manager/)!
+Directory](http://wordpress.org/plugins/avatar-manager/)!
 
 
 
 Get Started
 -----------
 
-Clone the repo, `git clone git://github.com/cdog/avatar-manager.git`, or
-[download the latest
-release](https://github.com/cdog/avatar-manager/zipball/master).
+Clone the repo, `git clone git://github.com/resourcestream/avatar-manager.git`,
+or [download the latest
+release](https://github.com/resourcestream/avatar-manager/zipball/master).
 
 
 
@@ -76,11 +76,16 @@ resources.
 Get Involved
 ------------
 
-Have a bug or a feature request? [Please open a new
-issue](https://github.com/cdog/avatar-manager/issues). Before opening any issue,
-please search for existing issues and read the [Issue
+**Thank you for choosing to contribute to Avatar Manager!**
+
+Have a bug or a feature request? Please [open a new
+issue](https://github.com/resourcestream/avatar-manager/issues). Before opening
+any issue, please search for existing issues and read the [Issue
 Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas
 Gallagher](https://github.com/necolas/).
+
+Ice Cream is a user-driven project, and all developments and enhancements depend
+on users like **you**!
 
 
 
@@ -89,6 +94,7 @@ Authors
 
 **Cătălin Dogaru**
 
++ http://twitter.com/resourcestream
 + http://github.com/cdog
 
 
