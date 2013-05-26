@@ -4,11 +4,11 @@
  */
 /*
 Plugin Name: Avatar Manager
-Plugin URI: http://wordpress.org/extend/plugins/avatar-manager/
+Plugin URI: http://wordpress.org/plugins/avatar-manager/
 Description: Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.
 Version: 1.3.0
 Author: Cătălin Dogaru
-Author URI: http://swarm.cs.pub.ro/~cdogaru/
+Author URI: http://cdog.dunked.com/
 License: GPLv2 or later
 */
 
