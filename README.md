@@ -82,7 +82,8 @@ Have a bug or a feature request? Please [open a new
 issue](https://github.com/resourcestream/avatar-manager/issues). Before opening
 any issue, please search for existing issues and read the [Issue
 Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas
-Gallagher](https://github.com/necolas/).
+Gallagher](https://github.com/necolas/). Please submit all pull requests against
+dev branches.
 
 Ice Cream is a user-driven project, and all developments and enhancements depend
 on users like **you**!
