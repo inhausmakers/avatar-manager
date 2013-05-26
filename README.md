@@ -85,8 +85,8 @@ Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas
 Gallagher](https://github.com/necolas/). Please submit all pull requests against
 dev branches.
 
-Ice Cream is a user-driven project, and all developments and enhancements depend
-on users like **you**!
+Avatar Manager is a user-driven project, and all developments and enhancements
+depend on users like **you**!
 
 
 
