@@ -266,7 +266,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</label>
 					<?php endif; ?>
 					<?php
-					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
+					if ( is_admin() && $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] )  ) {
 						$href = esc_attr( add_query_arg( array(
 							'action'                       => 'update',
 							'avatar_manager_action'        => 'remove-avatar',
@@ -301,7 +301,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</label><!-- .description -->
 						<br>
 						<input name="avatar_manager_import" type="file">
-						<?php submit_button( __( 'Upload', 'avatar-manager' ), 'button', 'avatar-manager-upload-avatar', false ); ?>
+						<input type="submit" name="avatar-manager-upload-avatar" id="avatar-manager-upload-avatar" class="button" value="<?php esc_attr_e( 'Upload', 'avatar-manager' ); ?>">
 					</fieldset>
 				</td>
 			</tr>
@@ -371,7 +371,7 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 function avatar_manager_admin_enqueue_scripts() {
 	global $hook_suffix;
 
-	if ( $hook_suffix == 'profile.php' || $hook_suffix == 'user-edit.php' ) {
+	if ( $hook_suffix == 'profile.php' || $hook_suffix == 'user-edit.php' || !is_admin() ) {
 		// Registers plugin CSS style file.
 		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
 
@@ -387,6 +387,7 @@ function avatar_manager_admin_enqueue_scripts() {
 }
 
 add_action( 'admin_enqueue_scripts', 'avatar_manager_admin_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'avatar_manager_admin_enqueue_scripts' );
 
 /**
  * Generates a resized copy of the specified avatar image.
@@ -543,6 +544,10 @@ add_action( 'delete_attachment', 'avatar_manager_delete_avatar' );
  * @param int $user_id User to update.
  */
 function avatar_manager_edit_user_profile_update( $user_id ) {
+
+	if ( ! is_admin() )
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+
 	// Retrieves plugin options.
 	$options = avatar_manager_get_options();
 
