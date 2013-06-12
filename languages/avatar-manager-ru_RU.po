@@ -2,26 +2,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Avatar Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 22:47+0200\n"
-"PO-Revision-Date: 2013-06-11 17:57+0500\n"
+"POT-Creation-Date: 2013-06-12 13:45+0200\n"
+"PO-Revision-Date: 2013-06-12 13:45+0200\n"
 "Last-Translator: Artem Frolov <forester@codedforest.com>\n"
-"Language-Team: dikiyforester <forester@codedforest.com>\n"
+"Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_e;_n;_x\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;esc_attr_e\n"
 "X-Poedit-Basepath: .\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../avatar-manager.php:69 ../avatar-manager.php:154
+#: ../avatar-manager.php:69
+#: ../avatar-manager.php:154
 msgid "Avatar Uploads"
 msgstr "Загрузка Аватара"
 
-#: ../avatar-manager.php:73 ../avatar-manager.php:180
+#: ../avatar-manager.php:73
+#: ../avatar-manager.php:180
 msgid "Default Size"
 msgstr "Размер по умолчанию"
 
@@ -37,7 +40,8 @@ msgstr "Размер изображения аватара по умолчани
 msgid "Avatar"
 msgstr "Аватар"
 
-#: ../avatar-manager.php:243 ../avatar-manager.php:249
+#: ../avatar-manager.php:243
+#: ../avatar-manager.php:249
 msgid "Display this avatar"
 msgstr "Отображение аватаров"
 
@@ -46,12 +50,8 @@ msgid "Gravatar"
 msgstr "Gravatar"
 
 #: ../avatar-manager.php:257
-msgid ""
-"<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" "
-"target=\"_blank\">More information</a>"
-msgstr ""
-"<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" "
-"target=\"_blank\">Подробнее</a>"
+msgid "<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" target=\"_blank\">More information</a>"
+msgstr "<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" target=\"_blank\">Подробнее</a>"
 
 #: ../avatar-manager.php:265
 msgid "Custom"
@@ -61,7 +61,8 @@ msgstr "Пользовательский"
 msgid "Delete"
 msgstr "Удалить"
 
-#: ../avatar-manager.php:290 ../avatar-manager.php:296
+#: ../avatar-manager.php:290
+#: ../avatar-manager.php:296
 msgid "Select Image"
 msgstr "Выберите Изображение"
 
@@ -73,7 +74,8 @@ msgstr "Выберите изображение с вашего компьюте
 msgid "Upload"
 msgstr "Загрузить"
 
-#: ../avatar-manager.php:312 ../avatar-manager.php:318
+#: ../avatar-manager.php:312
+#: ../avatar-manager.php:318
 msgid "Avatar Rating"
 msgstr "Рейтинг Аватара"
 
@@ -83,9 +85,7 @@ msgstr "G &#8212; Подходит для любой аудитории"
 
 #: ../avatar-manager.php:328
 msgid "PG &#8212; Possibly offensive, usually for audiences 13 and above"
-msgstr ""
-"PG &#8212; Может содержать оскорбительные элементы, обычно для аудитории "
-"старше 13 лет"
+msgstr "PG &#8212; Может содержать оскорбительные элементы, обычно для аудитории старше 13 лет"
 
 #: ../avatar-manager.php:331
 msgid "R &#8212; Intended for adult audiences above 17"
@@ -99,37 +99,43 @@ msgstr "X &#8212; Для ещё более зрелой аудитории"
 msgid "Choose a rating for your custom avatar."
 msgstr "Выберите рейтинг для вашего пользовательского Аватара"
 
-#: ../avatar-manager.php:593
+#: ../avatar-manager.php:597
 msgid "Image Upload Error"
 msgstr "Ошибка Загрузки Изображения"
 
-#: ../avatar-manager.php:925
+#: ../avatar-manager.php:929
 msgid "Avatar Image"
 msgstr "Аватар"
 
-#: ../avatar-manager.php:951 ../avatar-manager.php:993
-#: ../avatar-manager.php:1036 ../avatar-manager.php:1086
-#: ../avatar-manager.php:1135 ../avatar-manager.php:1199
+#: ../avatar-manager.php:955
+#: ../avatar-manager.php:997
+#: ../avatar-manager.php:1040
+#: ../avatar-manager.php:1090
+#: ../avatar-manager.php:1139
+#: ../avatar-manager.php:1203
 msgid "Insufficient arguments passed to this XML-RPC method."
 msgstr "В XML-RPC метод передано недостаточно аргументов."
 
-#: ../avatar-manager.php:967 ../avatar-manager.php:1055
-#: ../avatar-manager.php:1107 ../avatar-manager.php:1155
+#: ../avatar-manager.php:971
+#: ../avatar-manager.php:1059
+#: ../avatar-manager.php:1111
+#: ../avatar-manager.php:1159
 msgid "Sorry, you don't have a custom avatar."
 msgstr "Извините, у вас нет пользовательского Аватара."
 
-#: ../avatar-manager.php:1099
+#: ../avatar-manager.php:1103
 msgid "Invalid avatar type."
 msgstr "Неверный тип Аватара."
 
-#: ../avatar-manager.php:1148
+#: ../avatar-manager.php:1152
 msgid "Invalid custom avatar rating."
 msgstr "Недопустимый рейтинг пользовательского Аватара."
 
-#: ../avatar-manager.php:1212
+#: ../avatar-manager.php:1216
 msgid "Sorry, you don't have permission to upload files."
 msgstr "Извините, у вас нет прав на загрузку файлов."
 
-#: ../avatar-manager.php:1233
+#: ../avatar-manager.php:1237
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "Извините, этот тип файлов не поддерживается в целях безопасности."
+
