@@ -1,4 +1,4 @@
-[Avatar Manager v1.3.0](http://wordpress.org/plugins/avatar-manager/)
+[Avatar Manager v1.4.0](http://wordpress.org/plugins/avatar-manager/)
 =======================
 
 Avatar Manager for WordPress is a sweet and simple plugin for storing avatars
@@ -97,6 +97,13 @@ Authors
 
 + http://twitter.com/resourcestream
 + http://github.com/cdog
+
+
+
+Contributors
+------------
+
+[Artem Frolov](http://profiles.wordpress.org/dikiy_forester/)
 
 
 
