@@ -103,6 +103,8 @@ Authors
 Contributors
 ------------
 
+Avatar Manager is brought to you by these fine folks.
+
 [Artem Frolov](http://profiles.wordpress.org/dikiy_forester/)
 
 
