@@ -106,7 +106,8 @@ Contributing Developers
 Avatar Manager is brought to you by these fine folks.
 
 [Artem Frolov](http://profiles.wordpress.org/dikiy_forester/),
-[Guy Steyaert](http://profiles.wordpress.org/ideos/)
+[Guy Steyaert](http://profiles.wordpress.org/ideos/),
+[Pieter Goosen](http://profiles.wordpress.org/pietergoosen)
 
 
 
