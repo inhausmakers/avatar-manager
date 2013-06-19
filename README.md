@@ -100,8 +100,8 @@ Authors
 
 
 
-Contributors
-------------
+Contributing Developers
+-----------------------
 
 Avatar Manager is brought to you by these fine folks.
 
