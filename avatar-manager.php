@@ -283,7 +283,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</label>
 					<?php endif; ?>
 					<?php
-					if ( is_admin() && $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
+					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
 						$href = esc_attr( add_query_arg( array(
 							'action'                       => 'update',
 							'avatar_manager_action'        => 'remove-avatar',
@@ -377,6 +377,8 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
 /**
  * Enqueues plugin scripts and styles for Users Your Profile Screen.
  *
+ * @uses is_admin() For checking if the Dashboard or the administration panel is
+ * attempting to be displayed.
  * @uses wp_register_style() For registering a CSS style file.
  * @uses wp_enqueue_style() For enqueuing a CSS style file.
  * @uses wp_register_script() For registering a JS script file.
@@ -395,7 +397,7 @@ function avatar_manager_admin_enqueue_scripts() {
 		wp_enqueue_style( 'avatar-manager.css');
 
 		// Registers plugin JS script file.
-		wp_register_script( 'avatar-manager.js', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.js', array( 'jquery' ), '1.0.0' );
+		wp_register_script( 'avatar-manager.js', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.js', array( 'jquery' ), '1.1.0' );
 
 		// Enqueues plugin JS script file.
 		wp_enqueue_script( 'avatar-manager.js' );
