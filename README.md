@@ -107,7 +107,8 @@ Avatar Manager is brought to you by these fine folks.
 
 [Artem Frolov](http://profiles.wordpress.org/dikiy_forester/),
 [Guy Steyaert](http://profiles.wordpress.org/ideos/),
-[Pieter Goosen](http://profiles.wordpress.org/pietergoosen)
+[Pieter Goosen](http://profiles.wordpress.org/pietergoosen),
+[Snowboard Mommy](http://profiles.wordpress.org/snowboardmommy/)
 
 
 
