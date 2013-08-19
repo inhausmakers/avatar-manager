@@ -1,0 +1,1 @@
+(function(a){a(document).ready(function(){a("#your-profile").attr("enctype","multipart/form-data");(function(){var c,b,e=a("#avatar-manager");if(!e.length){return}c=e.find('input[type="submit"]');b=e.find('input[type="file"]');function d(){c.prop("disabled",""===b.map(function(){return a(this).val()}).get().join(""))}d();b.on("change",d)})()})})(jQuery);
