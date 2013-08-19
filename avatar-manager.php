@@ -397,7 +397,7 @@ function avatar_manager_admin_enqueue_scripts() {
 	wp_enqueue_style( 'avatar-manager' );
 
 	// Registers plugin JS script file.
-	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.1.0' );
+	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.1.1' );
 
 	// Enqueues plugin JS script file.
 	wp_enqueue_script( 'avatar-manager' );
