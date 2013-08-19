@@ -1,14 +1,18 @@
-#profile-page .avatar-manager img {
+#avatar-manager label {
+	display: inline;
+}
+
+#avatar-manager img {
 	margin: 2px 0;
 	vertical-align: middle;
 }
 
-#profile-page .avatar-manager .delete {
+#avatar-manager .delete {
 	color: red;
 	padding: 2px;
 }
 
-#profile-page .avatar-manager .delete:hover {
+#avatar-manager .delete:hover {
 	background: red;
 	color: #fff;
 	text-decoration: none;

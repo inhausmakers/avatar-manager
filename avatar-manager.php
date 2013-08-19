@@ -391,7 +391,7 @@ function avatar_manager_admin_enqueue_scripts() {
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	// Registers plugin CSS style file.
-	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.css', array(), '1.0.0' );
+	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.css', array(), '1.1.0' );
 
 	// Enqueues plugin CSS style file.
 	wp_enqueue_style( 'avatar-manager' );
