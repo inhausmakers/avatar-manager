@@ -387,21 +387,22 @@ add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_admin_enqueue_scripts() {
-	global $hook_suffix;
+	if ( ! defined( 'IS_PROFILE_PAGE' ) )
+		return;
 
-	if ( ! is_admin() || in_array( $hook_suffix, array( 'profile.php', 'user-edit.php' ) ) ) {
-		// Registers plugin CSS style file.
-		wp_register_style( 'avatar-manager.css', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.css', array(), '1.0.0' );
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		// Enqueues plugin CSS style file.
-		wp_enqueue_style( 'avatar-manager.css');
+	// Registers plugin CSS style file.
+	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.css', array(), '1.0.0' );
 
-		// Registers plugin JS script file.
-		wp_register_script( 'avatar-manager.js', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager.js', array( 'jquery' ), '1.1.0' );
+	// Enqueues plugin CSS style file.
+	wp_enqueue_style( 'avatar-manager' );
 
-		// Enqueues plugin JS script file.
-		wp_enqueue_script( 'avatar-manager.js' );
-	}
+	// Registers plugin JS script file.
+	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.1.0' );
+
+	// Enqueues plugin JS script file.
+	wp_enqueue_script( 'avatar-manager' );
 }
 
 add_action( 'admin_enqueue_scripts', 'avatar_manager_admin_enqueue_scripts' );
