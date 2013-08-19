@@ -254,12 +254,12 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 	<h3>
 		<?php _e( 'Avatar', 'avatar-manager' ); ?>
 	</h3>
-	<table class="form-table">
+	<table class="form-table" id="avatar-manager">
 		<tr>
 			<th>
 				<?php _e( 'Display this avatar', 'avatar-manager' ); ?>
 			</th>
-			<td class="avatar-manager">
+			<td>
 				<fieldset>
 					<legend class="screen-reader-text">
 						<span>
@@ -270,10 +270,8 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						<input <?php checked( $avatar_type, 'gravatar', true ); ?> name="avatar_manager_avatar_type" type="radio" value="gravatar">
 						<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
 						<?php _e( 'Gravatar', 'avatar-manager' ); ?>
-						<span class="description">
-							<?php _e( '<a href="http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress" target="_blank">More information</a>', 'avatar-manager' ); ?>
-						</span><!-- .description -->
 					</label>
+					<?php _e( '<a href="http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress" target="_blank">More information</a>', 'avatar-manager' ); ?>
 					<?php if ( $user_has_custom_avatar ) : ?>
 						<br>
 						<label>
@@ -367,12 +365,12 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 				</td>
 			</tr>
 		<?php endif; ?>
-	</table><!-- .form-table -->
+	</table><!-- .form-table #avatar-manager -->
 	<?php
 }
 
-add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 add_action( 'edit_user_profile', 'avatar_manager_edit_user_profile' );
+add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 
 /**
  * Enqueues plugin scripts and styles for Users Your Profile Screen.
