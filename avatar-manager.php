@@ -13,7 +13,7 @@ License: GPLv2 or later
 */
 
 /*
-Copyright © 2013 Cătălin Dogaru
+Copyright © 2013-2014 Cătălin Dogaru
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
