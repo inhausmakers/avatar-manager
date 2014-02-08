@@ -586,6 +586,7 @@ function avatar_manager_delete_avatar( $user_id ) {
  *
  * @uses get_post() For taking a post ID and returning the database record for
  * that post.
+ * @uses get_user_meta() For retrieving user avatar id for comparison.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
  * attachment ID.
  *
@@ -596,6 +597,13 @@ function avatar_manager_delete_avatar( $user_id ) {
 function avatar_manager_delete_attachment( $attachment_id ) {
 	// Takes a post ID and returns the database record for that post.
 	$attachment = get_post( $attachment_id, ARRAY_A );
+
+    // Check if it is an avatar that we are deleting, if not, exit.
+    $user_id = $attachment['post_author'];
+    $avatar_id = (int) get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+    if ($attachment_id !== $avatar_id) {
+        return;
+    }
 
 	// Deletes an avatar image based on user ID.
 	avatar_manager_delete_avatar( $attachment['post_author'] );
