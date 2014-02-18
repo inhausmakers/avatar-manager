@@ -584,29 +584,35 @@ function avatar_manager_delete_avatar( $user_id ) {
 /**
  * Deletes an avatar image based on attachment ID.
  *
- * @uses get_post() For taking a post ID and returning the database record for
- * that post.
- * @uses get_user_meta() For retrieving user avatar id for comparison.
+ * @uses get_post_meta() For retrieving attachment meta fields.
+ * @uses get_user_meta() For retrieving user meta fields.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * attachment ID.
+ * user ID.
  *
  * @since Avatar Manager 1.5.0
  *
  * @param int $attachment_id ID of the attachment.
  */
 function avatar_manager_delete_attachment( $attachment_id ) {
-	// Takes a post ID and returns the database record for that post.
-	$attachment = get_post( $attachment_id, ARRAY_A );
+	// Retrieves attachment meta field based on attachment ID.
+	$meta_avatar = get_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
 
-    // Check if it is an avatar that we are deleting, if not, exit.
-    $user_id = $attachment['post_author'];
-    $avatar_id = (int) get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
-    if ($attachment_id !== $avatar_id) {
-        return;
-    }
+	if ( empty( $meta_avatar ) )
+		return;
 
-	// Deletes an avatar image based on user ID.
-	avatar_manager_delete_avatar( $attachment['post_author'] );
+	// An associative array with criteria to match.
+	$args = array(
+		'meta_key'   => 'avatar_manager_custom_avatar',
+		'meta_value' => $attachment_id
+	);
+
+	// Retrieves an array of users matching the criteria given in $args.
+	$users = get_users( $args );
+
+	foreach ( $users as $user ) {
+		// Deletes an avatar image based on user ID.
+		avatar_manager_delete_avatar( $user->ID );
+	}
 }
 
 add_action( 'delete_attachment', 'avatar_manager_delete_attachment' );
@@ -625,7 +631,7 @@ add_action( 'delete_attachment', 'avatar_manager_delete_attachment' );
  * message.
  * @uses __() For retrieving the translated string from the translate().
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * attachment ID.
+ * user ID.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
  * @uses wp_generate_attachment_metadata() For generating metadata for an
@@ -1068,7 +1074,7 @@ add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses do_action() For calling the functions added to an action hook.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * attachment ID.
+ * user ID.
  *
  * @since Avatar Manager 1.3.0
  *
@@ -1304,7 +1310,7 @@ function avatar_manager_setCustomAvatarRating( $args ) {
  * @uses do_action() For calling the functions added to an action hook.
  * @uses get_user_meta() For retrieving user meta fields.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * attachment ID.
+ * user ID.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
  * @uses wp_generate_attachment_metadata() For generating metadata for an
