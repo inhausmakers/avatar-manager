@@ -23,7 +23,7 @@ $args = array(
 $users = get_users( $args );
 
 foreach ( $users as $user ) {
-	// Deletes avatar image based on user ID.
+	// Deletes an avatar image based on user ID.
 	avatar_manager_delete_avatar( $user->ID );
 }
 ?>
