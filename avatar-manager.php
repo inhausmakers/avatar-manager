@@ -581,6 +581,9 @@ function avatar_manager_delete_avatar( $user_id ) {
 	return true;
 }
 
+add_action( 'delete_user', 'avatar_manager_delete_avatar' );
+add_action( 'wpmu_delete_user', 'avatar_manager_delete_avatar' );
+
 /**
  * Deletes an avatar image based on attachment ID.
  *
