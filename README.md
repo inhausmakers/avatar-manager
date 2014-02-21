@@ -33,7 +33,7 @@ Installation is simple as peas.
 2. After activating Avatar Manager, you will be able to customize the plugin
    options under the [Settings Discussion
    Screen](http://codex.wordpress.org/Settings_Discussion_Screen).
-3. That's it. You're ready to go!
+3. That’s it. You’re ready to go!
 
 
 
@@ -60,7 +60,7 @@ For more information on SemVer, please visit [semver.org](http://semver.org/).
 
 
 
-How It's Made
+How It’s Made
 -------------
 
 Want to find out how Avatar Manager is built? Make sure to read the following
