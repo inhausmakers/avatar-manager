@@ -279,22 +279,22 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 							<?php echo avatar_manager_get_custom_avatar( $profileuser->ID, 32, '', false ); ?>
 							<?php _e( 'Custom', 'avatar-manager' ); ?>
 						</label>
-					<?php endif; ?>
-					<?php
-					if ( $user_has_custom_avatar && ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) ) {
-						$href = esc_attr( add_query_arg( array(
-							'action'                       => 'update',
-							'avatar_manager_action'        => 'remove-avatar',
-							'user_id'                      => $profileuser->ID
-						),
-						self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
-						?>
-						<a class="delete" href="<?php echo wp_nonce_url( $href, 'update-user_' . $profileuser->ID ); ?>" onclick="return showNotice.warn();">
-							<?php _e( 'Delete', 'avatar-manager' ); ?>
-						</a><!-- .delete -->
 						<?php
-					}
-					?>
+						if ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) {
+							$href = esc_attr( add_query_arg( array(
+								'action'                => 'update',
+								'avatar_manager_action' => 'remove-avatar',
+								'user_id'               => $profileuser->ID
+							),
+							self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
+							?>
+							<a class="delete" href="<?php echo wp_nonce_url( $href, 'update-user_' . $profileuser->ID ); ?>" onclick="return showNotice.warn();">
+								<?php _e( 'Delete', 'avatar-manager' ); ?>
+							</a><!-- .delete -->
+							<?php
+						}
+						?>
+					<?php endif; ?>
 				</fieldset>
 			</td><!-- .avatar-manager -->
 		</tr>
@@ -310,12 +310,14 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 								<?php _e( 'Select Image', 'avatar-manager' ); ?>
 							</span>
 						</legend><!-- .screen-reader-text -->
-						<label class="description" for="avatar-manager-upload-avatar">
-							<?php _e( 'Choose an image from your computer:', 'avatar-manager' ); ?>
-						</label><!-- .description -->
-						<br>
-						<input name="avatar_manager_import" type="file">
-						<input class="button" id="avatar-manager-upload-avatar" name="avatar-manager-upload-avatar" type="submit" value="<?php esc_attr_e( 'Upload', 'avatar-manager' ); ?>">
+						<p>
+							<label class="description" for="avatar-manager-upload">
+								<?php _e( 'Choose an image from your computer:', 'avatar-manager' ); ?>
+							</label><!-- .description -->
+							<br>
+							<input id="avatar-manager-upload" name="avatar_manager_import" type="file">
+							<input class="button" name="avatar_manager_submit" type="submit" value="<?php esc_attr_e( 'Upload', 'avatar-manager' ); ?>">
+						</p>
 					</fieldset>
 				</td>
 			</tr>
@@ -675,7 +677,7 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', $custom_avatar_rating );
 	}
 
-	if ( isset( $_POST['avatar-manager-upload-avatar'] ) && $_POST['avatar-manager-upload-avatar'] ) {
+	if ( isset( $_POST['avatar_manager_submit'] ) && $_POST['avatar_manager_submit'] ) {
 		if ( ! function_exists( 'wp_handle_upload' ) )
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
