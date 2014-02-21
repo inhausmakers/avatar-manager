@@ -1,10 +1,11 @@
-#avatar-manager label {
-	display: inline;
-}
-
 #avatar-manager img {
 	margin: 2px 0;
 	vertical-align: middle;
+}
+
+#avatar-manager label + a {
+	display: inline-block;
+	margin-top: -6px;
 }
 
 #avatar-manager .delete {
