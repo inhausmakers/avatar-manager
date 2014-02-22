@@ -202,15 +202,18 @@ function avatar_manager_default_size_settings_field() {
  * @uses _e() For displaying the translated string from the translate().
  * @uses checked() For comparing two given values.
  * @uses get_avatar() For retrieving the avatar for a user.
- * @uses esc_attr() For escaping HTML attributes.
+ * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
+ * based on user ID.
+ * @uses current_user_can() For checking whether the current user has a certain
+ * capability.
  * @uses add_query_arg() For retrieving a modified URL (with) query string.
  * @uses self_admin_url() For retrieving an admin url link with optional path
  * appended.
- * @uses current_user_can() For checking whether the current user has a certain
- * capability.
- * @uses submit_button() For echoing a submit button, with provided text and
- * appropriate class.
+ * @uses wp_nonce_url() For retrieving URL with nonce added to URL query.
+ * @uses esc_attr_e() For displaying translated text that has been escaped for
+ * safe use in an attribute.
  * @uses __() For retrieving the translated string from the translate().
+ * @uses esc_attr() For escaping HTML attributes.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -281,12 +284,12 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						</label>
 						<?php
 						if ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) {
-							$href = esc_attr( add_query_arg( array(
+							$href = add_query_arg( array(
 								'action'                => 'update',
 								'avatar_manager_action' => 'remove-avatar',
 								'user_id'               => $profileuser->ID
 							),
-							self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) ) );
+							self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) );
 							?>
 							<a class="delete" href="<?php echo wp_nonce_url( $href, 'update-user_' . $profileuser->ID ); ?>" onclick="return showNotice.warn();">
 								<?php _e( 'Delete', 'avatar-manager' ); ?>
@@ -318,6 +321,25 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 							<input id="avatar-manager-upload" name="avatar_manager_import" type="file">
 							<input class="button" name="avatar_manager_submit" type="submit" value="<?php esc_attr_e( 'Upload', 'avatar-manager' ); ?>">
 						</p>
+						<?php if ( current_user_can( 'upload_files' ) ) : ?>
+							<p>
+								<label class="description" for="avatar-manager-choose-from-library-link">
+									<?php _e( 'Or choose an image from your media library:', 'avatar-manager' ); ?>
+								</label><!-- .description -->
+								<br>
+								<?php
+								$modal_update_href = add_query_arg( array(
+									'action'                => 'update',
+									'avatar_manager_action' => 'set-avatar',
+									'user_id'               => $profileuser->ID
+								),
+								self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) );
+								?>
+								<a class="button" data-choose="<?php esc_attr_e( 'Choose a Custom Avatar', 'avatar-manager' ); ?>" data-update="<?php esc_attr_e( 'Set as avatar', 'avatar-manager' ); ?>" data-update-link="<?php echo wp_nonce_url( $modal_update_href, 'update-user_' . $profileuser->ID ); ?>" id="avatar-manager-choose-from-library-link">
+									<?php _e( 'Choose Image', 'avatar-manager' ); ?>
+								</a><!-- #avatar-manager-choose-from-library-link -->
+							</p>
+						<?php endif; ?>
 					</fieldset>
 				</td>
 			</tr>
@@ -377,8 +399,8 @@ add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 /**
  * Enqueues plugin scripts and styles for Users Your Profile Screen.
  *
- * @uses is_admin() For checking if the Dashboard or the administration panel is
- * attempting to be displayed.
+ * @uses wp_enqueue_media() For enqueuing all scripts, styles, settings, and
+ * templates necessary to use all media JavaScript APIs.
  * @uses wp_register_style() For registering a CSS style file.
  * @uses wp_enqueue_style() For enqueuing a CSS style file.
  * @uses wp_register_script() For registering a JS script file.
@@ -390,16 +412,20 @@ function avatar_manager_admin_enqueue_scripts() {
 	if ( ! defined( 'IS_PROFILE_PAGE' ) )
 		return;
 
+	// Enqueues all scripts, styles, settings, and templates necessary to use
+	// all media JavaScript APIs.
+	wp_enqueue_media();
+
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	// Registers plugin CSS style file.
-	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.css', array(), '1.1.0' );
+	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.css', array(), '1.2.0' );
 
 	// Enqueues plugin CSS style file.
 	wp_enqueue_style( 'avatar-manager' );
 
 	// Registers plugin JS script file.
-	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.1.1' );
+	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.2.0' );
 
 	// Enqueues plugin JS script file.
 	wp_enqueue_script( 'avatar-manager' );
@@ -465,6 +491,7 @@ function avatar_manager_generate_avatar_url( $attachment_id, $size ) {
 /**
  * Generates a resized copy of the specified avatar image.
  *
+ * @uses get_post_meta() For retrieving attachment meta fields.
  * @uses avatar_manager_generate_avatar_path() For generating a file path of an
  * avatar image based on attachment ID and size.
  * @uses get_attached_file() For retrieving attached file path based on
@@ -482,6 +509,12 @@ function avatar_manager_generate_avatar_url( $attachment_id, $size ) {
  * @return bool True if a new file is created; false if the file already exists.
  */
 function avatar_manager_resize_avatar( $attachment_id, $size ) {
+	// Retrieves attachment meta field based on attachment ID.
+	$custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_custom_avatar', true );
+
+	if ( isset( $custom_avatar[ $size ] ) )
+		return $custom_avatar[ $size ];
+
 	// Generates a file path of an avatar image based on attachment ID and size.
 	$dest_path = avatar_manager_generate_avatar_path( $attachment_id, $size );
 
@@ -509,6 +542,58 @@ function avatar_manager_resize_avatar( $attachment_id, $size ) {
 	do_action( 'avatar_manager_resize_avatar', $attachment_id, $size );
 
 	return $skip;
+}
+
+/**
+ * Sets user's avatar.
+ *
+ * @uses get_post_meta() For retrieving attachment meta fields.
+ * @uses avatar_manager_resize_avatar() For generating a resized copy of the
+ * specified avatar image.
+ * @uses update_post_meta() For updating attachment meta fields.
+ * @uses get_user_meta() For retrieving user meta fields.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
+ * user ID.
+ * @uses update_user_meta() For updating user meta fields.
+ * @uses is_multisite() For determining whether Multisite support is enabled.
+ * @uses get_current_blog_id() For retrieving the current blog id.
+ *
+ * @since Avatar Manager 1.6.0
+ *
+ * @param int $user_id ID of the user.
+ * @param int $attachment_id ID of the attachment.
+ */
+function avatar_manager_set_avatar( $user_id, $attachment_id ) {
+	// Retrieves attachment meta field based on attachment ID.
+	$meta_avatar = get_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
+
+	if ( empty( $meta_avatar ) ) {
+		// Generates a resized copy of the avatar image.
+		$custom_avatar[ $options['default_size'] ] = avatar_manager_resize_avatar( $attachment_id, $options['default_size'] );
+
+		// Updates attachment meta fields based on attachment ID.
+		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar', $custom_avatar );
+		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', 'G' );
+		update_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
+	}
+
+	// Retrieves user meta field based on user ID.
+	$custom_avatar = get_user_meta( $user_id, 'avatar_manager_custom_avatar', true );
+
+	if ( ! empty( $custom_avatar ) && $custom_avatar != $attachment_id ) {
+		// Deletes user's old avatar image.
+		avatar_manager_delete_avatar( $user_id );
+	}
+
+	// Updates user meta fields based on user ID.
+	update_user_meta( $user_id, 'avatar_manager_avatar_type', 'custom' );
+	update_user_meta( $user_id, 'avatar_manager_custom_avatar', $attachment_id );
+
+	// Determines whether Multisite support is enabled.
+	if ( is_multisite() ) {
+		// Retrieves the current blog id.
+		update_user_meta( $user_id, 'avatar_manager_blog_id', get_current_blog_id() );
+	}
 }
 
 /**
@@ -590,7 +675,8 @@ add_action( 'wpmu_delete_user', 'avatar_manager_delete_avatar' );
  * Deletes an avatar image based on attachment ID.
  *
  * @uses get_post_meta() For retrieving attachment meta fields.
- * @uses get_user_meta() For retrieving user meta fields.
+ * @uses get_users() For retrieving an array of users matching the criteria
+ * given in $args.
  * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
  * user ID.
  *
@@ -635,18 +721,15 @@ add_action( 'delete_attachment', 'avatar_manager_delete_attachment' );
  * @uses wp_die() For killing WordPress execution and displaying HTML error
  * message.
  * @uses __() For retrieving the translated string from the translate().
- * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * user ID.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
  * @uses wp_generate_attachment_metadata() For generating metadata for an
  * attachment.
  * @uses wp_update_attachment_metadata() For updating metadata for an
  * attachment.
- * @uses avatar_manager_resize_avatar() For generating a resized copy of the
- * specified avatar image.
- * @uses is_multisite() For determining whether Multisite support is enabled.
- * @uses get_current_blog_id() For retrieving the current blog id.
+ * @uses avatar_manager_set_avatar() For setting user's avatar.
+ * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
+ * user ID.
  * @uses get_edit_user_link() For getting the link to the user's edit profile
  * page in the WordPress admin.
  * @uses add_query_arg() For retrieving a modified URL (with) query string.
@@ -710,11 +793,6 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 			wp_die( $file_attr['error'],  __( 'Image Upload Error', 'avatar-manager' ) );
 		}
 
-		if ( ! empty( $attachment_id ) ) {
-			// Deletes user's old avatar image.
-			avatar_manager_delete_avatar( $user_id );
-		}
-
 		// An associative array about the attachment.
 		$attachment = array(
 			'guid'           => $file_attr['url'],
@@ -732,23 +810,8 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		// Updates metadata for the attachment.
 		wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
 
-		// Generates a resized copy of the avatar image.
-		$custom_avatar[ $options['default_size'] ] = avatar_manager_resize_avatar( $attachment_id, $options['default_size'] );
-
-		// Updates attachment meta fields based on attachment ID.
-		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar', $custom_avatar );
-		update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', 'G' );
-		update_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
-
-		// Updates user meta fields based on user ID.
-		update_user_meta( $user_id, 'avatar_manager_avatar_type', 'custom' );
-		update_user_meta( $user_id, 'avatar_manager_custom_avatar', $attachment_id );
-
-		// Determines whether Multisite support is enabled.
-		if ( is_multisite() ) {
-			// Retrieves the current blog id.
-			update_user_meta( $user_id, 'avatar_manager_blog_id', get_current_blog_id() );
-		}
+		// Sets user's avatar.
+		avatar_manager_set_avatar( $user_id, $attachment_id );
 	}
 
 	if ( isset( $_GET['avatar_manager_action'] ) && $_GET['avatar_manager_action'] ) {
@@ -757,9 +820,17 @@ function avatar_manager_edit_user_profile_update( $user_id ) {
 		$action = $_GET['avatar_manager_action'];
 
 		switch ( $action ) {
+			case 'set-avatar':
+				if ( isset( $_GET['avatar_manager_attachment_id'] ) ) {
+					// Sets user's avatar.
+					avatar_manager_set_avatar( $user_id, absint( $_GET['avatar_manager_attachment_id'] ) );
+				}
+
+				break;
+
 			case 'remove-avatar':
-				// Deletes avatar image based on user ID.
-				avatar_manager_delete_avatar( $_GET['user_id'] );
+				// Deletes an avatar image based on user ID.
+				avatar_manager_delete_avatar( $user_id );
 
 				break;
 		}
@@ -1111,7 +1182,7 @@ function avatar_manager_deleteCustomAvatar( $args ) {
 	// Calls the functions added to xmlrpc_call action hook.
 	do_action( 'xmlrpc_call', 'avatarManager.deleteCustomAvatar' );
 
-	// Deletes avatar image based on user ID.
+	// Deletes an avatar image based on user ID.
 	return avatar_manager_delete_avatar( $user->ID );
 }
 
@@ -1313,22 +1384,13 @@ function avatar_manager_setCustomAvatarRating( $args ) {
  * @uses wp_upload_bits() For creating a file in the upload folder with given
  * content.
  * @uses do_action() For calling the functions added to an action hook.
- * @uses get_user_meta() For retrieving user meta fields.
- * @uses avatar_manager_delete_avatar() For deleting an avatar image based on
- * user ID.
  * @uses wp_insert_attachment() For inserting an attachment into the media
  * library.
  * @uses wp_generate_attachment_metadata() For generating metadata for an
  * attachment.
  * @uses wp_update_attachment_metadata() For updating metadata for an
  * attachment.
- * @uses avatar_manager_resize_avatar() For generating a resized copy of the
- * specified avatar image.
- * @uses update_post_meta() For updating attachment meta fields.
- * @uses update_user_meta() For updating user meta fields.
- * @uses is_multisite() For determining whether Multisite support is enabled.
- * @uses get_current_blog_id() For retrieving the current blog id.
- * @uses apply_filters() For calling the functions added to a filter hook.
+ * @uses avatar_manager_set_avatar() For setting user's avatar.
  *
  * @since Avatar Manager 1.3.0
  *
@@ -1386,13 +1448,6 @@ function avatar_manager_uploadCustomAvatar( $args ) {
 	// Calls the functions added to xmlrpc_call action hook.
 	do_action( 'xmlrpc_call', 'avatarManager.uploadCustomAvatar' );
 
-	// Retrieves user meta field based on user ID.
-	$attachment_id = get_user_meta( $user->ID, 'avatar_manager_custom_avatar', true );
-
-	if ( ! empty( $attachment_id ) )
-		// Deletes user's old avatar image.
-		avatar_manager_delete_avatar( $user->ID );
-
 	// An associative array about the attachment.
 	$attachment = array(
 		'guid'           => $file_attr['url'],
@@ -1410,23 +1465,8 @@ function avatar_manager_uploadCustomAvatar( $args ) {
 	// Updates metadata for the attachment.
 	wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
 
-	// Generates a resized copy of the avatar image.
-	$custom_avatar[ $options['default_size'] ] = avatar_manager_resize_avatar( $attachment_id, $options['default_size'] );
-
-	// Updates attachment meta fields based on attachment ID.
-	update_post_meta( $attachment_id, '_avatar_manager_custom_avatar', $custom_avatar );
-	update_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating', 'G' );
-	update_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
-
-	// Updates user meta fields based on user ID.
-	update_user_meta( $user->ID, 'avatar_manager_avatar_type', 'custom' );
-	update_user_meta( $user->ID, 'avatar_manager_custom_avatar', $attachment_id );
-
-	// Determines whether Multisite support is enabled.
-	if ( is_multisite() ) {
-		// Retrieves the current blog id.
-		update_user_meta( $user->ID, 'avatar_manager_blog_id', get_current_blog_id() );
-	}
+	// Sets user's avatar.
+	avatar_manager_set_avatar( $user->ID, $attachment_id );
 
 	$struct = array(
 		'id'   => strval( $attachment_id ),
