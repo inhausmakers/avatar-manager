@@ -212,6 +212,7 @@ function avatar_manager_default_size_settings_field() {
  * @uses wp_nonce_url() For retrieving URL with nonce added to URL query.
  * @uses esc_attr_e() For displaying translated text that has been escaped for
  * safe use in an attribute.
+ * @uses did_action() For retrieving the number of times an action is fired.
  * @uses __() For retrieving the translated string from the translate().
  * @uses esc_attr() For escaping HTML attributes.
  *
@@ -321,7 +322,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 							<input id="avatar-manager-upload" name="avatar_manager_import" type="file">
 							<input class="button" name="avatar_manager_submit" type="submit" value="<?php esc_attr_e( 'Upload', 'avatar-manager' ); ?>">
 						</p>
-						<?php if ( current_user_can( 'upload_files' ) ) : ?>
+						<?php if ( current_user_can( 'upload_files' ) && did_action( 'wp_enqueue_media' ) ) : ?>
 							<p>
 								<label class="description" for="avatar-manager-choose-from-library-link">
 									<?php _e( 'Or choose an image from your media library:', 'avatar-manager' ); ?>
@@ -399,6 +400,10 @@ add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
 /**
  * Enqueues plugin scripts and styles for Users Your Profile Screen.
  *
+ * @uses is_admin() For checking if the Dashboard or the administration panel is
+ * attempting to be displayed.
+ * @uses current_user_can() For checking whether the current user has a certain
+ * capability.
  * @uses wp_enqueue_media() For enqueuing all scripts, styles, settings, and
  * templates necessary to use all media JavaScript APIs.
  * @uses wp_register_style() For registering a CSS style file.
@@ -409,12 +414,14 @@ add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_admin_enqueue_scripts() {
-	if ( ! defined( 'IS_PROFILE_PAGE' ) )
+	if ( is_admin() && ! defined( 'IS_PROFILE_PAGE' ) )
 		return;
 
-	// Enqueues all scripts, styles, settings, and templates necessary to use
-	// all media JavaScript APIs.
-	wp_enqueue_media();
+	if ( current_user_can( 'upload_files' ) ) {
+		// Enqueues all scripts, styles, settings, and templates necessary to
+		// use all media JavaScript APIs.
+		wp_enqueue_media();
+	}
 
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -548,6 +555,7 @@ function avatar_manager_resize_avatar( $attachment_id, $size ) {
  * Sets user's avatar.
  *
  * @uses get_post_meta() For retrieving attachment meta fields.
+ * @uses avatar_manager_get_options() For retrieving plugin options.
  * @uses avatar_manager_resize_avatar() For generating a resized copy of the
  * specified avatar image.
  * @uses update_post_meta() For updating attachment meta fields.
@@ -568,6 +576,9 @@ function avatar_manager_set_avatar( $user_id, $attachment_id ) {
 	$meta_avatar = get_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar', true );
 
 	if ( empty( $meta_avatar ) ) {
+		// Retrieves plugin options.
+		$options = avatar_manager_get_options();
+
 		// Generates a resized copy of the avatar image.
 		$custom_avatar[ $options['default_size'] ] = avatar_manager_resize_avatar( $attachment_id, $options['default_size'] );
 
@@ -711,7 +722,6 @@ add_action( 'delete_attachment', 'avatar_manager_delete_attachment' );
 /**
  * Updates user profile based on user ID.
  *
- * @uses avatar_manager_get_options() For retrieving plugin options.
  * @uses sanitize_text_field() For sanitizing a string from user input or from
  * the database.
  * @uses update_user_meta() For updating user meta fields.
@@ -740,9 +750,6 @@ add_action( 'delete_attachment', 'avatar_manager_delete_attachment' );
  * @param int $user_id ID of the user to update.
  */
 function avatar_manager_edit_user_profile_update( $user_id ) {
-	// Retrieves plugin options.
-	$options = avatar_manager_get_options();
-
 	// Sanitizes the string from user input.
 	$avatar_type = isset( $_POST['avatar_manager_avatar_type'] ) ? sanitize_text_field( $_POST['avatar_manager_avatar_type'] ) : 'gravatar';
 
