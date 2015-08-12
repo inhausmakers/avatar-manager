@@ -66,10 +66,9 @@ How It’s Made
 Want to find out how Avatar Manager is built? Make sure to read the following
 resources.
 
-**Wptuts+**
+**Tuts+ Code**
 
-+ [How to Create a WordPress Avatar Management Plugin from Scratch: Getting Started](http://wp.tutsplus.com/tutorials/plugins/how-to-create-a-wordpress-avatar-management-plugin-from-scratch-getting-started/)
-+ [How to Create a WordPress Avatar Management Plugin from Scratch: Finishing Touches](http://wp.tutsplus.com/tutorials/plugins/how-to-create-a-wordpress-avatar-management-plugin-from-scratch-finishing-touches/)
++ [How to Create a WordPress Avatar Management Plugin from Scratch](http://code.tutsplus.com/series/how-to-create-a-wordpress-avatar-management-plugin-from-scratch--wp-33866)
 
 
 
