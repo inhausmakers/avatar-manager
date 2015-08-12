@@ -105,14 +105,15 @@ Contributing Developers
 
 Avatar Manager is brought to you by these fine folks.
 
-[Artem Frolov](http://profiles.wordpress.org/dikiy_forester),
-[Brice Capobianco](http://profiles.wordpress.org/brikou),
-[Guy Steyaert](http://profiles.wordpress.org/ideos),
-[Johan Steen](http://profiles.wordpress.org/artstorm),
-[Mateus Neves](http://profiles.wordpress.org/mateusneves),
-[Pieter Goosen](http://profiles.wordpress.org/pietergoosen),
+[Artem Frolov](https://profiles.wordpress.org/dikiy_forester),
+[Brice Capobianco](https://profiles.wordpress.org/brikou),
+[Guy Steyaert](https://profiles.wordpress.org/ideos),
+[Johan Steen](https://profiles.wordpress.org/artstorm),
+[Lucas Uzan](https://profiles.wordpress.org/wiiz83),
+[Mateus Neves](https://profiles.wordpress.org/mateusneves),
+[Pieter Goosen](https://profiles.wordpress.org/pietergoosen),
 [Samantha Muthiah](https://profiles.wordpress.org/schm168),
-[Snowboard Mommy](http://profiles.wordpress.org/snowboardmommy)
+[Snowboard Mommy](https://profiles.wordpress.org/snowboardmommy)
 
 
 
