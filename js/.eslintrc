@@ -1,0 +1,12 @@
+{
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "wp": false
+  },
+  "parser": "babel-eslint",
+  "root": true
+}
