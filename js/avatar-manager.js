@@ -8,8 +8,9 @@
 		( function() {
 			var button, input, avatarManager = $( '#avatar-manager' );
 
-			if ( ! avatarManager.length )
+			if ( ! avatarManager.length ) {
 				return;
+			}
 
 			button = avatarManager.find( 'input[type="submit"]' );
 			input  = avatarManager.find( 'input[type="file"]' );
@@ -25,7 +26,7 @@
 			input.on( 'change', toggleUploadButton );
 		} )();
 
-		$('#avatar-manager-choose-from-library-link').click( function( event ) {
+		$( '#avatar-manager-choose-from-library-link' ).click( function( event ) {
 			var $el = $( this );
 
 			event.preventDefault();
@@ -39,6 +40,7 @@
 
 			// Creates the media frame.
 			frame = wp.media.frames.customAvatar = wp.media( {
+
 				// Sets the title of the modal.
 				title: $el.data( 'choose' ),
 
@@ -49,6 +51,7 @@
 
 				// Customizes the submit button.
 				button: {
+
 					// Sets the text of the button.
 					text: $el.data( 'update' ),
 
@@ -60,9 +63,10 @@
 
 			// Runs a callback when an image is selected.
 			frame.on( 'select', function() {
+
 				// Grabs the selected attachment.
-				var attachment = frame.state().get('selection').first(),
-					link = $el.data('updateLink');
+				var attachment = frame.state().get( 'selection' ).first(),
+					link = $el.data( 'updateLink' );
 
 				// Tells the browser to navigate to the update link.
 				window.location = link + '&avatar_manager_attachment_id=' + attachment.id;
