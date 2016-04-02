@@ -72,9 +72,6 @@ module.exports = function (grunt) {
       options: {
         config: 'js/.jscsrc'
       },
-      grunt: {
-        src: 'Gruntfile.js'
-      },
       core: {
         src: 'js/*.js'
       }
