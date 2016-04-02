@@ -428,13 +428,13 @@ function avatar_manager_admin_enqueue_scripts() {
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	// Registers plugin CSS style file.
-	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.css', array(), '1.2.0' );
+	wp_register_style( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'assets/css/avatar-manager' . $suffix . '.css', array(), '1.2.1' );
 
 	// Enqueues plugin CSS style file.
 	wp_enqueue_style( 'avatar-manager' );
 
 	// Registers plugin JS script file.
-	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.2.0' );
+	wp_register_script( 'avatar-manager', AVATAR_MANAGER_PLUGIN_URL . 'assets/js/avatar-manager' . $suffix . '.js', array( 'jquery' ), '1.2.1' );
 
 	// Enqueues plugin JS script file.
 	wp_enqueue_script( 'avatar-manager' );
