@@ -23,7 +23,24 @@
     "url": "https://github.com/resourcestream/avatar-manager/issues"
   },
   "homepage": "https://github.com/resourcestream/avatar-manager#readme",
-  "devDependencies": {},
-  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^6.3.5",
+    "babel-eslint": "^6.0.2",
+    "grunt": "^0.4.5",
+    "grunt-babel": "^6.0.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-csslint": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-less": "^1.2.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-csscomb": "^3.1.0",
+    "grunt-eslint": "^18.0.0",
+    "grunt-jscs": "^2.8.0",
+    "grunt-postcss": "^0.8.0",
+    "jit-grunt": "^0.10.0",
+    "time-grunt": "^1.3.0"
+  },
   "private": true
 }
