@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Avatar Manager\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-18 12:43+0200\n"
+"PO-Revision-Date: 2015-11-06 07:51-0600\n"
+"Last-Translator: Cătălin Dogaru <catalin.dogaru@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;esc_attr_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.8.6\n"
+"Language: es_MX\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../avatar-manager.php:69 ../avatar-manager.php:154
+msgid "Avatar Uploads"
+msgstr "Cargas de Avatar"
+
+#: ../avatar-manager.php:73 ../avatar-manager.php:180
+msgid "Default Size"
+msgstr "Tamaño por omisión"
+
+#: ../avatar-manager.php:159
+msgid "Anyone can upload"
+msgstr "Cualquiera puede cargar"
+
+#: ../avatar-manager.php:184
+msgid "Default size of the avatar image"
+msgstr "Tamaño por omisión de la imagen del avatar"
+
+#: ../avatar-manager.php:238
+msgid "Avatar"
+msgstr "Avatar"
+
+#: ../avatar-manager.php:243 ../avatar-manager.php:249
+msgid "Display this avatar"
+msgstr "Muestra este avatar"
+
+#: ../avatar-manager.php:255
+msgid "Gravatar"
+msgstr "Gravatar"
+
+#: ../avatar-manager.php:257
+msgid ""
+"<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" "
+"target=\"_blank\">More information</a>"
+msgstr ""
+"<a href=\"http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress\" "
+"target=\"_blank\">Más información</a>"
+
+#: ../avatar-manager.php:265
+msgid "Custom"
+msgstr "Personalizado"
+
+#: ../avatar-manager.php:279
+msgid "Delete"
+msgstr "Eliminar"
+
+#: ../avatar-manager.php:290 ../avatar-manager.php:296
+msgid "Select Image"
+msgstr "Selecciona Imagen"
+
+#: ../avatar-manager.php:300
+msgid "Choose an image from your computer:"
+msgstr "Escoge una imagen desde tu computadora:"
+
+#: ../avatar-manager.php:304
+msgid "Upload"
+msgstr "Cargar"
+
+#: ../avatar-manager.php:312 ../avatar-manager.php:318
+msgid "Avatar Rating"
+msgstr "Clasificación de Avatar"
+
+#: ../avatar-manager.php:325
+msgid "G &#8212; Suitable for all audiences"
+msgstr "G &#8212; Adecuado para todos los públicos"
+
+#: ../avatar-manager.php:328
+msgid "PG &#8212; Possibly offensive, usually for audiences 13 and above"
+msgstr ""
+"PG &#8212; Posiblemente ofensivo, normalmente para mayores de 13 años"
+
+#: ../avatar-manager.php:331
+msgid "R &#8212; Intended for adult audiences above 17"
+msgstr "R &#8212; Destinado a un público adulto mayor de 17"
+
+#: ../avatar-manager.php:334
+msgid "X &#8212; Even more mature than above"
+msgstr "X &#8212; Contenido para criterios más amplios que los anteriores"
+
+#: ../avatar-manager.php:348
+msgid "Choose a rating for your custom avatar."
+msgstr "Escoge una calificación para tu avatar personalizado."
+
+#: ../avatar-manager.php:597
+msgid "Image Upload Error"
+msgstr "Error en Carga de Imagen"
+
+#: ../avatar-manager.php:929
+msgid "Avatar Image"
+msgstr "Imagen de Avatar"
+
+#: ../avatar-manager.php:955 ../avatar-manager.php:997
+#: ../avatar-manager.php:1040 ../avatar-manager.php:1090
+#: ../avatar-manager.php:1139 ../avatar-manager.php:1203
+msgid "Insufficient arguments passed to this XML-RPC method."
+msgstr "Argumentos insuficientes pasados a este método XML-RPC."
+
+#: ../avatar-manager.php:971 ../avatar-manager.php:1059
+#: ../avatar-manager.php:1111 ../avatar-manager.php:1159
+msgid "Sorry, you don't have a custom avatar."
+msgstr "Perdón, tú no posees un avatar personalizado."
+
+#: ../avatar-manager.php:1103
+msgid "Invalid avatar type."
+msgstr "Tipo de avatar inválido."
+
+#: ../avatar-manager.php:1152
+msgid "Invalid custom avatar rating."
+msgstr "Calificación inválida de avatar personalizado."
+
+#: ../avatar-manager.php:1216
+msgid "Sorry, you don't have permission to upload files."
+msgstr "Perdón, tú no tienes permiso para cargar archivos."
+
+#: ../avatar-manager.php:1237
+msgid "Sorry, this file type is not permitted for security reasons."
+msgstr ""
+"Perdón, este tipo de archivo no está permitido por razones de seguridad."
