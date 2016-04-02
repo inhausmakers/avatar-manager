@@ -1,0 +1,29 @@
+{
+  "name": "avatar-manager",
+  "version": "1.6.1",
+  "description": "Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/resourcestream/avatar-manager.git"
+  },
+  "keywords": [
+    "avatars",
+    "gravatar",
+    "profile",
+    "users",
+    "xml rpc"
+  ],
+  "author": "Cătălin Dogaru",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/resourcestream/avatar-manager/issues"
+  },
+  "homepage": "https://github.com/resourcestream/avatar-manager#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "private": true
+}
