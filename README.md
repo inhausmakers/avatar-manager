@@ -110,6 +110,7 @@ Avatar Manager is brought to you by these fine folks.
 [Johan Steen](https://profiles.wordpress.org/artstorm),
 [Lucas Uzan](https://profiles.wordpress.org/wiiz83),
 [Mateus Neves](https://profiles.wordpress.org/mateusneves),
+[Maura Montero D.](https://profiles.wordpress.org/modima65),
 [Pieter Goosen](https://profiles.wordpress.org/pietergoosen),
 [Samantha Muthiah](https://profiles.wordpress.org/schm168),
 [Snowboard Mommy](https://profiles.wordpress.org/snowboardmommy)
