@@ -119,7 +119,7 @@ Avatar Manager is brought to you by these fine folks.
 Copyright and License
 ---------------------
 
-Copyright © 2013-2015 Cătălin Dogaru
+Copyright © 2013-2016 Cătălin Dogaru
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
