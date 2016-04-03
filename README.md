@@ -1,48 +1,43 @@
-[Avatar Manager v1.6.1](http://wordpress.org/plugins/avatar-manager/)
-=======================
+# [Avatar Manager v1.6.1](http://wordpress.org/plugins/avatar-manager/)
 
-Avatar Manager for WordPress is a sweet and simple plugin for storing avatars
-locally and more. Easily.
+Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.
 
-Enhance your WordPress website by letting your users choose between using
-Gravatar or a self-hosted avatar image right from their profile screen. Improved
-workflow, on-demand image generation and custom user permissions under a native
-interface. Say hello to the Avatar Manager plugin.
+Enhance your WordPress website by letting your users choose between using Gravatar or a self-hosted avatar image right from their profile screen. Improved workflow, on-demand image generation and custom user permissions under a native interface. Say hello to the Avatar Manager plugin.
 
-To get started, check out Avatar Manager on [WordPress Plugin
-Directory](http://wordpress.org/plugins/avatar-manager/)!
+To get started, check out Avatar Manager on [WordPress Plugin Directory](http://wordpress.org/plugins/avatar-manager/)!
 
 
+## Get Started
 
-Get Started
------------
-
-Clone the repo, `git clone git://github.com/resourcestream/avatar-manager.git`,
-or [download the latest
-release](https://github.com/resourcestream/avatar-manager/zipball/master).
+Clone the repo, `git clone git://github.com/resourcestream/avatar-manager.git`, or [download the latest release](https://github.com/resourcestream/avatar-manager/zipball/master).
 
 
-
-Installation and Usage
-----------------------
+## Installation and Usage
 
 Installation is simple as peas.
 
-1. Install Avatar Manager either via the WordPress.org plugin directory, or by
-   uploading the files to your server.
-2. After activating Avatar Manager, you will be able to customize the plugin
-   options under the [Settings Discussion
-   Screen](http://codex.wordpress.org/Settings_Discussion_Screen).
+1. Install Avatar Manager either via the WordPress.org plugin directory, or by uploading the files to your server.
+2. After activating Avatar Manager, you will be able to customize the plugin options under the [Settings Discussion Screen](http://codex.wordpress.org/Settings_Discussion_Screen).
 3. That’s it. You’re ready to go!
 
 
+## Contributing
 
-Versioning
-----------
+**Thank you for choosing to contribute to Avatar Manager!**
 
-For transparency and insight into our release cycle, and for striving to
-maintain backward compatibility, Avatar Manager will be maintained under the
-Semantic Versioning guidelines as much as possible.
+Have a bug or a feature request? Please [open a new issue](https://github.com/resourcestream/avatar-manager/issues). Before opening any issue, please search for existing issues and read the [Issue Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas Gallagher](https://github.com/necolas/). Please submit all pull requests against dev branches.
+
+Avatar Manager is a user-driven project, and all developments and enhancements depend on users like **you**!
+
+
+## How It’s Made
+
+Find out how Avatar Manager it’s made on [Tuts+ Code](http://code.tutsplus.com/series/how-to-create-a-wordpress-avatar-management-plugin-from-scratch--wp-33866).
+
+
+## Versioning
+
+For transparency and insight into our release cycle, and for striving to maintain backward compatibility, Avatar Manager will be maintained under the Semantic Versioning guidelines as much as possible.
 
 Releases will be numbered with the following format:
 
@@ -50,57 +45,22 @@ Releases will be numbered with the following format:
 
 And constructed with the following guidelines:
 
-* Breaking backward compatibility bumps the major (and resets the minor and
-  patch).
-* New additions without breaking backward compatibility bumps the minor (and
-  resets the patch).
+* Breaking backward compatibility bumps the major (and resets the minor and patch).
+* New additions without breaking backward compatibility bumps the minor (and resets the patch).
 * Bug fixes and misc changes bumps the patch.
 
 For more information on SemVer, please visit [semver.org](http://semver.org/).
 
 
-
-How It’s Made
--------------
-
-Want to find out how Avatar Manager is built? Make sure to read the following
-resources.
-
-**Tuts+ Code**
-
-+ [How to Create a WordPress Avatar Management Plugin from Scratch](http://code.tutsplus.com/series/how-to-create-a-wordpress-avatar-management-plugin-from-scratch--wp-33866)
-
-
-
-Get Involved
-------------
-
-**Thank you for choosing to contribute to Avatar Manager!**
-
-Have a bug or a feature request? Please [open a new
-issue](https://github.com/resourcestream/avatar-manager/issues). Before opening
-any issue, please search for existing issues and read the [Issue
-Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas
-Gallagher](https://github.com/necolas/). Please submit all pull requests against
-dev branches.
-
-Avatar Manager is a user-driven project, and all developments and enhancements
-depend on users like **you**!
-
-
-
-Authors
--------
+## Authors
 
 **Cătălin Dogaru**
 
-+ http://twitter.com/resourcestream
-+ http://github.com/cdog
+* https://profiles.wordpress.org/cdog
+* https://github.com/cdog
 
 
-
-Contributing Developers
------------------------
+## Contributors
 
 Avatar Manager is brought to you by these fine folks.
 
@@ -116,21 +76,12 @@ Avatar Manager is brought to you by these fine folks.
 [Snowboard Mommy](https://profiles.wordpress.org/snowboardmommy)
 
 
-
-Copyright and License
----------------------
+## Copyright and License
 
 Copyright © 2013-2016 Cătălin Dogaru
 
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
-version.
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
-Street, Fifth Floor, Boston, MA 02110-1301, USA.
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
