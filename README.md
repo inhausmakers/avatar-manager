@@ -1,10 +1,10 @@
-# [Avatar Manager v1.6.1](http://wordpress.org/plugins/avatar-manager/)
+# [Avatar Manager v1.6.1](https://wordpress.org/plugins/avatar-manager/)
 
 Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.
 
 Enhance your WordPress website by letting your users choose between using Gravatar or a self-hosted avatar image right from their profile screen. Improved workflow, on-demand image generation and custom user permissions under a native interface. Say hello to the Avatar Manager plugin.
 
-To get started, check out Avatar Manager on [WordPress Plugin Directory](http://wordpress.org/plugins/avatar-manager/)!
+To get started, check out Avatar Manager on [WordPress Plugin Directory](https://wordpress.org/plugins/avatar-manager/)!
 
 
 ## Get Started
