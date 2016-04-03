@@ -30,9 +30,9 @@ Want to support this project for continued development and freely available for 
 * [**Add your own review.**](https://wordpress.org/support/view/plugin-reviews/avatar-manager#postform) Let others know how was your experience using Avatar Manager.
 * [**Make a donation.**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SMKJZHX7G3VQS) Keep me motivated with a candy bar or a theater ticket. Is that simple.
 
-Avatar Manager is a user-driven project, and all developments and enhancements depend on users like **you**! Become a contributor or make a donation, and get your name featured in front of a [growing audience](https://wordpress.org/plugins/avatar-manager/stats/).
+Avatar Manager is a user-driven project, and all developments and enhancements depend on users like _you_! Become a contributor or make a donation, and get your name featured in front of a [growing audience](https://wordpress.org/plugins/avatar-manager/stats/).
 
-Thank you for choosing to contribute to Avatar Manager!
+_Thank you for choosing to contribute to Avatar Manager!_
 
 
 ## Contributing
