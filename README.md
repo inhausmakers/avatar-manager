@@ -23,7 +23,7 @@ Installation is simple as peas.
 
 ## Help Preserve this Project
 
-Want to support this project for continued development and freely available for everyone? Here's how you can help preserve Avatar Manager:
+Want to support this project for continued development and freely available for everyone? Here’s how you can help preserve Avatar Manager:
 
 * [**Get involved.**](https://github.com/resourcestream/avatar-manager#contributing) Contribute a patch or help resolving an existing issue or confirmed feature request, or submit a translation.
 * [**Suggest adding to core.**](https://core.trac.wordpress.org/ticket/16020) Whether you find Avatar Manager a good fit for WordPress core your feedback can help make a difference.
