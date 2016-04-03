@@ -37,7 +37,7 @@ _Thank you for choosing to contribute to Avatar Manager!_
 
 ## Contributing
 
-Have a bug or a feature request? Please [open a new issue](https://github.com/resourcestream/avatar-manager/issues). Before opening any issue, please search for existing issues and read the [Issue Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas Gallagher](https://github.com/necolas/). Please submit all pull requests against dev branches.
+Have a bug or a feature request? Please [open a new issue](https://github.com/resourcestream/avatar-manager/issues). Before opening any issue, please search for existing issues and read the [Issue Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas Gallagher](https://github.com/necolas/). Please submit all pull requests against development branches.
 
 
 ## How It’s Made
