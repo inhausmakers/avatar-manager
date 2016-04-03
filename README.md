@@ -21,13 +21,23 @@ Installation is simple as peas.
 3. That’s it. You’re ready to go!
 
 
+## Help Preserve this Project
+
+Want to support this project for continued development and freely available for everyone? Here's how you can help preserve Avatar Manager:
+
+* [**Get involved.**](https://github.com/resourcestream/avatar-manager#contributing) Contribute a patch or help resolving an existing issue or confirmed feature request, or submit a translation.
+* [**Suggest adding to core.**](https://core.trac.wordpress.org/ticket/16020) Whether you find Avatar Manager a good fit for WordPress core your feedback can help make a difference.
+* [**Add your own review.**](https://wordpress.org/support/view/plugin-reviews/avatar-manager#postform) Let others know how was your experience using Avatar Manager.
+* [**Make a donation.**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SMKJZHX7G3VQS) Keep me motivated with a candy bar or a theater ticket. Is that simple.
+
+Avatar Manager is a user-driven project, and all developments and enhancements depend on users like **you**! Become a contributor or make a donation, and get your name featured in front of a [growing audience](https://wordpress.org/plugins/avatar-manager/stats/).
+
+Thank you for choosing to contribute to Avatar Manager!
+
+
 ## Contributing
 
-**Thank you for choosing to contribute to Avatar Manager!**
-
 Have a bug or a feature request? Please [open a new issue](https://github.com/resourcestream/avatar-manager/issues). Before opening any issue, please search for existing issues and read the [Issue Guidelines](https://github.com/necolas/issue-guidelines), written by [Nicolas Gallagher](https://github.com/necolas/). Please submit all pull requests against dev branches.
-
-Avatar Manager is a user-driven project, and all developments and enhancements depend on users like **you**!
 
 
 ## How It’s Made
