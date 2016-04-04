@@ -416,7 +416,7 @@ add_action( 'show_user_profile', 'avatar_manager_edit_user_profile' );
  * @since Avatar Manager 1.0.0
  */
 function avatar_manager_admin_enqueue_scripts() {
-	if ( is_admin() && ! defined( 'IS_PROFILE_PAGE' ) )
+	if ( ! defined( 'IS_PROFILE_PAGE' ) )
 		return;
 
 	if ( current_user_can( 'upload_files' ) ) {
