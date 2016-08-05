@@ -217,6 +217,7 @@ function avatar_manager_default_size_settings_field() {
  * @uses did_action() For retrieving the number of times an action is fired.
  * @uses __() For retrieving the translated string from the translate().
  * @uses esc_attr() For escaping HTML attributes.
+ * @uses esc_html() For escaping HTML output.
  *
  * @since Avatar Manager 1.0.0
  *
@@ -379,7 +380,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 							?>
 							<label>
 								<input <?php checked( $custom_avatar_rating, $key, true ); ?> name="avatar_manager_custom_avatar_rating" type="radio" value="<?php echo esc_attr( $key ); ?>">
-								<?php echo $rating; ?>
+								<?php echo esc_html( $rating ); ?>
 							</label>
 							<br>
 							<?php
@@ -1131,6 +1132,8 @@ add_filter( 'avatar_defaults', 'avatar_manager_avatar_defaults', 10, 1 );
  * @uses get_post_meta() For retrieving attachment meta fields.
  * @uses __() For retrieving the translated string from the translate().
  * @uses apply_filters() For calling the functions added to a filter hook.
+ * @uses esc_html__() For returning translated text that has been escaped for
+ * safe use in HTML.
  *
  * @since Avatar Manager 1.2.0
  *
@@ -1144,7 +1147,7 @@ function avatar_manager_display_media_states( $media_states ) {
 	$meta_avatar = get_post_meta( $post->ID, '_avatar_manager_is_custom_avatar', true );
 
 	if ( ! empty( $meta_avatar ) )
-		$media_states[] = __( 'Avatar Image', 'avatar-manager' );
+		$media_states[] = esc_html__( 'Avatar Image', 'avatar-manager' );
 
 	// Calls the functions added to avatar_manager_display_media_states filter
 	// hook.
