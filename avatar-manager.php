@@ -142,7 +142,8 @@ function avatar_manager_sanitize_options( $input ) {
  * Prints Avatar Uploads settings field.
  *
  * @uses avatar_manager_get_options() For retrieving plugin options.
- * @uses esc_html_e() For displaying the translated string from the translate().
+ * @uses esc_html_e() For displaying translated text that has been escaped for
+ * safe use in HTML.
  * @uses checked() For comparing two given values.
  *
  * @since Avatar Manager 1.0.0
@@ -169,7 +170,8 @@ function avatar_manager_avatar_uploads_settings_field() {
  * Prints Default Size settings field.
  *
  * @uses avatar_manager_get_options() For retrieving plugin options.
- * @uses esc_html_e() For displaying the translated string from the translate().
+ * @uses esc_html_e() For displaying translated text that has been escaped for
+ * safe use in HTML.
  *
  * @since Avatar Manager 1.0.0
  */
@@ -201,7 +203,8 @@ function avatar_manager_default_size_settings_field() {
  * @uses restore_current_blog() For restoring the current blog.
  * @uses remove_filter() For removing a function attached to a specified action
  * hook.
- * @uses esc_html_e() For displaying the translated string from the translate().
+ * @uses esc_html_e() For displaying translated text that has been escaped for
+ * safe use in HTML.
  * @uses checked() For comparing two given values.
  * @uses get_avatar() For retrieving the avatar for a user.
  * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
