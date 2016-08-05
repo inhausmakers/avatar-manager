@@ -142,7 +142,7 @@ function avatar_manager_sanitize_options( $input ) {
  * Prints Avatar Uploads settings field.
  *
  * @uses avatar_manager_get_options() For retrieving plugin options.
- * @uses _e() For displaying the translated string from the translate().
+ * @uses esc_html_e() For displaying the translated string from the translate().
  * @uses checked() For comparing two given values.
  *
  * @since Avatar Manager 1.0.0
@@ -154,12 +154,12 @@ function avatar_manager_avatar_uploads_settings_field() {
 	<fieldset>
 		<legend class="screen-reader-text">
 			<span>
-				<?php _e( 'Avatar Uploads', 'avatar-manager' ); ?>
+				<?php esc_html_e( 'Avatar Uploads', 'avatar-manager' ); ?>
 			</span>
 		</legend><!-- .screen-reader-text -->
 		<label>
 			<input <?php checked( $options['avatar_uploads'], 1, true ); ?> name="avatar_manager[avatar_uploads]" type="checkbox" value="1">
-			<?php _e( 'Anyone can upload', 'avatar-manager' ); ?>
+			<?php esc_html_e( 'Anyone can upload', 'avatar-manager' ); ?>
 		</label>
 	</fieldset>
 	<?php
@@ -169,7 +169,7 @@ function avatar_manager_avatar_uploads_settings_field() {
  * Prints Default Size settings field.
  *
  * @uses avatar_manager_get_options() For retrieving plugin options.
- * @uses _e() For displaying the translated string from the translate().
+ * @uses esc_html_e() For displaying the translated string from the translate().
  *
  * @since Avatar Manager 1.0.0
  */
@@ -180,11 +180,11 @@ function avatar_manager_default_size_settings_field() {
 	<fieldset>
 		<legend class="screen-reader-text">
 			<span>
-				<?php _e( 'Default Size', 'avatar-manager' ); ?>
+				<?php esc_html_e( 'Default Size', 'avatar-manager' ); ?>
 			</span>
 		</legend><!-- .screen-reader-text -->
 		<label>
-			<?php _e( 'Default size of the avatar image', 'avatar-manager' ); ?>
+			<?php esc_html_e( 'Default size of the avatar image', 'avatar-manager' ); ?>
 			<input class="small-text" min="1" name="avatar_manager[default_size]" step="1" type="number" value="<?php echo $options['default_size']; ?>">
 		</label>
 	</fieldset>
@@ -201,7 +201,7 @@ function avatar_manager_default_size_settings_field() {
  * @uses restore_current_blog() For restoring the current blog.
  * @uses remove_filter() For removing a function attached to a specified action
  * hook.
- * @uses _e() For displaying the translated string from the translate().
+ * @uses esc_html_e() For displaying the translated string from the translate().
  * @uses checked() For comparing two given values.
  * @uses get_avatar() For retrieving the avatar for a user.
  * @uses avatar_manager_get_custom_avatar() For retrieving user custom avatar
@@ -258,32 +258,32 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 	}
 	?>
 	<h3>
-		<?php _e( 'Avatar', 'avatar-manager' ); ?>
+		<?php esc_html_e( 'Avatar', 'avatar-manager' ); ?>
 	</h3>
 	<table class="form-table" id="avatar-manager">
 		<tr>
 			<th>
-				<?php _e( 'Display this avatar', 'avatar-manager' ); ?>
+				<?php esc_html_e( 'Display this avatar', 'avatar-manager' ); ?>
 			</th>
 			<td>
 				<fieldset>
 					<legend class="screen-reader-text">
 						<span>
-							<?php _e( 'Display this avatar', 'avatar-manager' ); ?>
+							<?php esc_html_e( 'Display this avatar', 'avatar-manager' ); ?>
 						</span><!-- .screen-reader-text -->
 					</legend>
 					<label>
 						<input <?php checked( $avatar_type, 'gravatar', true ); ?> name="avatar_manager_avatar_type" type="radio" value="gravatar">
 						<?php echo get_avatar( $profileuser->ID, 32, '', false ); ?>
-						<?php _e( 'Gravatar', 'avatar-manager' ); ?>
+						<?php esc_html_e( 'Gravatar', 'avatar-manager' ); ?>
 					</label>
-					<?php _e( '<a href="http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress" target="_blank">More information</a>', 'avatar-manager' ); ?>
+					<?php esc_html_e( '<a href="http://codex.wordpress.org/How_to_Use_Gravatars_in_WordPress" target="_blank">More information</a>', 'avatar-manager' ); ?>
 					<?php if ( $user_has_custom_avatar ) : ?>
 						<br>
 						<label>
 							<input <?php checked( $avatar_type, 'custom', true ); ?> name="avatar_manager_avatar_type" type="radio" value="custom">
 							<?php echo avatar_manager_get_custom_avatar( $profileuser->ID, 32, '', false ); ?>
-							<?php _e( 'Custom', 'avatar-manager' ); ?>
+							<?php esc_html_e( 'Custom', 'avatar-manager' ); ?>
 						</label>
 						<?php
 						if ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) {
@@ -295,7 +295,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 							self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) );
 							?>
 							<a class="delete" href="<?php echo wp_nonce_url( $href, 'update-user_' . $profileuser->ID ); ?>" onclick="return showNotice.warn();">
-								<?php _e( 'Delete', 'avatar-manager' ); ?>
+								<?php esc_html_e( 'Delete', 'avatar-manager' ); ?>
 							</a><!-- .delete -->
 							<?php
 						}
@@ -307,18 +307,18 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 		<?php if ( current_user_can( 'upload_files' ) || $options['avatar_uploads'] ) : ?>
 			<tr>
 				<th>
-					<?php _e( 'Select Image', 'avatar-manager' ); ?>
+					<?php esc_html_e( 'Select Image', 'avatar-manager' ); ?>
 				</th>
 				<td>
 					<fieldset>
 						<legend class="screen-reader-text">
 							<span>
-								<?php _e( 'Select Image', 'avatar-manager' ); ?>
+								<?php esc_html_e( 'Select Image', 'avatar-manager' ); ?>
 							</span>
 						</legend><!-- .screen-reader-text -->
 						<p>
 							<label class="description" for="avatar-manager-upload">
-								<?php _e( 'Choose an image from your computer:', 'avatar-manager' ); ?>
+								<?php esc_html_e( 'Choose an image from your computer:', 'avatar-manager' ); ?>
 							</label><!-- .description -->
 							<br>
 							<input id="avatar-manager-upload" name="avatar_manager_import" type="file">
@@ -327,7 +327,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						<?php if ( current_user_can( 'upload_files' ) && did_action( 'wp_enqueue_media' ) ) : ?>
 							<p>
 								<label class="description" for="avatar-manager-choose-from-library-link">
-									<?php _e( 'Or choose an image from your media library:', 'avatar-manager' ); ?>
+									<?php esc_html_e( 'Or choose an image from your media library:', 'avatar-manager' ); ?>
 								</label><!-- .description -->
 								<br>
 								<?php
@@ -339,7 +339,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 								self_admin_url( IS_PROFILE_PAGE ? 'profile.php' : 'user-edit.php' ) );
 								?>
 								<a class="button" data-choose="<?php esc_attr_e( 'Choose a Custom Avatar', 'avatar-manager' ); ?>" data-update="<?php esc_attr_e( 'Set as avatar', 'avatar-manager' ); ?>" data-update-link="<?php echo wp_nonce_url( $modal_update_href, 'update-user_' . $profileuser->ID ); ?>" id="avatar-manager-choose-from-library-link">
-									<?php _e( 'Choose Image', 'avatar-manager' ); ?>
+									<?php esc_html_e( 'Choose Image', 'avatar-manager' ); ?>
 								</a><!-- #avatar-manager-choose-from-library-link -->
 							</p>
 						<?php endif; ?>
@@ -350,13 +350,13 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 		<?php if ( $user_has_custom_avatar ) : ?>
 			<tr>
 				<th>
-					<?php _e( 'Avatar Rating', 'avatar-manager' ); ?>
+					<?php esc_html_e( 'Avatar Rating', 'avatar-manager' ); ?>
 				</th>
 				<td>
 					<fieldset>
 						<legend class="screen-reader-text">
 							<span>
-								<?php _e( 'Avatar Rating', 'avatar-manager' ); ?>
+								<?php esc_html_e( 'Avatar Rating', 'avatar-manager' ); ?>
 							</span>
 						</legend><!-- .screen-reader-text -->
 						<?php
@@ -386,7 +386,7 @@ function avatar_manager_edit_user_profile( $profileuser ) {
 						}
 						?>
 						<span class="description">
-							<?php _e( 'Choose a rating for your custom avatar.', 'avatar-manager' ); ?>
+							<?php esc_html_e( 'Choose a rating for your custom avatar.', 'avatar-manager' ); ?>
 						</span><!-- .description -->
 					</fieldset>
 				</td>
