@@ -84,7 +84,8 @@ Avatar Manager is brought to you by these fine folks.
 [Natalia Zabotina](https://profiles.wordpress.org/nnz),
 [Pieter Goosen](https://profiles.wordpress.org/pietergoosen),
 [Samantha Muthiah](https://profiles.wordpress.org/schm168),
-[Snowboard Mommy](https://profiles.wordpress.org/snowboardmommy)
+[Snowboard Mommy](https://profiles.wordpress.org/snowboardmommy),
+[Mike Selander](https://profiles.wordpress.org/mikeselander)
 
 
 ## Copyright and License
