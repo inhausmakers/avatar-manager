@@ -6,6 +6,7 @@ Thumbs.db
 # Editor generated files
 *.sublime-project
 *.sublime-workspace
+*.idea
 
 # Files to ignore
 *.log
