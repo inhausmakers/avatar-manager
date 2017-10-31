@@ -1509,4 +1509,58 @@ function avatar_manager_xmlrpc_methods( $methods ) {
 }
 
 add_filter( 'xmlrpc_methods', 'avatar_manager_xmlrpc_methods' );
-?>
+
+
+/**
+ *
+ * -- chrishiggins29: Adds custom avatar support for WordPress API
+ * -- October 30, 2017
+ *
+ * -- https://github.com/chrishiggins29
+ *
+ * -- NOTE: Be aware that these functions might overwrite standard API fields (ie. avatar_url)
+ */
+add_action( 'rest_api_init', 'avatar_manager_api_register_custom_avatar' );
+
+function avatar_manager_api_register_custom_avatar() {
+	register_rest_field( 'user',
+		'avatar_urls',
+		array(
+			'get_callback'    => 'avatar_manager_api_get_custom_avatar',
+			'update_callback' => null,
+			'schema'          => null,
+		)
+	);
+}
+
+
+/**
+ * Gets the URL of the custom avatar if applicable
+ *
+ * @param array $object Details of user.
+ * @param string $field_name Name of field.
+ * @param WP_REST_Request $request Current request
+ *
+ * @return array
+ */
+function avatar_manager_api_get_custom_avatar( $object, $field_name, $request ) {
+
+	$avatar_type = get_user_meta( $object['id'], 'avatar_manager_avatar_type', true );
+
+	if ( ! empty( $avatar_type ) && 'custom' === $avatar_type ) {
+		// retrieves postID (= ID of custom avatar/attachment) from table wp_usermeta if applicable
+		$custom_avatar_id = get_user_meta( $object['id'], 'avatar_manager_custom_avatar', true );
+
+		if ( ! empty( $custom_avatar_id ) ) {
+			// unsets entire array
+			$object['avatar_urls'] = [];
+			// overwrites Gravatar with saved custom avatar of default size (ie. 96) to be returned
+			// - NOTE: this might need some work! Not sure if sizes 24 and 48 are needed.
+			// - If so, the easiest would be to just add 2 more lines with the same URL for sizes 24 and 48.
+			$object['avatar_urls'][AVATAR_MANAGER_DEFAULT_SIZE] = wp_get_attachment_url( $custom_avatar_id );
+		}
+
+	}
+
+	return $object['avatar_urls'];
+}
