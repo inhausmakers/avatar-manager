@@ -641,25 +641,8 @@ function avatar_manager_delete_avatar( $user_id ) {
 		switch_to_blog( get_user_meta( $user_id, 'avatar_manager_blog_id', true ) );
 	}
 
-	// Retrieves attachment meta field based on attachment ID.
-	$custom_avatar = get_post_meta( $attachment_id, '_avatar_manager_custom_avatar', true );
-
-	if ( is_array( $custom_avatar ) ) {
-		foreach ( $custom_avatar as $size => $skip ) {
-			if ( ! $skip ) {
-				// Generates a file path of an avatar image based on attachment
-				// ID and size.
-				$file = avatar_manager_generate_avatar_path( $attachment_id, $size );
-
-				@unlink( $file );
-			}
-		}
-	}
-
-	// Deletes attachment meta fields based on attachment ID.
-	delete_post_meta( $attachment_id, '_avatar_manager_custom_avatar' );
-	delete_post_meta( $attachment_id, '_avatar_manager_custom_avatar_rating' );
-	delete_post_meta( $attachment_id, '_avatar_manager_is_custom_avatar' );
+	// Delete attachment post and files
+	wp_delete_attachment( $attachment_id, true );
 
 	// Determines whether Multisite support is enabled.
 	if ( is_multisite() ) {
