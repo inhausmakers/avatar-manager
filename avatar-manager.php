@@ -6,7 +6,9 @@
 Plugin Name: Avatar Manager
 Plugin URI: https://wordpress.org/plugins/avatar-manager/
 Description: Avatar Manager for WordPress is a sweet and simple plugin for storing avatars locally and more. Easily.
-Version: 1.6.1
+Version: 1.6.2
+Requires at least: 6.0
+Requires PHP: 5.6
 Author: Cătălin Dogaru
 Author URI: https://profiles.wordpress.org/cdog/
 License: GPLv2 or later
@@ -31,7 +33,7 @@ this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-define( 'AVATAR_MANAGER_VERSION', '1.6.1' );
+define( 'AVATAR_MANAGER_VERSION', '1.6.2' );
 define( 'AVATAR_MANAGER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AVATAR_MANAGER_AVATAR_UPLOADS', 0 );
 define( 'AVATAR_MANAGER_DEFAULT_SIZE', 96 );
@@ -1137,8 +1139,7 @@ add_filter( 'avatar_defaults', 'avatar_manager_avatar_defaults', 10, 1 );
  * @param array $media_states An associative array with media states.
  * @return array An associative array with media states.
  */
-function avatar_manager_display_media_states( $media_states ) {
-	global $post;
+function avatar_manager_display_media_states( $media_states, $post ) {
 
 	// Retrieves attachment meta field based on attachment ID.
 	$meta_avatar = get_post_meta( $post->ID, '_avatar_manager_is_custom_avatar', true );
@@ -1151,7 +1152,7 @@ function avatar_manager_display_media_states( $media_states ) {
 	return apply_filters( 'avatar_manager_display_media_states', $media_states );
 }
 
-add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 1 );
+add_filter( 'display_media_states', 'avatar_manager_display_media_states', 10, 2);
 
 /**
  * Deletes user's custom avatar image.
